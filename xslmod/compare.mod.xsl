@@ -3,7 +3,7 @@
   xmlns:fn="http://www.w3.org/2005/xpath-functions" xmlns:xtlc="http://www.xtpxlib.nl/ns/common"
   xmlns:local="http://www.xtpxlib.nl/ns/common/xslmod/container/local" exclude-result-prefixes="#all">
   <!-- ================================================================== -->
-  <!--*	
+  <!--~	
     XSL library module with support for comparing XML documents/elements.
     - Comment and processing instructions are ignored
     - Text nodes are normalized before comparison 

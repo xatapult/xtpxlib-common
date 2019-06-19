@@ -3,7 +3,7 @@
   xmlns:fn="http://www.w3.org/2005/xpath-functions" xmlns:xtlc="http://www.xtpxlib.nl/ns/common" xmlns:local="#local.dref.mod.xsl"
   exclude-result-prefixes="#all">
   <!-- ================================================================== -->
-  <!--*
+  <!--~
     XSLT library module with functions for the generic handling of document references
     (filenames/paths).
     
@@ -13,14 +13,14 @@
   <!-- GLOBAL CONSTANTS: -->
 
   <xsl:variable name="xtlc:protocol-file" as="xs:string" select="'file'">
-    <!--* File protocol specifier. -->
+    <!--~ File protocol specifier. -->
   </xsl:variable>
 
   <!-- ================================================================== -->
   <!-- BASIC DREF FUNCTIONS:  -->
 
   <xsl:function name="xtlc:dref-concat" as="xs:string">
-    <!--* 
+    <!--~ 
       Performs a safe concatenation of document reference path components: 
       - Translates all backslashes into slashes
 			- Makes sure that all components are separated with a single slash
@@ -31,7 +31,7 @@
       - xtlc:dref-concat(('a', '/b', 'c')) ==> /b/c
 		-->
     <xsl:param name="dref-path-components" as="xs:string*">
-      <!--* The path components that will be concatenated into a document reference. -->
+      <!--~ The path components that will be concatenated into a document reference. -->
     </xsl:param>
 
     <xsl:choose>
@@ -58,14 +58,14 @@
   <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 
   <xsl:function name="xtlc:dref-is-absolute" as="xs:boolean">
-    <!--* 
+    <!--~ 
       Returns true if the document reference can be considered absolute.
       
       A path is considered absolute when it starts with a / or \, contains a protocol specifier (e.g. file://) or
       starts with a Windows drive letter (e.g. C:).
     -->
     <xsl:param name="dref" as="xs:string">
-      <!--* Document reference to work on. -->
+      <!--~ Document reference to work on. -->
     </xsl:param>
 
     <xsl:sequence select="starts-with($dref, '/') or starts-with($dref, '\') or contains($dref, ':/') or matches($dref, '^[a-zA-Z]:')"/>
@@ -75,7 +75,7 @@
   <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 
   <xsl:function name="xtlc:dref-name" as="xs:string">
-    <!--* 
+    <!--~ 
       Returns the (file)name part of a complete document reference path. 
     
       Examples:
@@ -83,7 +83,7 @@
       - xtlc:dref-name('c') ==> c
     -->
     <xsl:param name="dref" as="xs:string">
-      <!--* Document reference to work on. -->
+      <!--~ Document reference to work on. -->
     </xsl:param>
 
     <xsl:sequence select="replace($dref, '.*[/\\]([^/\\]+)$', '$1')"/>
@@ -92,7 +92,7 @@
   <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 
   <xsl:function name="xtlc:dref-noext" as="xs:string">
-    <!--* 
+    <!--~ 
       Returns the complete document reference path but without its extension.
     
       Examples:
@@ -100,7 +100,7 @@
       - xtlc:dref-noext('a/b/c') ==> a/b/c      
     -->
     <xsl:param name="dref" as="xs:string">
-      <!--* Document reference to work on. -->
+      <!--~ Document reference to work on. -->
     </xsl:param>
 
     <xsl:sequence select="replace($dref, '\.[^\.]+$', '')"/>
@@ -109,7 +109,7 @@
   <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 
   <xsl:function name="xtlc:dref-name-noext" as="xs:string">
-    <!--* 
+    <!--~ 
       Returns the (file)name part of a document reference path but without its extension. 
     
       Examples:
@@ -117,7 +117,7 @@
       - xtlc:dref-name-noext('a/b/c') ==> c   
     -->
     <xsl:param name="dref" as="xs:string">
-      <!--* Document reference to work on. -->
+      <!--~ Document reference to work on. -->
     </xsl:param>
 
     <xsl:sequence select="xtlc:dref-noext(xtlc:dref-name($dref))"/>
@@ -126,7 +126,7 @@
   <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 
   <xsl:function name="xtlc:dref-ext" as="xs:string">
-    <!--* 
+    <!--~ 
       Returns the extension part of a document reference path. 
     
       Examples:
@@ -134,7 +134,7 @@
       - xtlc:dref-ext('a/b/c') ==> ''
     -->
     <xsl:param name="dref" as="xs:string">
-      <!--* Document reference to work on. -->
+      <!--~ Document reference to work on. -->
     </xsl:param>
 
     <xsl:variable name="name-only" as="xs:string" select="xtlc:dref-name($dref)"/>
@@ -151,7 +151,7 @@
   <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 
   <xsl:function name="xtlc:dref-path" as="xs:string">
-    <!--* 
+    <!--~ 
       Returns the path part of a document reference path.
     
       Examples:
@@ -159,7 +159,7 @@
       - xtlc:dref-path('c') ==> ''
     -->
     <xsl:param name="dref" as="xs:string">
-      <!--* Document reference to work on. -->
+      <!--~ Document reference to work on. -->
     </xsl:param>
 
     <xsl:choose>
@@ -176,14 +176,14 @@
   <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 
   <xsl:function name="xtlc:dref-result-doc" as="xs:string">
-    <!--* 
+    <!--~ 
       Transforms a document reference into something <xsl:result-document> can use. 
       
       <xsl:result-document> instruction always needs a file:// in front and has some strict rules about the 
       formatting. Make sure the input is an absolute dref! 
     -->
     <xsl:param name="dref" as="xs:string">
-      <!--* Document reference to work on. Must be absolute! -->
+      <!--~ Document reference to work on. Must be absolute! -->
     </xsl:param>
 
     <xsl:sequence select="xtlc:protocol-add($dref, $xtlc:protocol-file, true())"/>
@@ -193,14 +193,14 @@
   <!-- CANONICALIZATION OF DREFs: -->
 
   <xsl:function name="xtlc:dref-canonical" as="xs:string">
-    <!--* 
+    <!--~ 
       Makes a document reference canonical (remove any .. and . directory specifiers).
       
       Examples:
       - dref-canonical('a/b/../c') ==> a/c
     -->
     <xsl:param name="dref" as="xs:string">
-      <!--* Document reference to work on. -->
+      <!--~ Document reference to work on. -->
     </xsl:param>
 
     <!-- Split the document reference into parts: -->
@@ -261,7 +261,7 @@
   <!-- RELATIVE DREFs: -->
 
   <xsl:function name="xtlc:dref-relative" as="xs:string">
-    <!--* 
+    <!--~ 
       Computes a relative document reference from one document to another.
       
       Examples:
@@ -269,10 +269,10 @@
       - dref-relative('a/b/c/from.xml', 'a/b/d/to.xml') ==> ../d/to.xml      
     -->
     <xsl:param name="from-dref" as="xs:string">
-      <!--* Document reference (of a document) of the starting point.  -->
+      <!--~ Document reference (of a document) of the starting point.  -->
     </xsl:param>
     <xsl:param name="to-dref" as="xs:string">
-      <!--* Document reference (of a document) of the target. -->
+      <!--~ Document reference (of a document) of the target. -->
     </xsl:param>
 
     <xsl:sequence select="xtlc:dref-relative-from-path(xtlc:dref-path($from-dref), $to-dref)"/>
@@ -281,7 +281,7 @@
   <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 
   <xsl:function name="xtlc:dref-relative-from-path" as="xs:string">
-    <!--*
+    <!--~
       Computes a relative document reference from a path to a document.
       
       Examples:
@@ -289,10 +289,10 @@
       - dref-relative-from-path('a/b/c', 'a/b/d/to.xml') ==> ../d/to.xml            
     -->
     <xsl:param name="from-dref-path" as="xs:string">
-      <!--* Document reference (of a directory) of the starting point. -->
+      <!--~ Document reference (of a directory) of the starting point. -->
     </xsl:param>
     <xsl:param name="to-dref" as="xs:string">
-      <!--* Document reference (of a document) of the target. -->
+      <!--~ Document reference (of a document) of the target. -->
     </xsl:param>
 
     <!-- Get all the bits and pieces: -->
@@ -347,9 +347,9 @@
   <xsl:variable name="local:protocol-file-special" as="xs:string" select="concat($xtlc:protocol-file, ':/')"/>
 
   <xsl:function name="xtlc:protocol-present" as="xs:boolean">
-    <!--* Returns true when a reference has a protocol specifier (e.g. file:// or http://). -->
+    <!--~ Returns true when a reference has a protocol specifier (e.g. file:// or http://). -->
     <xsl:param name="ref" as="xs:string">
-      <!--* Reference to work on. -->
+      <!--~ Reference to work on. -->
     </xsl:param>
 
     <!-- Usually a protocol is something that ends with ://, e.g. http://, but for the file protocol we also encounter file:/ (single slash).
@@ -361,7 +361,7 @@
   <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 
   <xsl:function name="xtlc:protocol-remove" as="xs:string">
-    <!--* 
+    <!--~ 
       Removes the protocol part from a document reference.  
     
       Examples (it is tricky and inconsistent!)
@@ -371,7 +371,7 @@
       - xtlc:protocol-remove('file:/C:/a/b/c') ==> C:/a/b/c
     -->
     <xsl:param name="ref" as="xs:string">
-      <!--* Reference to work on. -->
+      <!--~ Reference to work on. -->
     </xsl:param>
 
     <xsl:variable name="protocol-windows-special" as="xs:string" select="concat('^', $local:protocol-file-special, '[a-zA-Z]:/')"/>
@@ -406,15 +406,15 @@
   <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 
   <xsl:function name="xtlc:protocol-add" as="xs:string">
-    <!--* Adds a protocol part (written without the trailing ://) to a reference. -->
+    <!--~ Adds a protocol part (written without the trailing ://) to a reference. -->
     <xsl:param name="ref" as="xs:string">
-      <!--* Reference to work on. -->
+      <!--~ Reference to work on. -->
     </xsl:param>
     <xsl:param name="protocol" as="xs:string">
-      <!--* The protocol to add, without a leading :// part (e.g. just 'file' or 'http'). -->
+      <!--~ The protocol to add, without a leading :// part (e.g. just 'file' or 'http'). -->
     </xsl:param>
     <xsl:param name="force" as="xs:boolean">
-      <!--* When true an existing protocol is removed first. When false, a reference with an existing protocol is left unchanged.  -->
+      <!--~ When true an existing protocol is removed first. When false, a reference with an existing protocol is left unchanged.  -->
     </xsl:param>
 
     <xsl:variable name="ref-1" as="xs:string" select="if ($force) then xtlc:protocol-remove($ref) else translate($ref, '\', '/')"/>
@@ -444,9 +444,9 @@
   <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 
   <xsl:function name="xtlc:protocol" as="xs:string">
-    <!--* Returns the protocol part of a reference (without the ://). -->
+    <!--~ Returns the protocol part of a reference (without the ://). -->
     <xsl:param name="ref" as="xs:string">
-      <!--* Reference to work on. -->
+      <!--~ Reference to work on. -->
     </xsl:param>
 
     <xsl:sequence select="xtlc:protocol($ref, '')"/>
@@ -455,12 +455,12 @@
   <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 
   <xsl:function name="xtlc:protocol" as="xs:string">
-    <!--* Returns the protocol part of a reference (without the ://) or a default value when none present. -->
+    <!--~ Returns the protocol part of a reference (without the ://) or a default value when none present. -->
     <xsl:param name="ref" as="xs:string">
-      <!--* Reference to work on. -->
+      <!--~ Reference to work on. -->
     </xsl:param>
     <xsl:param name="default-protocol" as="xs:string">
-      <!--* Default protocol to return when $ref contains none. -->
+      <!--~ Default protocol to return when $ref contains none. -->
     </xsl:param>
 
     <xsl:choose>
@@ -477,11 +477,11 @@
   <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 
   <xsl:function name="xtlc:dref-add-encoding" as="xs:string">
-    <!--* 
+    <!--~ 
       Encodes all "strange" characters with %xx. Any existing %xx parts will be kept as is.
     -->
     <xsl:param name="dref" as="xs:string">
-      <!--* Document reference to work on. -->
+      <!--~ Document reference to work on. -->
     </xsl:param>
 
     <xsl:variable name="protocol" as="xs:string" select="xtlc:protocol($dref)"/>

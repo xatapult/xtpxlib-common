@@ -3,7 +3,7 @@
   xmlns:fn="http://www.w3.org/2005/xpath-functions" xmlns:local="#local.message.mod.xsl" xmlns:xtlc="http://www.xtpxlib.nl/ns/common"
   exclude-result-prefixes="#all">
   <!-- ================================================================== -->
-  <!--*
+  <!--~
     Message related templates.
     
     A message is a standardized piece of XML used for inserting error, debug, etc., messages into XML documents.
@@ -12,20 +12,20 @@
   <!-- ================================================================== -->
 
   <xsl:template name="xtlc:msg-create" as="element(xtlc:message)">
-    <!--* 
+    <!--~ 
       Generates a standard xtlc:message construct.
     -->
     <xsl:param name="msg-parts" as="item()+" required="yes">
-      <!--* Message to show (in parts, all parts will be concatenated). -->
+      <!--~ Message to show (in parts, all parts will be concatenated). -->
     </xsl:param>
     <xsl:param name="status" as="xs:string" required="yes">
-      <!--* The status of the message. Must be one of the $xtlc:status-* constants. -->
+      <!--~ The status of the message. Must be one of the $xtlc:status-* constants. -->
     </xsl:param>
     <xsl:param name="extra-attributes" as="attribute()*" required="no" select="()">
-      <!--* Any extra attributes to add to the message. -->
+      <!--~ Any extra attributes to add to the message. -->
     </xsl:param>
     <xsl:param name="extra-contents" as="element()*" required="no" select="()">
-      <!--* Any extra elements to add to the message. -->
+      <!--~ Any extra elements to add to the message. -->
     </xsl:param>
     
     <xtlc:message status="{$status}" timestamp="{current-dateTime()}">

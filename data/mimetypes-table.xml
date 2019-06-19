@@ -2,7 +2,7 @@
 <mimetypes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://www.xtpxlib.nl/ns/mimetypes ../xsd/mimetypes.xsd" xmlns="http://www.xtpxlib.nl/ns/mimetypes">
   <!-- ================================================================== -->
-  <!--* 
+  <!--~ 
     Table used for transforming file extensions into a MIME type and vice versa. 
 	-->
   <!-- ================================================================== -->
