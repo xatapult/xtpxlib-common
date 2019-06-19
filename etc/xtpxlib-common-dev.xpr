@@ -9,6 +9,59 @@
                         <String>enable.project.master.files.support</String>
                         <Boolean>true</Boolean>
                     </entry>
+                    <entry>
+                        <String>key.custom.editor.variables.option.pane</String>
+                        <Boolean>true</Boolean>
+                    </entry>
+                    <entry>
+                        <String>user.defined.editor.variables</String>
+                        <userEditorVariable-array>
+                            <userEditorVariable>
+                                <field name="name">
+                                    <String>${TMPOUT}</String>
+                                </field>
+                                <field name="value">
+                                    <String>file:///C:/xdata2/OXYGEN-TMPOUT/${pn}-out</String>
+                                </field>
+                                <field name="shortDescription">
+                                    <String>Output directory for temporary results per project</String>
+                                </field>
+                            </userEditorVariable>
+                            <userEditorVariable>
+                                <field name="name">
+                                    <String>${ROOT}</String>
+                                </field>
+                                <field name="value">
+                                    <String>${pdu}/..</String>
+                                </field>
+                                <field name="shortDescription">
+                                    <String>Project root directory</String>
+                                </field>
+                            </userEditorVariable>
+                            <userEditorVariable>
+                                <field name="name">
+                                    <String>${BUILD}</String>
+                                </field>
+                                <field name="value">
+                                    <String>${ROOT}/build</String>
+                                </field>
+                                <field name="shortDescription">
+                                    <String>Project build directory</String>
+                                </field>
+                            </userEditorVariable>
+                            <userEditorVariable>
+                                <field name="name">
+                                    <String>${TMP}</String>
+                                </field>
+                                <field name="value">
+                                    <String>${ROOT}/tmp</String>
+                                </field>
+                                <field name="shortDescription">
+                                    <String>Project tmp directory</String>
+                                </field>
+                            </userEditorVariable>
+                        </userEditorVariable-array>
+                    </entry>
                 </serializableOrderedMap>
             </serialized>
         </options>
