@@ -3,24 +3,41 @@
   xmlns:array="http://www.w3.org/2005/xpath-functions/array" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:local="#local.hgm_2fr_c3b"
   xmlns:xtlc="http://www.xtpxlib.nl/ns/common" exclude-result-prefixes="#all" expand-text="true">
   <!-- ================================================================== -->
-  <!--	
-     TBD:
-     - expose expand text
-     - doc (no namespace anymore!)
+  <!--~	
+     Takes an XML document with parameters and turns this into a parameter map. 
+     More information in the component's readme file.
 	-->
   <!-- ================================================================== -->
   <!-- SETUP: -->
 
   <xsl:mode name="local:mode-evaluate-parameters" on-no-match="deep-skip"/>
-
-  <xsl:variable name="xtlc:parameter-group-separator" as="xs:string" select="'.'"/>
+  
+  <!-- ================================================================== -->
+  <!-- GLOBAL VARIABLES: -->
+  
+  <xsl:variable name="xtlc:parameter-group-separator" as="xs:string" select="'.'">
+    <!--~ When a <group> element is encountered, this character is used as a separator after the group's name.  -->
+  </xsl:variable>
 
   <!-- ================================================================== -->
-  <!--  -->
+  <!-- INTERFACE: -->
 
   <xsl:function name="xtlc:parameters-get" as="map(xs:string, xs:string*)">
-    <xsl:param name="root-item" as="item()"/>
-    <xsl:param name="filters" as="map(xs:string, xs:string*)?"/>
+    <!--~
+      Tries to locate a <parameters> element underneath $root-item and processes the <parameter> elements in here into a parameters map.
+      The <value> elements are filtered according to the entries in $filters.
+      Parameter references (either {$...} or ${...}). are expanded. If a parameter has multiple values, only the first one is used.
+    -->
+    <xsl:param name="root-item" as="item()">
+      <!--~ 
+        Root item under which the first <parameters> element is processed. 
+        Can be a URI, a document node or an element. See xtlc:item2element() on how this is processed.  -->
+    </xsl:param>
+    <xsl:param name="filters" as="map(xs:string, xs:string*)?">
+      <!--~
+        Any filters for the parameter's <value> elements. See module header for more information.
+      -->
+    </xsl:param>
 
     <!-- Get the first *:parameters element at or underneath $root-item: -->
     <xsl:variable name="root" as="element()?" select="(xtlc:item2element($root-item, false())/descendant-or-self::*:parameters)[1]"/>
@@ -36,6 +53,24 @@
   </xsl:function>
 
   <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+
+  <xsl:function name="xtlc:expand-text-against-parameters" as="xs:string">
+    <!--~
+      Expands parameter references in $text (either {$...} or ${...}) against the parameters in $parameter-map. 
+      If a parameter has multiple values, only the first one is used.
+    -->
+    <xsl:param name="text" as="xs:string">
+      <!--~ Text to expand. -->
+    </xsl:param>
+    <xsl:param name="parameter-map" as="map(xs:string, xs:string*)">
+      <!--~ Map with parameter values.  -->
+    </xsl:param>
+
+    <xsl:sequence select="local:expand-text($text, $parameter-map, ())"/>
+  </xsl:function>
+
+  <!-- ================================================================== -->
+  <!-- PARAMETER FILE PROCESSING TEMPLATES: -->
 
   <xsl:template match="*:parameter[normalize-space(@name) ne '']" mode="local:mode-evaluate-parameters">
     <xsl:param name="prefix" as="xs:string?" required="no" tunnel="yes" select="()"/>
@@ -63,6 +98,7 @@
   <!-- SUPPORT: -->
 
   <xsl:function name="local:normalize-name" as="xs:string">
+    <!-- Normalizes a name and replaces spaces by underscores. -->
     <xsl:param name="name-raw" as="xs:string"/>
     <xsl:sequence select="$name-raw => normalize-space() => translate(' ', '_')"/>
   </xsl:function>
@@ -70,6 +106,13 @@
   <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 
   <xsl:function name="local:check-filters" as="xs:boolean">
+    <!-- 
+      Checks the attributes on a <value> element against the settings in $filters.
+      Attributes are considered to be whitespace separated lists of values.
+      If any attribute's local-name is also present as a key in $filters, one of the attribute's values must be in the $filters entry. If
+      not, the function returns false.
+      The function returns true if there are no filters or no attributes match.
+    -->
     <xsl:param name="value-element" as="element()"/>
     <xsl:param name="filters" as="map(xs:string, xs:string*)?"/>
 
@@ -94,6 +137,10 @@
   <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 
   <xsl:function name="local:expand-map" as="map(xs:string, xs:string*)?">
+    <!-- 
+      Expands all parameter references (either ${...} or {$...}) in the entries of $parameter-map. Returns a new map.
+      Checks for circular references.
+    -->
     <xsl:param name="parameter-map" as="map(xs:string, xs:string*)"/>
 
     <xsl:map>
@@ -112,6 +159,10 @@
   <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 
   <xsl:function name="local:expand-text" as="xs:string">
+    <!-- 
+      Expands a string value against the parameters in $parameter-map. Checks for circular references.
+      If a parameter has multiple values, only the first one is used.
+    -->
     <xsl:param name="text" as="xs:string"/>
     <xsl:param name="parameter-map" as="map(xs:string, xs:string*)"/>
     <xsl:param name="visited-parameters" as="xs:string*"/>
@@ -127,8 +178,7 @@
               </xsl:call-template>
             </xsl:when>
             <xsl:when test="map:contains($parameter-map, $parameter-name)">
-              <xsl:sequence
-                select="local:expand-text(string-join($parameter-map($parameter-name)), $parameter-map, ($visited-parameters, $parameter-name))"/>
+              <xsl:sequence select="local:expand-text($parameter-map($parameter-name)[1], $parameter-map, ($visited-parameters, $parameter-name))"/>
             </xsl:when>
             <xsl:otherwise>
               <xsl:sequence select="."/>
@@ -142,4 +192,5 @@
     </xsl:variable>
     <xsl:sequence select="string-join($substituted-parts)"/>
   </xsl:function>
+
 </xsl:stylesheet>
