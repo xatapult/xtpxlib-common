@@ -14,7 +14,7 @@
   <!-- ================================================================== -->
  
   <xsl:include href="../xslmod/general.mod.xsl"/>
-  <xsl:include href="../xslmod/dref.mod.xsl"/>
+  <xsl:include href="../xslmod/href.mod.xsl"/>
   <xsl:include href="../xslmod/message.mod.xsl"/>
   <xsl:include href="../xslmod/mimetypes.mod.xsl"/>
   <xsl:include href="../xslmod/uuid.mod.xsl"/>    
