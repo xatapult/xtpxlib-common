@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.0">
+  <xs:annotation>
+    <xs:documentation>Schema for sets of parameters as used by this library. Use xslmod/parameters.mod.xsl for turning these lists into maps.
+Important: This module processes the elements in this schema in *any* namespace!</xs:documentation>
+  </xs:annotation>
+  <xs:element name="parameters">
+    <xs:annotation>
+      <xs:documentation>Root element for a set of parameters (either in a document on its own or embedded).</xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:group ref="g-parameter-group"/>
+      </xs:sequence>
+      <xs:anyAttribute namespace="##any"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:simpleType name="t-parameter-name">
+    <xs:restriction base="xs:NCName"/>
+  </xs:simpleType>
+  <xs:group name="g-parameter">
+    <xs:sequence>
+      <xs:element name="parameter">
+        <xs:annotation>
+          <xs:documentation>A single parameter.</xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element maxOccurs="unbounded" minOccurs="0" name="value">
+              <xs:annotation>
+                <xs:documentation>Value(s) for this parameter.</xs:documentation>
+              </xs:annotation>
+              <xs:complexType>
+                <xs:simpleContent>
+                  <xs:extension base="xs:string">
+                    <xs:anyAttribute namespace="##any" processContents="skip">
+                      <xs:annotation>
+                        <xs:documentation>Attributes on a value can be used to filter values based on different circumstances (e.g. language, platform, etc.).</xs:documentation>
+                      </xs:annotation>
+                    </xs:anyAttribute>
+                  </xs:extension>
+                </xs:simpleContent>
+              </xs:complexType>
+            </xs:element>
+          </xs:sequence>
+          <xs:attribute name="name" type="t-parameter-name" use="required">
+            <xs:annotation>
+              <xs:documentation>Name of the parameter.</xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+          <xs:anyAttribute namespace="##any"/>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:group>
+  <xs:group name="g-parameter-group">
+    <xs:sequence>
+      <xs:choice maxOccurs="unbounded" minOccurs="0">
+        <xs:group ref="g-parameter"/>
+        <xs:element name="group">
+          <xs:complexType>
+            <xs:group ref="g-parameter-group"/>
+            <xs:attribute name="name" type="t-parameter-name" use="required">
+              <xs:annotation>
+                <xs:documentation>Name of the parameter.</xs:documentation>
+              </xs:annotation>
+            </xs:attribute>
+            <xs:anyAttribute namespace="##any"/>
+          </xs:complexType>
+        </xs:element>
+      </xs:choice>
+    </xs:sequence>
+  </xs:group>
+</xs:schema>

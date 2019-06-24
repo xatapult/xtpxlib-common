@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" targetNamespace="http://www.xtpxlib.nl/ns/common"
+  xmlns:xtlc="http://www.xtpxlib.nl/ns/common">
+
+  <xs:element name="version-information">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:annotation>
+          <xs:documentation>Releases should be ordered by release date, most recent first.</xs:documentation>
+        </xs:annotation>
+        <xs:element maxOccurs="unbounded" minOccurs="0" name="release">
+          <xs:annotation>
+            <xs:documentation>May contain some markdown formatted text with information about the release.</xs:documentation>
+          </xs:annotation>
+          <xs:complexType>
+            <xs:simpleContent>
+              <xs:extension base="xs:string">
+                <xs:attribute name="version" use="required">
+                  <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                      <xs:pattern value="[0-9]+\.[0-9]+(\.[a-zA-Z0-9]+)?"/>
+                    </xs:restriction>
+                  </xs:simpleType>
+                </xs:attribute>
+                <xs:attribute name="date" type="xs:date" use="required"/>
+              </xs:extension>
+            </xs:simpleContent>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

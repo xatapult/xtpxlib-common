@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<some-random-root-element>
+  <parameters>
+    <parameter name="x">
+      <value system="prod">value for prod</value>
+      <value system="acc" level="currentx current">value for acc </value>
+    </parameter>
+    
+    <group name="groupie">
+      <parameter name="inthegroup">
+        <value>Yeah ${x} - {$x}</value>
+      </parameter>
+    </group>
+    
+  </parameters>
+  
+  
+  
+</some-random-root-element>

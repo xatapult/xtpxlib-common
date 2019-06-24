@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- ================================================================== -->
+<!--~
+   	Dummy file to use as input for processes that require an XML input document 
+   	but the input is ignored.
+-->
+<!-- ================================================================== -->
+<dummy/>
