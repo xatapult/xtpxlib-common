@@ -6,8 +6,25 @@
     <xs:complexType>
       <xs:sequence>
         <xs:annotation>
-          <xs:documentation>Releases should be ordered by release date, most recent first.</xs:documentation>
+          <xs:documentation>Releases *must* be ordered by release date, most recent first.</xs:documentation>
         </xs:annotation>
+        <xs:element minOccurs="0" name="dependencies">
+          <xs:annotation>
+            <xs:documentation>Dependencies for this component</xs:documentation>
+          </xs:annotation>
+          <xs:complexType>
+            <xs:choice maxOccurs="unbounded" minOccurs="0">
+              <xs:element name="component">
+                <xs:annotation>
+                  <xs:documentation>Component dependency</xs:documentation>
+                </xs:annotation>
+                <xs:complexType>
+                  <xs:attribute name="name" type="xtlc:t-component-name" use="required"/>
+                </xs:complexType>
+              </xs:element>
+            </xs:choice>
+          </xs:complexType>
+        </xs:element>
         <xs:element maxOccurs="unbounded" minOccurs="0" name="release">
           <xs:annotation>
             <xs:documentation>May contain some markdown formatted text with information about the release.</xs:documentation>
@@ -35,30 +52,37 @@
           </xs:complexType>
         </xs:element>
       </xs:sequence>
-      <xs:attribute name="component" use="required">
+      <xs:attribute name="component" use="required" type="xtlc:t-component-name">
         <xs:annotation>
           <xs:documentation>Name of this component</xs:documentation>
         </xs:annotation>
-        <xs:simpleType>
-          <xs:restriction base="xs:string">
-            <xs:minLength value="1">
-              <xs:annotation>
-                <xs:documentation>Name of the component</xs:documentation>
-              </xs:annotation>
-            </xs:minLength>
-          </xs:restriction>
-        </xs:simpleType>
       </xs:attribute>
-      <xs:attribute name="git" use="required">
+      <xs:attribute name="git" use="required" type="xtlc:t-git-repository-uri">
         <xs:annotation>
           <xs:documentation>URI of the corresponding GIT repository</xs:documentation>
         </xs:annotation>
-        <xs:simpleType>
-          <xs:restriction base="xs:string">
-            <xs:minLength value="1"/>
-          </xs:restriction>
-        </xs:simpleType>
       </xs:attribute>
     </xs:complexType>
   </xs:element>
+  <xs:simpleType name="t-component-name">
+    <xs:annotation>
+      <xs:documentation>Name of a component</xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:minLength value="1">
+        <xs:annotation>
+          <xs:documentation>Name of a component</xs:documentation>
+        </xs:annotation>
+      </xs:minLength>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="t-git-repository-uri">
+    <xs:annotation>
+      <xs:documentation>URI of a GIT repository
+</xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:minLength value="1"/>
+    </xs:restriction>
+  </xs:simpleType>
 </xs:schema>
