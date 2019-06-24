@@ -20,9 +20,9 @@ Some of the libraries depend on each other. Because of the XSLT mechanism for th
 
 ---
 
-## xtpxlib parameters 
+## `xtpxlib` parameters 
 
-Working with parameters is quite common. Therefore xtpxlib has a custom mechanism for this. 
+Working with parameters is quite common. Therefore `xtpxlib` has a custom mechanism for this. 
 
 Parameters have a (string) name (without whitespace) and zero or more (string) values.
 
