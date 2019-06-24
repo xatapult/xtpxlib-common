@@ -70,8 +70,6 @@
         <folder masterFiles="true" name="Master Files">
             <file name="xtpxlib-common-oxygen-project-master.xsl"/>
         </folder>
-        <folder path="../../xtpxlib-archive/"/>
         <folder path="../"/>
-        <folder path="../../../../xmldev/xtpxlib/"/>
     </projectTree>
 </project>
