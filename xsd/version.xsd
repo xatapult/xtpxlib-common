@@ -6,7 +6,7 @@
     <xs:complexType>
       <xs:sequence>
         <xs:annotation>
-          <xs:documentation>Releases should be ordered by relkease date, most recent first.</xs:documentation>
+          <xs:documentation>Releases should be ordered by release date, most recent first.</xs:documentation>
         </xs:annotation>
         <xs:element maxOccurs="unbounded" minOccurs="0" name="release">
           <xs:annotation>
