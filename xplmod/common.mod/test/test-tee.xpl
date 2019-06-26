@@ -28,7 +28,7 @@
   </p:identity>
   
   <xtlc:tee>
-    <p:with-option name="href" select="resolve-uri('../../../../../xtpxlib2-tmp/test-tee-result.xml', static-base-uri())"/> 
+    <p:with-option name="href" select="resolve-uri('../../../tmp/test-tee-result.xml', static-base-uri())"/> 
     <p:with-option name="enable" select="true()"/>
     <p:with-option name="root-attribute-href" select="'teefile'"/> 
   </xtlc:tee>

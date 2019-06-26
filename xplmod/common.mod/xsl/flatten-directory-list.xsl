@@ -36,9 +36,9 @@
         <xsl:copy copy-namespaces="no">
           <xsl:copy-of select="@name" copy-namespaces="no"/>
           
-          <xsl:variable name="dref-abs" as="xs:string" select="xtlc:href-canonical(xtlc:href-concat((../@xml:base, @name)))"/>
-          <xsl:attribute name="dref-abs" select="$dref-abs"/>
-          <xsl:attribute name="dref-rel" select="xtlc:href-relative-from-path($base-dir, $dref-abs)"/>
+          <xsl:variable name="href-abs" as="xs:string" select="xtlc:href-canonical(xtlc:href-concat((../@xml:base, @name)))"/>
+          <xsl:attribute name="href-abs" select="$href-abs"/>
+          <xsl:attribute name="href-rel" select="xtlc:href-relative-from-path($base-dir, $href-abs)"/>
           
         </xsl:copy>
       </xsl:for-each>

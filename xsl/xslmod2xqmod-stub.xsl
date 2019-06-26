@@ -11,7 +11,7 @@
 
   <xsl:output method="text" indent="no" encoding="UTF-8"/>
 
-  <xsl:include href="../xslmod/common.mod.xsl"/>
+  <xsl:include href="../xslmod/general.mod.xsl"/>
 
   <!-- ================================================================== -->
   <!-- GLOBAL VARIABLES -->

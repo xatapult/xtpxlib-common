@@ -14,7 +14,7 @@
   
   <p:import href="../common.mod.xpl"/>
   
-  <p:variable name="href-log" select="resolve-uri('../../../../../xtpxlib2-tmp/test-log.xml', static-base-uri())"/>
+  <p:variable name="href-log" select="resolve-uri('../../../tmp/test-log.xml', static-base-uri())"/>
   
   <!-- ================================================================== -->
   

@@ -48,7 +48,7 @@
     <p:option name="flatten" required="false" select="false()">
       <p:documentation>
         When true, the list will be "flattened": Only c:file children within the root c:directory element. All c:file elements have a
-        @name, @dref-abs (absolute filename) and @dref-rel (relative filename) attribute.
+        @name, @href-abs (absolute filename) and @href-rel (relative filename) attribute.
       </p:documentation>
     </p:option>
 
@@ -175,7 +175,7 @@
 
     <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 
-    <p:option name="dref-target-zip" required="true">
+    <p:option name="href-target-zip" required="true">
       <p:documentation>
          Document reference for the zip file to produce (must have a leading file:// specifier!)
       </p:documentation>
@@ -223,7 +223,7 @@
       <p:input port="manifest">
         <p:pipe port="result" step="xtpxplib-prepare-zip-manifest"/>
       </p:input>
-      <p:with-option name="href" select="$dref-target-zip"/>
+      <p:with-option name="href" select="$href-target-zip"/>
     </pxp:zip>
 
     <!-- Remove superfluous attributes (there is no information in them): -->
@@ -455,19 +455,19 @@
       </p:documentation>
     </p:input>
 
-    <p:option name="dref-source" required="true">
+    <p:option name="href-source" required="true">
       <p:documentation>
         Reference to the source file to copy.
       </p:documentation>
     </p:option>
 
-    <p:option name="dref-source-zip" required="false" select="''">
+    <p:option name="href-source-zip" required="false" select="''">
       <p:documentation>
-        Document reference to a zip file. When filled, $dref-source is assumed to be a path inside this zip.
+        Document reference to a zip file. When filled, $href-source is assumed to be a path inside this zip.
       </p:documentation>
     </p:option>
 
-    <p:option name="dref-target" required="true">
+    <p:option name="href-target" required="true">
       <p:documentation>
         Reference to the target.
       </p:documentation>
@@ -491,7 +491,7 @@
 
     <p:choose>
 
-      <p:when test="xs:boolean($enable) and ($dref-source ne '')">
+      <p:when test="xs:boolean($enable) and ($href-source ne '')">
         <p:identity name="copy-input"/>
 
         <!-- Since we don't know how big the input is and we don't want our copying stuff burdened with too much input, 
@@ -508,10 +508,10 @@
         <p:choose>
 
           <!-- Copy from straight file on disk: -->
-          <p:when test="$dref-source-zip eq ''">
+          <p:when test="$href-source-zip eq ''">
             <pxf:copy>
-              <p:with-option name="href" select="$dref-source"/>
-              <p:with-option name="target" select="$dref-target"/>
+              <p:with-option name="href" select="$href-source"/>
+              <p:with-option name="target" select="$href-target"/>
               <p:with-option name="fail-on-error" select="true()"/>
             </pxf:copy>
           </p:when>
@@ -519,12 +519,12 @@
           <!-- Copy from zip: -->
           <p:otherwise>
             <pxp:unzip content-type="application/octet-stream">
-              <p:with-option name="href" select="$dref-source-zip"/>
+              <p:with-option name="href" select="$href-source-zip"/>
               <!-- The dref for the file in the must be without any leading slashes/backslashes, and it must be a uri: -->
-              <p:with-option name="file" select="replace($dref-source, '^[/\\]+', '')"/>
+              <p:with-option name="file" select="replace($href-source, '^[/\\]+', '')"/>
             </pxp:unzip>
             <p:store cx:decode="true">
-              <p:with-option name="href" select="$dref-target"/>
+              <p:with-option name="href" select="$href-target"/>
             </p:store>
           </p:otherwise>
         </p:choose>
@@ -560,13 +560,13 @@
       </p:documentation>
     </p:input>
 
-    <p:option name="dref-source-dir" required="true">
+    <p:option name="href-source-dir" required="true">
       <p:documentation>
         Reference to the directory to copy from.
       </p:documentation>
     </p:option>
 
-    <p:option name="dref-target-dir" required="true">
+    <p:option name="href-target-dir" required="true">
       <p:documentation>
         Reference to the directory to copy to.
       </p:documentation>
@@ -599,7 +599,7 @@
 
     <!-- Get a directory listing: -->
     <xtlc:recursive-directory-list>
-      <p:with-option name="path" select="$dref-source-dir"/>
+      <p:with-option name="path" select="$href-source-dir"/>
     </xtlc:recursive-directory-list>
 
     <!-- Create a list of files to copy: -->
@@ -607,8 +607,8 @@
       <p:input port="stylesheet">
         <p:document href="xsl/create-copy-dir-list.xsl"/>
       </p:input>
-      <p:with-param name="dref-source-dir" select="$dref-source-dir"/>
-      <p:with-param name="dref-target-dir" select="$dref-target-dir"/>
+      <p:with-param name="href-source-dir" select="$href-source-dir"/>
+      <p:with-param name="href-target-dir" select="$href-target-dir"/>
     </p:xslt>
     
     <!-- Do the copying: -->
@@ -646,7 +646,7 @@
       </p:documentation>
     </p:input>
 
-    <p:option name="dref-dir" required="true">
+    <p:option name="href-dir" required="true">
       <p:documentation>
         Reference to the directory to remove.
       </p:documentation>
@@ -687,7 +687,7 @@
 
         <!-- Get a directory listing: -->
         <xtlc:recursive-directory-list>
-          <p:with-option name="path" select="$dref-dir"/>
+          <p:with-option name="path" select="$href-dir"/>
         </xtlc:recursive-directory-list>
 
         <!-- Create a list in the right order: -->
@@ -700,11 +700,11 @@
 
         <!-- Remove: -->
         <p:for-each>
-          <p:iteration-source select="/*/remove[@dref]"/>
-          <p:variable name="dref-for-remove" select="/*/@dref"/>
+          <p:iteration-source select="/*/remove[@href]"/>
+          <p:variable name="href-for-remove" select="/*/@href"/>
 
           <pxf:delete recursive="false" fail-on-error="true">
-            <p:with-option name="href" select="$dref-for-remove"/>
+            <p:with-option name="href" select="$href-for-remove"/>
           </pxf:delete>
 
         </p:for-each>
