@@ -1,6 +1,6 @@
 # `xtpxlib-common`: Xatapult XML Library - Common part
 
-Version release and dependency information: See `/version.xml` 
+Version, release and dependency information: See `/version.xml` 
 
 Xatapult Content Engineering - http://www.xatapult.nl
 
