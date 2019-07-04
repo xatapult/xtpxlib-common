@@ -19,6 +19,10 @@
     <!--~ When a <group> element is encountered, this character is used as a separator after the group's name.  -->
   </xsl:variable>
 
+  <xsl:variable name="xtlc:parameter-main-trigger-character" as="xs:string" select="'$'">
+    <!--~ Use this variable for a quick check on whether something might contain a parameter: contains(..., $xtlc:parameter-main-trigger-character) -->
+  </xsl:variable>
+
   <!-- ================================================================== -->
   <!-- INTERFACE: -->
 
