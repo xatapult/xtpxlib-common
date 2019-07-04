@@ -11,10 +11,10 @@
   <!-- SETUP: -->
 
   <xsl:mode name="local:mode-evaluate-parameters" on-no-match="deep-skip"/>
-  
+
   <!-- ================================================================== -->
   <!-- GLOBAL VARIABLES: -->
-  
+
   <xsl:variable name="xtlc:parameter-group-separator" as="xs:string" select="'.'">
     <!--~ When a <group> element is encountered, this character is used as a separator after the group's name.  -->
   </xsl:variable>
@@ -168,26 +168,50 @@
     <xsl:param name="visited-parameters" as="xs:string*"/>
 
     <xsl:variable name="substituted-parts" as="xs:string*">
-      <xsl:analyze-string select="$text" regex="\$\{{(\S+)\}}|\{{\$(\S+)\}}">
+
+      <!-- First check for doubled quotes with $ signs before or after. Make this into single quotes: -->
+      <xsl:analyze-string select="$text" regex="\$\{{\{{|\{{\{{\$">
         <xsl:matching-substring>
-          <xsl:variable name="parameter-name" as="xs:string" select="if (regex-group(1) ne '') then regex-group(1) else regex-group(2)"/>
           <xsl:choose>
-            <xsl:when test="$parameter-name = $visited-parameters">
-              <xsl:call-template name="xtlc:raise-error">
-                <xsl:with-param name="msg-parts" select="('Cyclic parameter reference: ', xtlc:q($parameter-name))"/>
-              </xsl:call-template>
+            <xsl:when test=". eq '${{'">
+              <xsl:sequence select="'${'"/>
             </xsl:when>
-            <xsl:when test="map:contains($parameter-map, $parameter-name)">
-              <xsl:sequence select="local:expand-text($parameter-map($parameter-name)[1], $parameter-map, ($visited-parameters, $parameter-name))"/>
+            <xsl:when test=". eq '{{$'">
+              <xsl:sequence select="'{$'"/>
             </xsl:when>
             <xsl:otherwise>
+              <!-- Should not occur... -->
               <xsl:sequence select="."/>
             </xsl:otherwise>
           </xsl:choose>
         </xsl:matching-substring>
+
         <xsl:non-matching-substring>
-          <xsl:sequence select="."/>
+          <!-- Check all other texts for ${...} and {$...} patterns and substitute the bastards: -->
+          <xsl:analyze-string select="." regex="\$\{{(\S+)\}}|\{{\$(\S+)\}}">
+            <xsl:matching-substring>
+              <xsl:variable name="parameter-name" as="xs:string" select="if (regex-group(1) ne '') then regex-group(1) else regex-group(2)"/>
+              <xsl:choose>
+                <xsl:when test="$parameter-name = $visited-parameters">
+                  <xsl:call-template name="xtlc:raise-error">
+                    <xsl:with-param name="msg-parts" select="('Cyclic parameter reference: ', xtlc:q($parameter-name))"/>
+                  </xsl:call-template>
+                </xsl:when>
+                <xsl:when test="map:contains($parameter-map, $parameter-name)">
+                  <xsl:sequence select="local:expand-text($parameter-map($parameter-name)[1], $parameter-map, ($visited-parameters, $parameter-name))"
+                  />
+                </xsl:when>
+                <xsl:otherwise>
+                  <xsl:sequence select="."/>
+                </xsl:otherwise>
+              </xsl:choose>
+            </xsl:matching-substring>
+            <xsl:non-matching-substring>
+              <xsl:sequence select="."/>
+            </xsl:non-matching-substring>
+          </xsl:analyze-string>
         </xsl:non-matching-substring>
+
       </xsl:analyze-string>
     </xsl:variable>
     <xsl:sequence select="string-join($substituted-parts)"/>

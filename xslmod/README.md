@@ -84,7 +84,9 @@ This will result in two parameters: `x` and `groupie.inthegroup`.
 
 ### Referencing parameter values
 
-In specifying a parameter's value(s) in `<value>` elements, you can reference another parameter by using a `{$parameter-name}` or `${parameter-name}` construction. Only the first value of a parameter will be used. 
+In specifying a parameter's value(s) in `<value>` elements, you can reference another parameter by using a `{$parameter-name}` or `${parameter-name}` construction. Only the *first* value of a parameter will be used.
+
+If you write `${{` or `{{$`, no parameter substitution will take place and the double curly braces here will be replaced by a single one. So `${{` will become `${` and `{{$` will become `{$`.
 
 
 

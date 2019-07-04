@@ -12,6 +12,10 @@
       </parameter>
     </group>
     
+    <parameter name="noexpand">
+      <value>Do not expand this ${{x} and {{$x}. Instead make the double {{-s into single ones.</value>
+    </parameter>
+    
   </parameters>
   
   
