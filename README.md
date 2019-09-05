@@ -11,13 +11,13 @@ Erik Siegel - erik@xatapult.nl - +31 6 53260792
 **`xtpxlib`** is a library containing software for processing XML, using languages like 
 XSLT, XProc etc. It consists of several separate components, named `xtpxlib-*`. Everything can be found on GitHub ([https://github.com/eriksiegel](https://github.com/eriksiegel)).
 
-**`xtpxlib-common`** ([https://github.com/eriksiegel/xtpxlib-common](https://github.com/eriksiegel/xtpxlib-common)) is the common, shared, component of xtpxlib. It is used by most other `xtpxlib `components.
+**`xtpxlib-common`** ([https://github.com/eriksiegel/xtpxlib-common](https://github.com/eriksiegel/xtpxlib-common)) is the common, shared, component of xtpxlib. It is used by most other `xtpxlib` components.
 
 ----
 
 ## Using `xtpxlib`
 
-* Clone the GitHub repository to some appropriate location on disk. That's basicly it for installation.
+* Clone the GitHub repository to some appropriate location on disk. That's basically it for installation.
 * If you use more than one `xtpxlib` component, all repositories must be cloned in the same base directory.
 
 ----
