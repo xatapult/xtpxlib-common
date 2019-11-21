@@ -192,7 +192,7 @@
 
         <xsl:non-matching-substring>
           <!-- Check all other texts for ${...} and {$...} patterns and substitute the bastards: -->
-          <xsl:analyze-string select="." regex="\$\{{(\S+)\}}|\{{\$(\S+)\}}">
+          <xsl:analyze-string select="." regex="\$\{{(\S+?)\}}|\{{\$(\S+?)\}}">
             <xsl:matching-substring>
               <xsl:variable name="parameter-name" as="xs:string" select="if (regex-group(1) ne '') then regex-group(1) else regex-group(2)"/>
               <xsl:choose>
