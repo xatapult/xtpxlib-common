@@ -25,7 +25,7 @@
             </xs:choice>
           </xs:complexType>
         </xs:element>
-        <xs:element maxOccurs="unbounded" minOccurs="0" name="release">
+        <xs:element maxOccurs="unbounded" name="release">
           <xs:annotation>
             <xs:documentation>May contain some markdown formatted text with information about the release.</xs:documentation>
           </xs:annotation>
@@ -52,14 +52,19 @@
           </xs:complexType>
         </xs:element>
       </xs:sequence>
-      <xs:attribute name="component" use="required" type="xtlc:t-component-name">
+      <xs:attribute name="component-name" use="required" type="xtlc:t-component-name">
         <xs:annotation>
           <xs:documentation>Name of this component</xs:documentation>
         </xs:annotation>
       </xs:attribute>
-      <xs:attribute name="git" use="required" type="xtlc:t-git-repository-uri">
+      <xs:attribute name="git-uri" use="required" type="xtlc:t-git-repository-uri">
         <xs:annotation>
           <xs:documentation>URI of the corresponding GIT repository</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="github-pages-uri" type="xs:anyURI">
+        <xs:annotation>
+          <xs:documentation>Optional URI of the accompanying GitHub pages site</xs:documentation>
         </xs:annotation>
       </xs:attribute>
     </xs:complexType>
