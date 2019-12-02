@@ -57,7 +57,7 @@
   <xsl:variable name="xtlc:namespace-xtlc-common" as="xs:string" select="namespace-uri-for-prefix('xtlc', doc('')/*)">
     <!--~ Name of the xtpxlib common namespace.  -->
   </xsl:variable>
-  
+
   <xsl:variable name="xtlc:internal-error-prompt" as="xs:string" select="'Internal error: '">
     <!--~ Add this in front of any internal error raised. -->
   </xsl:variable>
@@ -388,6 +388,91 @@
           </xsl:for-each>
         </xsl:variable>
         <xsl:sequence select="string-join($string-parts, '')"/>
+      </xsl:otherwise>
+    </xsl:choose>
+
+  </xsl:function>
+
+  <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+
+  <xsl:function name="xtlc:text2lines" as="xs:string*">
+    <!--~
+      Converts text into separate lines (using the LF as separator, CRs are removed).
+    -->
+    <xsl:param name="text" as="xs:string?">
+      <!--~ The text to convert.  -->
+    </xsl:param>
+    <xsl:param name="remove-empty-start-end-lines" as="xs:boolean">
+      <!--~ When `true` any empty (containing whitespace only) lines at the beginning and end are removed. -->
+    </xsl:param>
+    <xsl:param name="normalize-indents" as="xs:boolean">
+      <!--~ When `true` the indents of the lines are normalized: the indent of the non-whitespace line with the minimum leading whitespace 
+        is removed from all other lines. Lines that contain only whitespace will become zero length. -->
+    </xsl:param>
+
+    <!-- Turn the block of text into individual lines: -->
+    <xsl:variable name="fulltext-no-cr" as="xs:string" select="translate(string($text), '&#13;', '')"/>
+    <xsl:variable name="textlines-1" as="xs:string*" select="tokenize($fulltext-no-cr, '&#10;')"/>
+
+    <!-- Remove any empty start-end lines if requested: -->
+    <xsl:variable name="textlines-2" as="xs:string*">
+      <xsl:choose>
+        <xsl:when test="$remove-empty-start-end-lines">
+          <xsl:for-each-group select="$textlines-1" group-adjacent="normalize-space(.) eq ''">
+            <xsl:if test="not(current-grouping-key()) or ((position() gt 1) and (position() lt last()))">
+              <xsl:sequence select="current-group()"/>
+            </xsl:if>
+          </xsl:for-each-group>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:sequence select="$textlines-1"/>
+        </xsl:otherwise>
+      </xsl:choose>
+    </xsl:variable>
+
+    <!-- Normalize the indents if requested: -->
+    <xsl:choose>
+      <xsl:when test="$normalize-indents">
+        <!-- Find the minimum indent: -->
+        <xsl:variable name="minimum-leading-whitespace" as="xs:integer"
+          select="if (empty($textlines-2)) 
+            then 0 
+            else min(for $line in $textlines-2[normalize-space(.) ne ''] return xtlc:count-leading-whitespace($line))"/>
+        <xsl:for-each select="$textlines-2">
+          <xsl:choose>
+            <xsl:when test="normalize-space(.) eq ''">
+              <xsl:sequence select="''"/>
+            </xsl:when>
+            <xsl:otherwise>
+              <xsl:sequence select="substring(., $minimum-leading-whitespace + 1)"/>
+            </xsl:otherwise>
+          </xsl:choose>
+        </xsl:for-each>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:sequence select="$textlines-2"/>
+      </xsl:otherwise>
+    </xsl:choose>
+
+  </xsl:function>
+
+  <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+
+  <xsl:function name="xtlc:count-leading-whitespace" as="xs:integer">
+    <!--~ Counts the number of whitespace characters at the beginning of a string  -->
+    <xsl:param name="text" as="xs:string">
+      <!--~ Text to work on  -->
+    </xsl:param>
+
+    <xsl:choose>
+      <xsl:when test="($text eq '')">
+        <xsl:sequence select="0"/>
+      </xsl:when>
+      <xsl:when test="matches(substring($text, 1, 1), '\s')">
+        <xsl:sequence select="xtlc:count-leading-whitespace(substring($text, 2)) + 1"/>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:sequence select="0"/>
       </xsl:otherwise>
     </xsl:choose>
 
