@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-model href="../../xsd/docbook/docbook.nvdl" type="application/xml" schematypens="http://purl.oclc.org/dsdl/nvdl/ns/structure/1.0"?>
+<book xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xi="http://www.w3.org/2001/XInclude"
+  xmlns:xdoc="http://www.xtpxlib.nl/ns/xdoc" version="5.0">
+
+  <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+
+  <info>
+    <title>{$component-name}</title>
+    <subtitle>Common code</subtitle>
+    <pubdate>{$DATE}</pubdate>
+    <author>
+      <personname>{$author-name}</personname>
+    </author>
+    <orgname>{$owner-company-name}</orgname>
+  </info>
+
+  <!-- ================================================================== -->
+
+  <preface>
+    <title>{$library-name} - Common code</title>
+    
+    <xdoc:transform href="../../../xtpxlib-webdoc/transforms/generate-basic-component-information-header.xpl" component-name="xtpxlib-common" />
+
+  </preface>
+  
+  <!-- ================================================================== -->
+
+  <chapter>
+    <title>Description</title>
+    <para>TBD <xref linkend="general.mod.xsl"/></para>
+  </chapter>
+  
+  <!-- ================================================================== -->
+  
+  <chapter>
+    <title>XSLT Modules</title>
+    
+    <xdoc:transform href="$xdoc/code-docgen.xpl" filecomponents="2" header-level="1" sublevels="false">
+      <xi:include href="../../xslmod/compare.mod.xsl"/>
+    </xdoc:transform>
+    
+    <xdoc:transform href="$xdoc/code-docgen.xpl" filecomponents="2" header-level="1" sublevels="false">
+      <xi:include href="../../xslmod/date-time.mod.xsl"/>
+    </xdoc:transform>
+    
+    <xdoc:transform href="$xdoc/code-docgen.xpl" filecomponents="2" header-level="1" sublevels="false">
+      <xi:include href="../../xslmod/format-output.mod.xsl"/>
+    </xdoc:transform>
+    
+    <xdoc:transform href="$xdoc/code-docgen.xpl" filecomponents="2" header-level="1" sublevels="false">
+      <xi:include href="../../xslmod/general.mod.xsl"/>
+    </xdoc:transform>
+    
+    <xdoc:transform href="$xdoc/code-docgen.xpl" filecomponents="2" header-level="1" sublevels="false">
+      <xi:include href="../../xslmod/href.mod.xsl"/>
+    </xdoc:transform>
+    
+    <xdoc:transform href="$xdoc/code-docgen.xpl" filecomponents="2" header-level="1" sublevels="false">
+      <xi:include href="../../xslmod/message.mod.xsl"/>
+    </xdoc:transform>
+    
+    <xdoc:transform href="$xdoc/code-docgen.xpl" filecomponents="2" header-level="1" sublevels="false">
+      <xi:include href="../../xslmod/mimetypes.mod.xsl"/>
+    </xdoc:transform>
+    
+    <xdoc:transform href="$xdoc/code-docgen.xpl" filecomponents="2" header-level="1" sublevels="false">
+      <xi:include href="../../xslmod/parameters.mod.xsl"/>
+    </xdoc:transform>
+    
+    <xdoc:transform href="$xdoc/code-docgen.xpl" filecomponents="2" header-level="1" sublevels="false">
+      <xi:include href="../../xslmod/uuid.mod.xsl"/>
+    </xdoc:transform>
+    
+  </chapter>
+  
+  <!-- ================================================================== -->
+
+  <chapter>
+    <title>XProc Libraries</title>
+    
+    <xdoc:transform href="$xdoc/code-docgen.xpl" filecomponents="3" header-level="1" sublevels="false">
+      <xi:include href="../../xplmod/common.mod/common.mod.xpl"/>
+    </xdoc:transform>
+    
+  </chapter>
+  
+  
+</book>
+<!-- ================================================================== -->

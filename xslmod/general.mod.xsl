@@ -12,13 +12,13 @@
   <!-- Date time formatting: -->
 
   <xsl:variable name="xtlc:default-dt-format" as="xs:string" select="'[Y]-[M01]-[D01] [H01]:[m01]:[s01]'">
-    <!--~ Default date/time format string (yyyy-mm-dd ...). -->
+    <!--~ Default date/time format string (`yyyy-mm-dd …`). -->
   </xsl:variable>
   <xsl:variable name="xtlc:default-dt-format-nl" as="xs:string" select="'[D01]-[M01]-[Y] [H01]:[m01]:[s01]'">
-    <!--~ Date/time format string (Dutch: dd-mm-yyyy ...). -->
+    <!--~ Date/time format string (Dutch: `dd-mm-yyyy …`). -->
   </xsl:variable>
   <xsl:variable name="xtlc:default-dt-format-en" as="xs:string" select="'[M01]-[D01]-[Y] [H01]:[m01]:[s01]'">
-    <!--~ Date/time format string (English: mm-dd-yyyy ...). -->
+    <!--~ Date/time format string (English: `mm-dd-yyyy …`). -->
   </xsl:variable>
 
   <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
@@ -88,7 +88,7 @@
   <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 
   <xsl:function name="xtlc:q" as="xs:string">
-    <!--~ Returns the input string quoted ("$in") -->
+    <!--~ Returns the input string quoted (`"$in"`) -->
     <xsl:param name="in" as="xs:string?">
       <!--~ String to convert. -->
     </xsl:param>
@@ -115,7 +115,7 @@
       <!--~ String to prefix -->
     </xsl:param>
     <xsl:param name="prefix-char" as="xs:string">
-      <!--~ String to prefix with. Only first character is used. If empty, a * is used. -->
+      <!--~ String to prefix with. Only first character is used. If empty, a `*` is used. -->
     </xsl:param>
     <xsl:param name="length" as="xs:integer">
       <!--~ The length to reach. -->
@@ -140,9 +140,9 @@
   <xsl:function name="xtlc:item2element" as="element()?">
     <!--~ 
       Tries to find the element belonging to a given item:
-      - When the item is of type xs:string or xs:anyURI, it is assumed to be a document reference. The root element of this is returned.
-      - When the item is of type document-node(), the root element of this document is returned
-      - When the item is of type element(), this is returned
+      - When the item is of type `xs:string` or `xs:anyURI`, it is assumed to be a document reference. The root element of this is returned.
+      - When the item is of type `document-node()`, the root element of this document is returned
+      - When the item is of type `element()`, this is returned
       
       You can choose whether to produce an error message or () when the item cannot be resolved.
     -->
@@ -150,7 +150,7 @@
       <!--~ The item to work on -->
     </xsl:param>
     <xsl:param name="error-on-non-resolve" as="xs:boolean">
-      <!--~ Whether to generate an error when $item could not be resolved. Otherwise, the function will return (). -->
+      <!--~ Whether to generate an error when `$item` could not be resolved. Otherwise, the function will return `()`. -->
     </xsl:param>
 
     <xsl:variable name="function-name-prompt" as="xs:string" select="'item2element: '"/>
@@ -202,7 +202,7 @@
   <xsl:function name="xtlc:str2bln" as="xs:boolean">
     <!--~ 
       Safe conversion of a string into a boolean.
-      When $in is empty or not convertible into a boolean, $default is returned.
+      When `$in` is empty or not convertible into a boolean, `$default` is returned.
     -->
     <xsl:param name="in" as="xs:string?">
       <!--~ String to convert. -->
@@ -229,7 +229,7 @@
   <xsl:function name="xtlc:str2int" as="xs:integer">
     <!--~ 
       Safe conversion of a string into an integer.
-      When $in is empty or not convertible into an integer, $default is returned.
+      When `$in` is empty or not convertible into an integer, `$default` is returned.
     -->
     <xsl:param name="in" as="xs:string?">
       <!--~ String to convert. -->
@@ -275,7 +275,7 @@
     <!--~ 
       Turns a string into a valid identifier, adding a prefix.
       All characters that are not allowed in an identifier are converted into underscores. 
-      When the result does not start with a letter or underscore, the extra prefix 'id-' is added.
+      When the result does not start with a letter or underscore, the extra prefix `id-` is added.
     -->
     <xsl:param name="in" as="xs:string">
       <!--~ String to convert. -->
@@ -301,7 +301,7 @@
     <!--~ 
       Turns a string into a valid identifier.
       All characters that are not allowed in an identifier are converted into underscores. 
-      When the result does not start with a letter or underscore, the extra prefix 'id-' is added.
+      When the result does not start with a letter or underscore, the extra prefix `id-` is added.
     -->
     <xsl:param name="in" as="xs:string">
       <!--~ String to convert. -->
@@ -484,7 +484,7 @@
   <xsl:template name="xtlc:raise-error">
     <!--~ Stops any processing by raising an error. -->
     <xsl:param name="msg-parts" as="item()+" required="yes">
-      <!--~ Error message to show (in parts, all parts will be concatenated by xtlc:items2str()). -->
+      <!--~ Error message to show (in parts, all parts will be concatenated by `xtlc:items2str()`). -->
     </xsl:param>
     <xsl:param name="error-name" as="xs:string" required="no" select="$xtlc:status-error">
       <!--~ The (optional) name of the error. Must be a NCName. -->
