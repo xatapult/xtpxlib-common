@@ -206,7 +206,7 @@
     <!-- Split the href into parts: -->
     <xsl:variable name="protocol" as="xs:string" select="xtlc:href-protocol($href)"/>
     <xsl:variable name="href-no-protocol" as="xs:string" select="xtlc:href-protocol-remove($href)"/>
-    <xsl:variable name="href-components" as="xs:string*" select="tokenize($href-no-protocol, '/')"/>
+    <xsl:variable name="href-components" as="xs:string*" select="tokenize($href-no-protocol, '/')[. ne '']"/>
 
     <!-- Assemble it together again: -->
     <xsl:variable name="href-canonical-filename" as="xs:string"
