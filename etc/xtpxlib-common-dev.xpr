@@ -18,6 +18,21 @@
                         <scenarioAssociation-array>
                             <scenarioAssociation>
                                 <field name="url">
+                                    <String>../../xtpxlib-webdoc/xpl/xsl-xdoc-to-componentdoc-website/adapt-html.xsl</String>
+                                </field>
+                                <field name="scenarioIds">
+                                    <list>
+                                        <String>generate-componentdoc</String>
+                                    </list>
+                                </field>
+                                <field name="scenarioTypes">
+                                    <list>
+                                        <String>XPROC</String>
+                                    </list>
+                                </field>
+                            </scenarioAssociation>
+                            <scenarioAssociation>
+                                <field name="url">
                                     <String>../doc/source/xtpxlib-common-componentdoc.xml</String>
                                 </field>
                                 <field name="scenarioIds">

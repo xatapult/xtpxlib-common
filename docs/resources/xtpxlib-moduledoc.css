@@ -17,8 +17,8 @@ div.note {
 }
 
 p.bridgehead {
+  margin-top: 2em;
   font-weight: bold;
-  font-size: 120%;
   border-top: thin solid grey;
   background-color: lightgrey;
 }
