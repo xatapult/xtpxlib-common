@@ -1,44 +1,49 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet version="2.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xs="http://www.w3.org/2001/XMLSchema"
   xmlns:fn="http://www.w3.org/2005/xpath-functions" xmlns:xtlc="http://www.xtpxlib.nl/ns/common"
-  xmlns:local="http://www.xtpxlib.nl/ns/common/xslmod/container/local" exclude-result-prefixes="#all">
+  xmlns:local="http://www.xtpxlib.nl/ns/common/xslmod/compare/local" exclude-result-prefixes="#all">
   <!-- ================================================================== -->
   <!--~	
-    XSL library module with support for comparing XML documents/elements.
-    - Comment and processing instructions are ignored
-    - Text nodes are normalized before comparison 
-    - Empty text nodes (after normalization) are ignored
-    - The comparison stops after the first (set of) differences are encountered. 
-    - The result is either:
-      - An empty set in no differences found
-      - One or more xtlc:message elements, status="error" when differences were found (you can only get more than one message 
-        on attribute differences)
-
-    Module dependencies: general.mod.xsl, message.mod.xsl
+    XSL library module with support for comparing XML documents/elements:
 	-->
- 
   <!-- ================================================================== -->
   
   <xsl:template name="xtlc:compare-documents" as="element(xtlc:message)*">
-    <xsl:param name="doc1" as="document-node()" required="yes"/>
-    <xsl:param name="doc2" as="document-node()" required="yes"/>
+    <!--~ 
+      Compares two XML documents with each other:
+      
+      * Comments and processing instructions are ignored
+      * Text nodes are normalized before comparison 
+      * Empty text nodes (after normalization) are ignored
+      * The comparison stops after the first difference is encountered. 
+      * The result is either:
+        * An empty set, when no differences found
+        * One or more `xtlc:message` elements, `status="error"` when differences were found (you can only get more than one message 
+          on attribute differences)
+    -->
+    <xsl:param name="doc1" as="document-node()" required="yes">
+      <!--~ First document to compare. -->
+    </xsl:param>
+    <xsl:param name="doc2" as="document-node()" required="yes">
+      <!--~ Second document to compare. -->
+    </xsl:param>
     
-    <xsl:call-template name="xtlc:compare-elements">
+    <xsl:call-template name="local:compare-elements">
       <xsl:with-param name="elm1" select="$doc1/*"/>
       <xsl:with-param name="elm2" select="$doc2/*"/>
     </xsl:call-template>
     
   </xsl:template>
   
-  <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+  <!-- ================================================================== -->
   
-  <xsl:template name="xtlc:compare-elements" as="element(xtlc:message)*">
+  <xsl:template name="local:compare-elements" as="element(xtlc:message)*">
     <xsl:param name="elm1" as="element()" required="yes"/>
     <xsl:param name="elm2" as="element()" required="yes"/>
     <xsl:param name="path" as="xs:string" required="no" select="''"/>
     
     <xsl:variable name="current-path" as="xs:string" select="concat($path, '/', name($elm1), local:elm-seq-nr-string($elm1))"/>
-    <xsl:variable name="att-compare" as="element(xtlc:message)*" select="xtlc:compare-attributes($current-path, $elm1/@*, $elm2/@*)"/>
+    <xsl:variable name="att-compare" as="element(xtlc:message)*" select="local:compare-attributes($current-path, $elm1/@*, $elm2/@*)"/>
     
     <xsl:choose>
       
@@ -57,7 +62,7 @@
       
       <!-- This element checks out, go deeper -->
       <xsl:otherwise>
-        <xsl:call-template name="xtlc:compare-node-lists">
+        <xsl:call-template name="local:compare-node-lists">
           <xsl:with-param name="nodes1" select="$elm1/node()"/>
           <xsl:with-param name="nodes2" select="$elm2/node()"/>
           <xsl:with-param name="path" select="$current-path"/>
@@ -69,7 +74,7 @@
   
   <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
   
-  <xsl:template name="xtlc:compare-node-lists" as="element(xtlc:message)*">
+  <xsl:template name="local:compare-node-lists" as="element(xtlc:message)*">
     <xsl:param name="nodes1" as="node()*" required="yes"/>
     <xsl:param name="nodes2" as="node()*" required="yes"/>
     <xsl:param name="path" as="xs:string" required="yes"/>
@@ -86,14 +91,14 @@
       
       <!-- Do not compare on processing instructions and comments: -->
       <xsl:when test="($node1 instance of processing-instruction()) or ($node1 instance of comment())">
-        <xsl:call-template name="xtlc:compare-node-lists">
+        <xsl:call-template name="local:compare-node-lists">
           <xsl:with-param name="nodes1" select="subsequence($nodes1, 2)"/>
           <xsl:with-param name="nodes2" select="$nodes2"/>
           <xsl:with-param name="path" select="$path"/>
         </xsl:call-template>
       </xsl:when>
       <xsl:when test="($node2 instance of processing-instruction()) or ($node2 instance of comment())">
-        <xsl:call-template name="xtlc:compare-node-lists">
+        <xsl:call-template name="local:compare-node-lists">
           <xsl:with-param name="nodes1" select="$nodes1"/>
           <xsl:with-param name="nodes2" select="subsequence($nodes2, 2)"/>
           <xsl:with-param name="path" select="$path"/>
@@ -102,14 +107,14 @@
       
       <!-- Do not compare empty text nodes: -->
       <xsl:when test="($node1 instance of text()) and (normalize-space($node1) eq '')">
-        <xsl:call-template name="xtlc:compare-node-lists">
+        <xsl:call-template name="local:compare-node-lists">
           <xsl:with-param name="nodes1" select="subsequence($nodes1, 2)"/>
           <xsl:with-param name="nodes2" select="$nodes2"/>
           <xsl:with-param name="path" select="$path"/>
         </xsl:call-template>
       </xsl:when>
       <xsl:when test="($node2 instance of text()) and (normalize-space($node2) eq '')">
-        <xsl:call-template name="xtlc:compare-node-lists">
+        <xsl:call-template name="local:compare-node-lists">
           <xsl:with-param name="nodes1" select="$nodes1"/>
           <xsl:with-param name="nodes2" select="subsequence($nodes2, 2)"/>
           <xsl:with-param name="path" select="$path"/>
@@ -119,7 +124,7 @@
       <!-- Elements: -->
       <xsl:when test="($node1 instance of element()) and ($node2 instance of element())">
         <xsl:variable name="compare-elements-result" as="element(xtlc:message)*">
-          <xsl:call-template name="xtlc:compare-elements">
+          <xsl:call-template name="local:compare-elements">
             <xsl:with-param name="elm1" select="$node1"/>
             <xsl:with-param name="elm2" select="$node2"/>
             <xsl:with-param name="path" select="$path"/>
@@ -130,7 +135,7 @@
             <xsl:sequence select="$compare-elements-result"/>
           </xsl:when>
           <xsl:otherwise>
-            <xsl:call-template name="xtlc:compare-node-lists">
+            <xsl:call-template name="local:compare-node-lists">
               <xsl:with-param name="nodes1" select="subsequence($nodes1, 2)"/>
               <xsl:with-param name="nodes2" select="subsequence($nodes2, 2)"/>
               <xsl:with-param name="path" select="$path"/>
@@ -150,7 +155,7 @@
             </xsl:call-template>
           </xsl:when>
           <xsl:otherwise>
-            <xsl:call-template name="xtlc:compare-node-lists">
+            <xsl:call-template name="local:compare-node-lists">
               <xsl:with-param name="nodes1" select="subsequence($nodes1, 2)"/>
               <xsl:with-param name="nodes2" select="subsequence($nodes2, 2)"/>
               <xsl:with-param name="path" select="$path"/>
@@ -172,7 +177,7 @@
   
   <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
   
-  <xsl:function name="xtlc:compare-attributes" as="element(xtlc:message)*">
+  <xsl:function name="local:compare-attributes" as="element(xtlc:message)*">
     <xsl:param name="path" as="xs:string"/>
     <xsl:param name="attlist1" as="attribute()*"/>
     <xsl:param name="attlist2" as="attribute()*"/>

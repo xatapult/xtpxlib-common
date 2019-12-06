@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<?xml-model href="../../xsd/docbook/docbook.nvdl" type="application/xml" schematypens="http://purl.oclc.org/dsdl/nvdl/ns/structure/1.0"?>
+<?xml-model href="../../../xtpxlib-xdoc/xsd/docbook/docbook.nvdl" type="application/xml" schematypens="http://purl.oclc.org/dsdl/nvdl/ns/structure/1.0"?>
 <book xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xi="http://www.w3.org/2001/XInclude"
   xmlns:xdoc="http://www.xtpxlib.nl/ns/xdoc" version="5.0">
 
@@ -19,72 +19,161 @@
 
   <preface>
     <title>{$library-name} - Common code</title>
-    
-    <xdoc:transform href="../../../xtpxlib-webdoc/transforms/generate-basic-component-information-header.xpl" component-name="xtpxlib-common" />
+
+    <xdoc:transform href="../../../xtpxlib-webdoc/transforms/generate-basic-component-information-header.xpl" component-name="{$component-name}"/>
 
   </preface>
-  
+
   <!-- ================================================================== -->
 
-  <chapter>
+  <chapter xml:id="chapter-description">
     <title>Description</title>
-    <para>TBD <xref linkend="general.mod.xsl"/></para>
+
+    <para><code>{$component-name}</code> is <code>xtpxlib</code>'s communal component. Most other components in <code>xtpxlib</code> are dependent on
+      it. If you start using <code>xtpxlib</code>, you'll also use it a lot yourself.</para>
+
+    <sect1>
+      <title>Contents</title>
+
+      <para><code>{$component-name}</code> consists of the following parts (by subdirectory):</para>
+
+      <table role="nonumber">
+        <title/>
+        <tgroup cols="2">
+          <colspec role="code-width-cm:2-4"/>
+          <colspec/>
+          <thead>
+            <row>
+              <entry>Directory</entry>
+              <entry>Contents</entry>
+            </row>
+          </thead>
+          <tbody>
+            <row>
+              <entry><code role="code-width-limited">data</code></entry>
+              <entry>XML data files. See <xref linkend="chapter-xml-data-files"/></entry>
+            </row>
+            <row>
+              <entry><code role="code-width-limited">doc</code></entry>
+              <entry>Sources for the generation of the component's documentation. Internal use only.</entry>
+            </row>
+            <row>
+              <entry><code role="code-width-limited">docs</code></entry>
+              <entry>GitHub pages site for this component.</entry>
+            </row>
+            <row>
+              <entry><code role="code-width-limited">etc</code></entry>
+              <entry>Auxiliary files, mainly for use in the oXygen IDE.</entry>
+            </row>
+            <row>
+              <entry><code role="code-width-limited">template</code></entry>
+              <entry>
+                <para>Template files. These files contain XSLT, XQuery, XProc, etc. files with the main structure and headers filled in. Contain
+                  macros for use in the oXygen IDE.</para>
+                <para>To install/use these files in oXygen, open its preferences dialogue (<code>Options</code> &gt; <code>Preferences…</code>) and
+                  add the <code>{$component-name}/template</code> subdirectory to its <code>Document templates</code> section.</para>
+              </entry>
+            </row>
+            <row>
+              <entry><code role="code-width-limited"/>xplmod</entry>
+              <entry>General purpose XProc (1.0) modules. See <xref linkend="chapter-xproc-libraries"/>.</entry>
+            </row>
+            <row>
+              <entry><code role="code-width-limited"/>xqmod</entry>
+              <entry>General purpose XQuery modules. This is a partial translation of the XSLT module's functionality (especially from <code><link
+                    linkend="href.mod.xsl">href.mod.xsl</link></code>) into XQuery.</entry>
+            </row>
+            <row>
+              <entry><code role="code-width-limited">xsd</code></entry>
+              <entry>Schemas for some of the document types used in <code>{$library-name}</code>. See <xref linkend="chapter-xml-schemas"/>.</entry>
+            </row>
+            <row>
+              <entry><code role="code-width-limited"/>xsl</entry>
+              <entry>Some general purpose XSLT stylesheets. See <xref linkend="chapter-xsl-stylesheets"/>.</entry>
+            </row>
+            <row>
+              <entry><code role="code-width-limited">xslmod</code></entry>
+              <entry>General purpose XSLT modules. See <xref linkend="chapter-xslt-modules"/>.</entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+
+    </sect1>
+
+    <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+
+    <sect1 xml:id="parameters-explanation">
+      <title>Parameter handling in <code>{$component-name}</code></title>
+
+      <para>[TBD]</para>
+    </sect1>
+
   </chapter>
-  
-  <!-- ================================================================== -->
-  
-  <chapter>
-    <title>XSLT Modules</title>
-    
-    <xdoc:transform href="$xdoc/code-docgen.xpl" filecomponents="2" header-level="1" sublevels="false">
-      <xi:include href="../../xslmod/compare.mod.xsl"/>
-    </xdoc:transform>
-    
-    <xdoc:transform href="$xdoc/code-docgen.xpl" filecomponents="2" header-level="1" sublevels="false">
-      <xi:include href="../../xslmod/date-time.mod.xsl"/>
-    </xdoc:transform>
-    
-    <xdoc:transform href="$xdoc/code-docgen.xpl" filecomponents="2" header-level="1" sublevels="false">
-      <xi:include href="../../xslmod/format-output.mod.xsl"/>
-    </xdoc:transform>
-    
-    <xdoc:transform href="$xdoc/code-docgen.xpl" filecomponents="2" header-level="1" sublevels="false">
-      <xi:include href="../../xslmod/general.mod.xsl"/>
-    </xdoc:transform>
-    
-    <xdoc:transform href="$xdoc/code-docgen.xpl" filecomponents="2" header-level="1" sublevels="false">
-      <xi:include href="../../xslmod/href.mod.xsl"/>
-    </xdoc:transform>
-    
-    <xdoc:transform href="$xdoc/code-docgen.xpl" filecomponents="2" header-level="1" sublevels="false">
-      <xi:include href="../../xslmod/message.mod.xsl"/>
-    </xdoc:transform>
-    
-    <xdoc:transform href="$xdoc/code-docgen.xpl" filecomponents="2" header-level="1" sublevels="false">
-      <xi:include href="../../xslmod/mimetypes.mod.xsl"/>
-    </xdoc:transform>
-    
-    <xdoc:transform href="$xdoc/code-docgen.xpl" filecomponents="2" header-level="1" sublevels="false">
-      <xi:include href="../../xslmod/parameters.mod.xsl"/>
-    </xdoc:transform>
-    
-    <xdoc:transform href="$xdoc/code-docgen.xpl" filecomponents="2" header-level="1" sublevels="false">
-      <xi:include href="../../xslmod/uuid.mod.xsl"/>
-    </xdoc:transform>
-    
-  </chapter>
-  
+
   <!-- ================================================================== -->
 
-  <chapter>
-    <title>XProc Libraries</title>
-    
-    <xdoc:transform href="$xdoc/code-docgen.xpl" filecomponents="3" header-level="1" sublevels="false">
-      <xi:include href="../../xplmod/common.mod/common.mod.xpl"/>
-    </xdoc:transform>
-    
+  <chapter xml:id="chapter-xml-data-files" xreflabel="XML Data Files">
+    <title>XML Data Files</title>
+
+    <para>The {$component-name} component contains the following XML data files:</para>
+
+    <xdoc:transform href="$xdoc/code-docgen-dir.xpl" dir="../../../xtpxlib-common/data/" filter="\.xml$" header-level="1" filecomponents="2"
+      sublevels="false"/>
+
   </chapter>
-  
-  
+
+  <!-- ================================================================== -->
+
+
+  <chapter xml:id="chapter-xproc-libraries" xreflabel="XProc Libraries">
+    <title>XProc Libraries</title>
+
+    <para>The {$component-name} component contains the following XProc (1.0) library module:</para>
+
+    <xdoc:transform href="$xdoc/code-docgen-dir.xpl" dir="../../../xtpxlib-common/xplmod/" filter="\.mod\.xpl$" header-level="1" filecomponents="3"
+      sublevels="false"/>
+
+  </chapter>
+
+  <!-- ================================================================== -->
+
+  <chapter xml:id="chapter-xml-schemas" xreflabel="XML Schemas">
+    <title>XML Schemas</title>
+
+    <para>The {$component-name} component contains the following XML Schemas:</para>
+
+    <xdoc:transform href="$xdoc/code-docgen-dir.xpl" dir="../../../xtpxlib-common/xsd/" filter="\.xsd$" header-level="1" filecomponents="2"
+      sublevels="false"/>
+
+  </chapter>
+
+  <!-- ================================================================== -->
+
+  <chapter xml:id="chapter-xsl-stylesheets" xreflabel="XSLT Stylesheets">
+    <title>XSLT Stylesheets</title>
+
+    <para>The {$component-name} component contains the following XSLT Stylesheets:</para>
+
+    <xdoc:transform href="$xdoc/code-docgen-dir.xpl" dir="../../../xtpxlib-common/xsl/" filter="\.xsl$" header-level="1" filecomponents="2"
+      sublevels="false"/>
+
+  </chapter>
+
+  <!-- ================================================================== -->
+
+  <chapter xml:id="chapter-xslt-modules" xreflabel="XSLT Modules">
+    <title>XSLT Modules</title>
+
+    <para>The {$component-name} component contains the following XSLT modules. The ones used most frequently are <code><link linkend="general.mod.xsl"
+          >general.mod.xsl</link></code> and <code><link linkend="href.mod.xsl">href.mod.xsl</link></code>.</para>
+
+    <xdoc:transform href="$xdoc/code-docgen-dir.xpl" dir="../../../xtpxlib-common/xslmod/" filter="\.mod\.xsl$" header-level="1" filecomponents="2"
+      sublevels="false"/>
+
+  </chapter>
+
+
+
 </book>
 <!-- ================================================================== -->

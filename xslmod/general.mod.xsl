@@ -55,7 +55,7 @@
   <!-- Others: -->
 
   <xsl:variable name="xtlc:namespace-xtlc-common" as="xs:string" select="namespace-uri-for-prefix('xtlc', doc('')/*)">
-    <!--~ Name of the xtpxlib common namespace.  -->
+    <!--~Namespace used for `xtpxlib-common`.  -->
   </xsl:variable>
 
   <xsl:variable name="xtlc:internal-error-prompt" as="xs:string" select="'Internal error: '">
@@ -71,7 +71,7 @@
       <!--~ The first character of this string is the character to repeat. If empty, an empty string is returned. -->
     </xsl:param>
     <xsl:param name="repeat" as="xs:integer">
-      <!--~ The number of repeats. If <= 0, an empty string is returned.  -->
+      <!--~ The number of repeats. If <= `0`, an empty string is returned.  -->
     </xsl:param>
 
     <xsl:choose>
@@ -115,7 +115,7 @@
       <!--~ String to prefix -->
     </xsl:param>
     <xsl:param name="prefix-char" as="xs:string">
-      <!--~ String to prefix with. Only first character is used. If empty, a `*` is used. -->
+      <!--~ String to prefix with. Only first character is used. If empty, `*` is used. -->
     </xsl:param>
     <xsl:param name="length" as="xs:integer">
       <!--~ The length to reach. -->
@@ -139,12 +139,13 @@
 
   <xsl:function name="xtlc:item2element" as="element()?">
     <!--~ 
-      Tries to find the element belonging to a given item:
-      - When the item is of type `xs:string` or `xs:anyURI`, it is assumed to be a document reference. The root element of this is returned.
-      - When the item is of type `document-node()`, the root element of this document is returned
-      - When the item is of type `element()`, this is returned
+      Tries to find the element belonging to a given item.
       
-      You can choose whether to produce an error message or () when the item cannot be resolved.
+      * When the item is of type `xs:string` or `xs:anyURI`, it is assumed to be a document reference. The root element of this is returned.
+      * When the item is of type `document-node()`, the root element of this document is returned
+      * When the item is of type `element()`, this is returned
+      
+      You can choose whether to produce an error message or `()` when the item cannot be resolved.
     -->
     <xsl:param name="item" as="item()">
       <!--~ The item to work on -->
@@ -202,6 +203,7 @@
   <xsl:function name="xtlc:str2bln" as="xs:boolean">
     <!--~ 
       Safe conversion of a string into a boolean.
+      
       When `$in` is empty or not convertible into a boolean, `$default` is returned.
     -->
     <xsl:param name="in" as="xs:string?">
@@ -228,8 +230,9 @@
 
   <xsl:function name="xtlc:str2int" as="xs:integer">
     <!--~ 
-      Safe conversion of a string into an integer.
-      When `$in` is empty or not convertible into an integer, `$default` is returned.
+      Safe conversion of a string to an integer.
+      
+      When `$in` is empty or not convertible to an integer, `$default` is returned.
     -->
     <xsl:param name="in" as="xs:string?">
       <!--~ String to convert. -->
@@ -274,8 +277,10 @@
   <xsl:function name="xtlc:str2id" as="xs:string">
     <!--~ 
       Turns a string into a valid identifier, adding a prefix.
+      
       All characters that are not allowed in an identifier are converted into underscores. 
-      When the result does not start with a letter or underscore, the extra prefix `id-` is added.
+      
+      When the result does not start with a letter or underscore, the prefix `id-` is added.
     -->
     <xsl:param name="in" as="xs:string">
       <!--~ String to convert. -->
@@ -300,8 +305,10 @@
   <xsl:function name="xtlc:str2id" as="xs:string">
     <!--~ 
       Turns a string into a valid identifier.
+      
       All characters that are not allowed in an identifier are converted into underscores. 
-      When the result does not start with a letter or underscore, the extra prefix `id-` is added.
+      
+      When the result does not start with a letter or underscore, the prefix `id-` is added.
     -->
     <xsl:param name="in" as="xs:string">
       <!--~ String to convert. -->
@@ -314,7 +321,7 @@
   <!-- CONVERSIONS TO STRING: -->
 
   <xsl:function name="xtlc:att2str" as="xs:string">
-    <!--~ Turns an attribute into a string representation, suitable for display. -->
+    <!--~ Turns an attribute into a string representation, suitable for display (e.g. `name="value"`). -->
     <xsl:param name="att" as="attribute()?">
       <!--~ Attribute to convert. -->
     </xsl:param>
@@ -332,7 +339,7 @@
   <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 
   <xsl:function name="xtlc:elm2str" as="xs:string">
-    <!--~ Turns an element into a descriptive string (the element with all the attributes (excluding schema references). -->
+    <!--~ Turns an element into a descriptive string (the element with all its attributes, excluding schema references). -->
     <xsl:param name="elm" as="element()?">
       <!--~ Element to convert  -->
     </xsl:param>
@@ -359,7 +366,9 @@
   <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 
   <xsl:function name="xtlc:items2str" as="xs:string">
-    <!--~ Creates a string from a sequence of items. Useful for easy creation of messages consisting of multiple parts and pieces. -->
+    <!--~ Creates a string from a sequence of items. 
+      
+      Useful for easy creation of messages consisting of multiple parts and pieces. -->
     <xsl:param name="items" as="item()*">
       <!--~ The message parts to combine  -->
     </xsl:param>
@@ -397,7 +406,9 @@
 
   <xsl:function name="xtlc:text2lines" as="xs:string*">
     <!--~
-      Converts text into separate lines (using the LF as separator, CRs are removed).
+      Converts text into separate lines.
+      
+      Uses the LF as separator; CRs are removed.
     -->
     <xsl:param name="text" as="xs:string?">
       <!--~ The text to convert.  -->
@@ -437,7 +448,7 @@
         <xsl:variable name="minimum-leading-whitespace" as="xs:integer"
           select="if (empty($textlines-2)) 
             then 0 
-            else min(for $line in $textlines-2[normalize-space(.) ne ''] return xtlc:count-leading-whitespace($line))"/>
+            else min(for $markdown-line in $textlines-2[normalize-space(.) ne ''] return xtlc:count-leading-whitespace($markdown-line))"/>
         <xsl:for-each select="$textlines-2">
           <xsl:choose>
             <xsl:when test="normalize-space(.) eq ''">
@@ -461,7 +472,7 @@
   <xsl:function name="xtlc:count-leading-whitespace" as="xs:integer">
     <!--~ Counts the number of whitespace characters at the beginning of a string  -->
     <xsl:param name="text" as="xs:string">
-      <!--~ Text to work on  -->
+      <!--~ Text to work on. -->
     </xsl:param>
 
     <xsl:choose>
@@ -487,7 +498,7 @@
       <!--~ Error message to show (in parts, all parts will be concatenated by `xtlc:items2str()`). -->
     </xsl:param>
     <xsl:param name="error-name" as="xs:string" required="no" select="$xtlc:status-error">
-      <!--~ The (optional) name of the error. Must be a NCName. -->
+      <!--~ The (optional) name of the error. Must be an NCName. -->
     </xsl:param>
 
     <xsl:value-of select="error(QName($xtlc:namespace-xtlc-common, $error-name), xtlc:items2str($msg-parts))"/>

@@ -5,7 +5,8 @@
   <!-- ================================================================== -->
   <!--~	
      Takes an XML document with parameters and turns this into a parameter map. 
-     More information in the README.md file.
+     
+     More information [here](*parameters-explanation)
 	-->
   <!-- ================================================================== -->
   <!-- SETUP: -->

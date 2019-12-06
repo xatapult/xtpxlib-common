@@ -2,7 +2,10 @@
 <fop version="1.0">
   <!-- ================================================================== -->
   <!--~ 
-    Default configuration file for the FOP renderer.	
+    Default configuration file for the FOP XSL-FO renderer.
+    
+    The only thing this configuration file does is set the font handling to "auto-detect" (meaning it will
+    try the use the system fonts).  
   -->
   <!-- ================================================================== -->
   <renderers>

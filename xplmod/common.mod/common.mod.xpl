@@ -2,9 +2,9 @@
 <p:library xmlns:p="http://www.w3.org/ns/xproc" xmlns:c="http://www.w3.org/ns/xproc-step" xmlns:xtlc="http://www.xtpxlib.nl/ns/common"
   xmlns:cx="http://xmlcalabash.com/ns/extensions" xmlns:pxp="http://exproc.org/proposed/steps" xmlns:pxf="http://exproc.org/proposed/steps/file"
   version="1.0" xpath-version="2.0" exclude-inline-prefixes="#all">
-
+ 
   <p:documentation>
-    XProc library with generic steps.
+    XProc (1.0) library with generic steps.
   </p:documentation>
 
   <!-- ================================================================== -->
@@ -14,9 +14,9 @@
 
     <p:documentation>
       Returns the contents of a directory, going into sub-directories recursively.
-      When the requested directory does not exist, it returns only a c:directory root element with @error="true".
+      When the requested directory does not exist, it returns only a `c:directory` root element with an `error="true"` attribute.
     
-      Adapated from Norman Walsh example code at https://github.com/xquery/xquerydoc/blob/master/deps/xmlcalabash/recursive-directory-list.xpl
+      Adapted from Norman Walsh's [example code](https://github.com/xquery/xquerydoc/blob/master/deps/xmlcalabash/recursive-directory-list.xpl).
     </p:documentation>
 
     <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
@@ -29,26 +29,26 @@
 
     <p:option name="include-filter" required="false">
       <p:documentation>
-        An optional regexp include filter.
+        An optional regular expression include filter.
       </p:documentation>
     </p:option>
 
     <p:option name="exclude-filter" required="false">
       <p:documentation>
-        An optional regexp exclude filter.
+        An optional regular expression exclude filter.
       </p:documentation>
     </p:option>
 
     <p:option name="depth" required="false" select="-1">
       <p:documentation>
-        The sub-directory depth to go. When le 0, all sub-directories are processed.
+        The sub-directory depth to go. When le `0`, all sub-directories are processed.
       </p:documentation>
     </p:option>
 
     <p:option name="flatten" required="false" select="false()">
       <p:documentation>
-        When true, the list will be "flattened": Only c:file children within the root c:directory element. All c:file elements have a
-        @name, @href-abs (absolute filename) and @href-rel (relative filename) attribute.
+        When `true`, the list will be "flattened": All `c:file` children will be direct children of the root's `c:directory` element. These `c:file` elements get a
+        `@name`, `@href-abs` (absolute filename) and `@href-rel` (relative filename) attribute.
       </p:documentation>
     </p:option>
 
@@ -177,23 +177,23 @@
 
     <p:option name="href-target-zip" required="true">
       <p:documentation>
-         Document reference for the zip file to produce (must have a leading file:// specifier!)
+         Document reference for the zip file to produce (must have a leading `file:/` specifier!)
       </p:documentation>
     </p:option>
 
     <p:option name="include-base" required="false" select="true()">
       <p:documentation>
-        When true, the last part of $base-path (e.g. a/b/c ==> c) is used as the root directory in the zip file.
+        When true, the last part of `$base-path` (e.g. `a/b/c` ==> `c`) is used as the root directory in the zip file.
       </p:documentation>
     </p:option>
 
     <p:option name="base-path" required="true">
-      <p:documentation>Directory which contents will be stored in the zip (must have a leading file:// specifier!)</p:documentation>
+      <p:documentation>Directory which contents will be stored in the zip (must have a leading `file:/` specifier!)</p:documentation>
     </p:option>
 
     <p:output port="result">
       <p:documentation>
-        The output of the actual zip step, listing all the files that went in         
+        The output of the actual zip step, listing all the files that went in.
       </p:documentation>
     </p:output>
 
@@ -263,23 +263,23 @@
 
     <p:option name="href" required="true">
       <p:documentation>
-        Name of the file to write to (must have a leading file:// specifier!)
+        Name of the file to write to (must have a leading `file:/` specifier!)
       </p:documentation>
     </p:option>
 
     <p:option name="enable" required="false" select="true()">
-      <p:documentation>Whether to actually do the write. When false nothing happens.</p:documentation>
+      <p:documentation>Whether to actually do the write. When `false`, nothing happens.</p:documentation>
     </p:option>
 
     <p:option name="root-attribute-href" required="false" select="''">
       <p:documentation>
-        If filled, $href is recorded as an attribute with this name on the root element of the original input. Must be a valid attribute name.
+        If filled, `$href` is recorded as an attribute with this name on the root element of the original input. Must be a valid attribute name.
       </p:documentation>
     </p:option>
 
     <p:output port="result" primary="true" sequence="false">
       <p:documentation>
-        The input unchanged (unless $root-attribute-href was specified).
+        The input unchanged (unless a `$root-attribute-href` was specified).
       </p:documentation>
     </p:output>
 
@@ -349,32 +349,32 @@
 
     <p:option name="href-log" required="true">
       <p:documentation>
-        Name of the file to write the logmessages to (must have a leading file:// specifier!)
+        Name of the file to write the log messages to (must have a leading `file:/` specifier!).
       </p:documentation>
     </p:option>
 
     <p:option name="enable" required="false" select="true()">
       <p:documentation>
-        Whether the logging is done at all.
+        Whether the logging will be done at all.
       </p:documentation>
     </p:option>
 
     <p:option name="status" required="false" select="'ok'">
       <p:documentation>
-        Status of the message. Must be ok, warning, error or debug.
+        Status of the message. Must be `ok`, `warning`, `error` or `debug`.
       </p:documentation>
     </p:option>
 
     <p:option name="message" required="true">
       <p:documentation>
-        The actual log message
+        The actual log message to write.
       </p:documentation>
     </p:option>
 
     <p:option name="keep-messages" required="false" select="100">
       <p:documentation>
-        The number of messages to keep in the logfile. If le 0, all messages are kept.
-        Set by default to 100 to prevent overflowing files...
+        The number of messages to keep in the logfile. If le `0`, all messages are kept.
+        Set by default to `100` to prevent overflowing files…
       </p:documentation>
     </p:option>
 
@@ -442,9 +442,6 @@
 
     <p:documentation>
       Copies a file, if necessary from inside a zip file.
-
-      IMPORTANT: For older versions of Calabash (before January 2017) there is a huge bug in this step: A file inside a zip file must have a straight      
-      filename without any characters that normally would have been escaped (like, the most inportant one, spaces).
     </p:documentation>
 
     <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
@@ -457,13 +454,14 @@
 
     <p:option name="href-source" required="true">
       <p:documentation>
-        Reference to the source file to copy.
+        Reference to the source file to copy (must have a leading `file:/` specifier!).
       </p:documentation>
     </p:option>
 
     <p:option name="href-source-zip" required="false" select="''">
       <p:documentation>
-        Document reference to a zip file. When filled, $href-source is assumed to be a path inside this zip.
+        Document reference to a zip file (must have a leading `file:/` specifier!). When filled, `$href-source` 
+        is assumed to be a path inside this zip.
       </p:documentation>
     </p:option>
 
@@ -562,13 +560,13 @@
 
     <p:option name="href-source-dir" required="true">
       <p:documentation>
-        Reference to the directory to copy from.
+        Reference to the directory to copy from (must have a leading `file:/` specifier!).
       </p:documentation>
     </p:option>
 
     <p:option name="href-target-dir" required="true">
       <p:documentation>
-        Reference to the directory to copy to.
+        Reference to the directory to copy to (must have a leading `file:/` specifier!). If it does not exist the step will try to create it.
       </p:documentation>
     </p:option>
 
@@ -636,8 +634,7 @@
 
   <p:declare-step type="xtlc:remove-dir">
     <p:documentation>
-      Removes a full directory (since the normal processing using pxf:delete does not work properly some older Calabash versions... :-( )
-      When the directory does not exist everything continues without error.
+      Removes a full directory When the directory does not exist, everything continues without error.
     </p:documentation>
 
     <p:input port="source" primary="true" sequence="false">
@@ -648,7 +645,7 @@
 
     <p:option name="href-dir" required="true">
       <p:documentation>
-        Reference to the directory to remove.
+        Reference to the directory to remove (must have a leading `file:/` specifier!).
       </p:documentation>
     </p:option>
 
