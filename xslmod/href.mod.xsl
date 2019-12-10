@@ -4,10 +4,7 @@
   exclude-result-prefixes="#all">
   <!-- ================================================================== -->
   <!--~
-    XSLT library module with functions for the generic handling of href-s.
-    (filenames/paths).
-    
-    Module dependencies: None
+    XSLT library module with functions for the generic handling of href-s (filenames/paths).
 	-->
   <!-- ================================================================== -->
   <!-- GLOBAL CONSTANTS: -->
@@ -22,16 +19,17 @@
   <xsl:function name="xtlc:href-concat" as="xs:string">
     <!--~ 
       Performs a safe concatenation of href components: 
-      - Translates all backslashes into slashes
-			- Makes sure that all components are separated with a single slash
-      - If somewhere in the list is an absolute path, the concatenation stops.
+      
+      * Translates all backslashes into slashes
+      * Makes sure that all components are separated with a single slash
+      * If somewhere in the list is an absolute path, the concatenation stops.
       
       Examples:
-      - xtlc:href-concat(('a', 'b', 'c')) ==> a/b/c
-      - xtlc:href-concat(('a', '/b', 'c')) ==> /b/c
+      * `xtlc:href-concat(('a', 'b', 'c'))` ==> `'a/b/c'`
+      * `xtlc:href-concat(('a', '/b', 'c'))` ==> `'/b/c'`
 		-->
     <xsl:param name="href-path-components" as="xs:string*">
-      <!--~ The path components that will be concatenated into a full href. -->
+      <!--~ The path components to concatenate into a full href. -->
     </xsl:param>
 
     <xsl:choose>
@@ -59,10 +57,10 @@
 
   <xsl:function name="xtlc:href-is-absolute" as="xs:boolean">
     <!--~ 
-      Returns true if the href can be considered absolute.
+      Returns `true` if the href is considered absolute.
       
-      An href is considered absolute when it starts with a / or \, contains a protocol specifier (e.g. file://) or
-      starts with a Windows drive letter (e.g. C:).
+      An href is considered absolute when it starts with a `/` or `\`, contains a protocol specifier (e.g. `file://`) or
+      starts with a Windows drive letter (e.g. `C:`).
     -->
     <xsl:param name="href" as="xs:string">
       <!--~ href to work on. -->
@@ -79,8 +77,8 @@
       Returns the (file)name part of an href. 
     
       Examples:
-      - xtlc:href-name('a/b/c') ==> c
-      - xtlc:href-name('c') ==> c
+      * `xtlc:href-name('a/b/c')` ==> `'c'`
+      * `xtlc:href-name('c')` ==> `'c'`
     -->
     <xsl:param name="href" as="xs:string">
       <!--~ href to work on. -->
@@ -93,11 +91,11 @@
 
   <xsl:function name="xtlc:href-noext" as="xs:string">
     <!--~ 
-      Returns the complete href path but without its extension.
+      Returns the complete href path without its extension.
     
       Examples:
-      - xtlc:href-noext('a/b/c.xml') ==> a/b/c
-      - xtlc:href-noext('a/b/c') ==> a/b/c      
+      - `xtlc:href-noext('a/b/c.xml')` ==> `'a/b/c'`
+      - `xtlc:href-noext('a/b/c')` ==> `'a/b/c'`      
     -->
     <xsl:param name="href" as="xs:string">
       <!--~ href to work on. -->
@@ -110,11 +108,11 @@
 
   <xsl:function name="xtlc:href-name-noext" as="xs:string">
     <!--~ 
-      Returns the (file)name part of an href, but without its extension. 
+      Returns the (file)name part of an href without its extension. 
     
       Examples:
-      - xtlc:href-name-noext('a/b/c.xml') ==> c
-      - xtlc:href-name-noext('a/b/c') ==> c   
+      * `xtlc:href-name-noext('a/b/c.xml')` ==> `'c'`
+      * `xtlc:href-name-noext('a/b/c')` ==> `'c'`   
     -->
     <xsl:param name="href" as="xs:string">
       <!--~ href to work on. -->
@@ -130,8 +128,8 @@
       Returns the extension part of an href. 
     
       Examples:
-      - xtlc:href-ext('a/b/c.xml') ==> xml
-      - xtlc:href-ext('a/b/c') ==> ''
+      * `xtlc:href-ext('a/b/c.xml')` ==> `'xml'`
+      * `xtlc:href-ext('a/b/c')` ==> `''`
     -->
     <xsl:param name="href" as="xs:string">
       <!--~ href to work on. -->
@@ -155,8 +153,8 @@
       Returns the path part of an href.
     
       Examples:
-      - xtlc:href-path('a/b/c') ==> a/b
-      - xtlc:href-path('c') ==> ''
+      * `xtlc:href-path('a/b/c')` ==> `'a/b'`
+      * `xtlc:href-path('c')` ==> `''`
     -->
     <xsl:param name="href" as="xs:string">
       <!--~ href to work on. -->
@@ -177,10 +175,10 @@
 
   <xsl:function name="xtlc:href-result-doc" as="xs:string">
     <!--~ 
-      Transforms an href into something <xsl:result-document> can use. 
+      Transforms an href into something `xsl:result-document/@href` can use. 
       
-      <xsl:result-document> instruction always needs a file:// in front and has some strict rules about the 
-      formatting. Make sure the input is an absolute href! 
+      `xsl:result-document/@href` needs a `file://` in front and has some strict rules about the 
+      formatting. The input to this function *must* be an absolute href! 
     -->
     <xsl:param name="href" as="xs:string">
       <!--~ href to work on. Must be absolute! -->
@@ -197,7 +195,7 @@
       Makes an href canonical (remove any .. and . directory specifiers).
       
       Examples:
-      - href-canonical('a/b/../c') ==> a/c
+      * `href-canonical('a/b/../c')` ==> `'a/c'`
     -->
     <xsl:param name="href" as="xs:string">
       <!--~ href to work on. -->
@@ -265,8 +263,8 @@
       Computes a relative href from one document to another.
       
       Examples:
-      - href-relative('a/b/c/from.xml', 'a/b/to.xml') ==> ../to.xml
-      - href-relative('a/b/c/from.xml', 'a/b/d/to.xml') ==> ../d/to.xml      
+      * `href-relative('a/b/c/from.xml', 'a/b/to.xml')` ==> `'../to.xml'`
+      * `href-relative('a/b/c/from.xml', 'a/b/d/to.xml')` ==> `'../d/to.xml'`      
     -->
     <xsl:param name="from-href" as="xs:string">
       <!--~ href (of a document) of the starting point.  -->
@@ -282,11 +280,11 @@
 
   <xsl:function name="xtlc:href-relative-from-path" as="xs:string">
     <!--~
-      Computes a relative href from a path to a document.
+      Computes a relative href from a directory path to a document.
       
       Examples:
-      - href-relative-from-path('a/b/c', 'a/b/to.xml') ==> ../to.xml
-      - href-relative-from-path('a/b/c', 'a/b/d/to.xml') ==> ../d/to.xml            
+      * `href-relative-from-path('a/b/c', 'a/b/to.xml')` ==> `'../to.xml'`
+      * `href-relative-from-path('a/b/c', 'a/b/d/to.xml')` ==> `'../d/to.xml'`            
     -->
     <xsl:param name="from-href-path" as="xs:string">
       <!--~ href (of a directory) of the starting point. -->
@@ -347,7 +345,7 @@
   <xsl:variable name="local:protocol-file-special" as="xs:string" select="concat($xtlc:protocol-file, ':/')"/>
 
   <xsl:function name="xtlc:href-protocol-present" as="xs:boolean">
-    <!--~ Returns true when an href has a protocol specifier (e.g. file:// or http://). -->
+    <!--~ Returns true when an href has a protocol specifier (e.g. `file://` or `http://`). -->
     <xsl:param name="href" as="xs:string">
       <!--~ href to work on. -->
     </xsl:param>
@@ -364,11 +362,12 @@
     <!--~ 
       Removes the protocol part from an href.  
     
-      Examples (it is tricky and inconsistent!)
-      - xtlc:protocol-remove('file:///a/b/c') ==> /a/b/c
+      Examples:
+      * `xtlc:protocol-remove('file:///a/b/c')` ==> `'/a/b/c'`
+      
       Weird exceptions:
-      - xtlc:protocol-remove('file:/a/b/c') ==> /a/b/c
-      - xtlc:protocol-remove('file:/C:/a/b/c') ==> C:/a/b/c
+      - `xtlc:protocol-remove('file:/a/b/c')` ==> `'/a/b/c'`
+      - `xtlc:protocol-remove('file:/C:/a/b/c')` ==> `'C:/a/b/c'`
     -->
     <xsl:param name="href" as="xs:string">
       <!--~ href to work on. -->
@@ -406,15 +405,15 @@
   <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 
   <xsl:function name="xtlc:href-protocol-add" as="xs:string">
-    <!--~ Adds a protocol part (written without the trailing ://) to an href. -->
+    <!--~ Adds a protocol specifier (written without the trailing `://`, e.g. `http`) to an href. -->
     <xsl:param name="href" as="xs:string">
       <!--~ href to work on. -->
     </xsl:param>
     <xsl:param name="protocol" as="xs:string">
-      <!--~ The protocol to add, without a leading :// part (e.g. just 'file' or 'http'). -->
+      <!--~ The protocol to add, without a leading `://` part (e.g. just `file` or `http`). -->
     </xsl:param>
     <xsl:param name="force" as="xs:boolean">
-      <!--~ When true an existing protocol is removed first. When false, a reference with an existing protocol is left unchanged.  -->
+      <!--~ When `true` an existing protocol is removed first. When `false`, a reference with an existing protocol is left unchanged.  -->
     </xsl:param>
 
     <xsl:variable name="ref-1" as="xs:string" select="if ($force) then xtlc:href-protocol-remove($href) else translate($href, '\', '/')"/>
@@ -444,7 +443,12 @@
   <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 
   <xsl:function name="xtlc:href-protocol" as="xs:string">
-    <!--~ Returns the protocol part of an href (without the ://). -->
+    <!--~ 
+      Returns the protocol part of an href (without the `://`). 
+    
+      Examples:
+      * `xtlc:href-protocol('http://…')` ==> `'http'`
+    -->
     <xsl:param name="href" as="xs:string">
       <!--~ href to work on. -->
     </xsl:param>
@@ -455,7 +459,13 @@
   <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 
   <xsl:function name="xtlc:href-protocol" as="xs:string">
-    <!--~ Returns the protocol part of an href (without the ://) or a default value when none present. -->
+    <!--~ 
+      Returns the protocol part of an href (without the `://`) or a default value when none present. 
+    
+      Examples:
+      * `xtlc:href-protocol('http://…', 'file')` ==> `'http'`
+      * `xtlc:href-protocol('/a/b/c', 'file')` ==> `'file'`
+    -->
     <xsl:param name="href" as="xs:string">
       <!--~ href to work on. -->
     </xsl:param>
@@ -478,7 +488,7 @@
 
   <xsl:function name="xtlc:href-add-encoding" as="xs:string">
     <!--~ 
-      Encodes all "strange" characters with %xx. Any existing %xx parts will be kept as is.
+      Percentage encodes all "strange" characters (`%xx`). Any existing percentage encodings will be kept as is.
     -->
     <xsl:param name="href" as="xs:string">
       <!--~ href to work on. -->
