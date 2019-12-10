@@ -12,9 +12,9 @@
 
 ## Technical information
 
-Component version: V0.0 - 2019-11-28
+Component version: V0.9 - 2019-12-10
 
-Documentation: [`http://www.xatapult.nl`](http://www.xatapult.nl)
+Documentation: [`http://common.xtpxlib.org`](http://common.xtpxlib.org)
 
 Git URI: `git@github.com:xatapult/xtpxlib-common.git`
 
@@ -24,8 +24,8 @@ Git site: [`https://github.com/xatapult/xtpxlib-common`](https://github.com/xata
 
 ## Version history
 
-**V0.0 - 2019-11-28 (current)**
+**V0.9 - 2019-12-10 (current)**
 
-TBD
+Pre-release to test GitHub pages functionality
 
 
