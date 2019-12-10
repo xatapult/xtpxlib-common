@@ -6,7 +6,7 @@
   <!--~	
      Takes an XML document with parameters and turns this into a parameter map. 
      
-     More information [here](*parameters-explanation)
+     More information [here](%parameters-explanation).
 	-->
   <!-- ================================================================== -->
   <!-- SETUP: -->
@@ -21,7 +21,7 @@
   </xsl:variable>
 
   <xsl:variable name="xtlc:parameter-main-trigger-character" as="xs:string" select="'$'">
-    <!--~ Use this variable for a quick check on whether something might contain a parameter: contains(..., $xtlc:parameter-main-trigger-character) -->
+    <!--~ Use this variable for a quick check on whether something might contain a parameter: `contains(..., $xtlc:parameter-main-trigger-character)` -->
   </xsl:variable>
 
   <!-- ================================================================== -->
@@ -29,39 +29,43 @@
 
   <xsl:function name="xtlc:parameters-get" as="map(xs:string, xs:string*)">
     <!--~
-      Tries to locate a <parameters> element underneath $root-item and processes the <parameter> elements in here into a parameters map.
-      The <value> elements are filtered according to the entries in $filters.
-      Parameter references (either {$...} or ${...}). are expanded. If a parameter has multiple values, only the first one is used.
+      Tries to locate a `<parameters>` element (in any namespace) underneath `$root-item` and processes the child `<parameter>` and 
+      `<group>` elements in here into a parameter map.
+      
+      The `<value>` elements are filtered according to the entries in `$filters`.
+      
+      Parameter references in values (either `{$...}` or `${...}`). are expanded. If a parameter has multiple values, only the first one is used.
     -->
     <xsl:param name="root-item" as="item()">
       <!--~ 
-        Root item under which the first <parameters> element is processed. 
-        Can be a URI, a document node or an element. See xtlc:item2element() on how this is processed.  -->
+        Root item under which the first `<parameters>` element is processed. 
+        Can be an href, a document node or an element. See `xtlc:item2element()` on how this is processed.  -->
     </xsl:param>
     <xsl:param name="filters" as="map(xs:string, xs:string*)?">
       <!--~
-        Any filters for the parameter's <value> elements. See module header for more information.
+        Any filters for the parameter's `<value>` elements. 
       -->
     </xsl:param>
 
     <!-- Get the first *:parameters element at or underneath $root-item: -->
     <xsl:variable name="root" as="element()?" select="(xtlc:item2element($root-item, false())/descendant-or-self::*:parameters)[1]"/>
-    <xsl:variable name="unexpanded-map" as="map(xs:string, xs:string*)">
-      <xsl:map>
-        <xsl:apply-templates select="$root/*" mode="local:mode-evaluate-parameters">
-          <xsl:with-param name="filters" as="map(xs:string, xs:string*)?" tunnel="yes" select="$filters"/>
-        </xsl:apply-templates>
-        <xsl:sequence select="$filters"/>
-      </xsl:map>
+
+    <!-- Turn all the child <parameter> and <group> elements into separate maps: -->
+    <xsl:variable name="parameter-maps" as="map(xs:string, xs:string*)*">
+      <xsl:apply-templates select="$root/*" mode="local:mode-evaluate-parameters">
+        <xsl:with-param name="filters" as="map(xs:string, xs:string*)?" tunnel="yes" select="$filters"/>
+      </xsl:apply-templates>
     </xsl:variable>
-    <xsl:sequence select="local:expand-map($unexpanded-map)"/>
+    
+    <!-- Merge the maps and expand any parameter references in the values: -->
+    <xsl:sequence select="map:merge($parameter-maps, map{'duplicates': 'combine'}) => local:expand-map()"/>
   </xsl:function>
 
   <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 
   <xsl:function name="xtlc:expand-text-against-parameters" as="xs:string">
     <!--~
-      Expands parameter references in $text (either {$...} or ${...}) against the parameters in $parameter-map. 
+      Expands parameter references in `$text` (either `{$...}` or `${...}`) against the parameters in `$parameter-map`. 
       If a parameter has multiple values, only the first one is used.
     -->
     <xsl:param name="text" as="xs:string">
@@ -77,7 +81,7 @@
   <!-- ================================================================== -->
   <!-- PARAMETER FILE PROCESSING TEMPLATES: -->
 
-  <xsl:template match="*:parameter[normalize-space(@name) ne '']" mode="local:mode-evaluate-parameters">
+  <xsl:template match="*:parameter[normalize-space(@name) ne '']" mode="local:mode-evaluate-parameters" as="map(xs:string, xs:string*)">
     <xsl:param name="prefix" as="xs:string?" required="no" tunnel="yes" select="()"/>
     <xsl:param name="filters" as="map(xs:string, xs:string*)?" required="yes" tunnel="yes"/>
 
@@ -92,7 +96,7 @@
 
   <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 
-  <xsl:template match="*:group[normalize-space(@name) ne '']" mode="local:mode-evaluate-parameters">
+  <xsl:template match="*:group[normalize-space(@name) ne '']" mode="local:mode-evaluate-parameters" as="map(xs:string, xs:string*)*">
     <xsl:param name="prefix" as="xs:string?" required="no" select="()" tunnel="yes"/>
     <xsl:apply-templates select="*" mode="#current">
       <xsl:with-param name="prefix" as="xs:string" tunnel="yes" select="$prefix || local:normalize-name(@name) || $xtlc:parameter-group-separator"/>

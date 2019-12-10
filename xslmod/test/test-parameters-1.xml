@@ -16,8 +16,13 @@
       <value>Do not expand this ${{x} and {{$x}. Instead make the double {{-s into single ones.</value>
     </parameter>
     
+    <parameter name="combine">
+      <value>Parameter declared twice must be combined</value>
+    </parameter> 
+    <parameter name="combine">
+      <value>Another combined value</value>
+    </parameter>
+    
   </parameters>
-  
-  
   
 </some-random-root-element>
