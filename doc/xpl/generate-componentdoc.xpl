@@ -9,9 +9,7 @@
   <!-- ================================================================== -->
   <!-- SETUP: -->
 
-  <p:output port="result" primary="true" sequence="false">
-    <p:documentation>TBD</p:documentation>
-  </p:output>
+  <p:output port="result" primary="true" sequence="false"/>
   <p:serialization port="result" method="xml" encoding="UTF-8" indent="true" omit-xml-declaration="false"/>
 
   <p:import href="../../../xtpxlib-webdoc/xpl/xdoc-to-componentdoc-website.xpl"/>

@@ -234,7 +234,7 @@
           >general.mod.xsl</link></code> and <code><link linkend="href.mod.xsl">href.mod.xsl</link></code>.</para>
 
     <xdoc:transform href="$xdoc/code-docgen-dir.xpl" dir="../../../xtpxlib-common/xslmod/" filter="\.mod\.xsl$" header-level="1" filecomponents="2"
-      sublevels="false"/>
+      sublevels="true"/>
 
   </chapter>
 
@@ -246,7 +246,7 @@
     <para>The {$component-name} component contains the following XProc (1.0) library module:</para>
 
     <xdoc:transform href="$xdoc/code-docgen-dir.xpl" dir="../../../xtpxlib-common/xplmod/" filter="\.mod\.xpl$" header-level="1" filecomponents="3"
-      sublevels="false"/>
+      sublevels="true"/>
 
   </chapter>
 
@@ -258,7 +258,7 @@
     <para>The {$component-name} component contains the following XSLT Stylesheets:</para>
 
     <xdoc:transform href="$xdoc/code-docgen-dir.xpl" dir="../../../xtpxlib-common/xsl/" filter="\.xsl$" header-level="1" filecomponents="2"
-      sublevels="false"/>
+      sublevels="true"/>
 
   </chapter>
 
@@ -270,7 +270,7 @@
     <para>The {$component-name} component contains the following XML data files:</para>
 
     <xdoc:transform href="$xdoc/code-docgen-dir.xpl" dir="../../../xtpxlib-common/data/" filter="\.xml$" header-level="1" filecomponents="2"
-      sublevels="false"/>
+      sublevels="true"/>
 
   </chapter>
 
@@ -282,7 +282,7 @@
     <para>The {$component-name} component contains the following XML Schemas:</para>
 
     <xdoc:transform href="$xdoc/code-docgen-dir.xpl" dir="../../../xtpxlib-common/xsd/" filter="\.xsd$" header-level="1" filecomponents="2"
-      sublevels="false"/>
+      sublevels="true"/>
 
   </chapter>
 
