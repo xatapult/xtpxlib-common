@@ -4,6 +4,9 @@
   <!-- ================================================================== -->
   <!--~ 
     Table used for transforming file extensions into a MIME type and vice versa. 
+    
+    Follows the [mimetypes.xsd](%mimetypes.xsd) schema. 
+    Used internally by the [mimetypes.mod.xsl](%mimetypes.mod.xsl) module, but might also be useful in other situations. 
 	-->
   <!-- ================================================================== -->
   <!---->

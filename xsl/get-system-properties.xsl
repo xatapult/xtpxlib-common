@@ -2,8 +2,8 @@
 <xsl:stylesheet version="2.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xs="http://www.w3.org/2001/XMLSchema"
   xmlns:fn="http://www.w3.org/2005/xpath-functions" xmlns:local="#local.y5l_s3s_5bb" exclude-result-prefixes="#all">
   <!-- ================================================================== -->
-  <!-- 
-       Gets all the available system properties out
+  <!--~
+       Gets all the XSLT available system properties (as returned by `system-property()`).
   -->
   <!-- ================================================================== -->
   <!-- SETUP: -->

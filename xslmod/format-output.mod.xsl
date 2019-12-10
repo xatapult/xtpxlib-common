@@ -7,14 +7,14 @@
     XSLT library with functions for formatting output/strings.
     
     When language based, we only distinguish between Dutch and non-Dutch (usually English).
-   
-    Module dependencies: general.mod.xsl
 	-->
   <!-- ================================================================== -->
 
   <xsl:function name="xtlc:format-double" as="xs:string">
     <!--~
-      Formats a double as a string with a given amount of digits. For the Dutch language . and , are swapped. 
+      Formats a double as a string with a given amount of digits. 
+      
+      For the Dutch language, `.` and `,` are swapped. 
     -->
     <xsl:param name="dbl" as="xs:double">
       <!--~ Number to convert  -->
@@ -23,7 +23,7 @@
       <!--~ The number of digits to use. When < 0 this is left open. -->
     </xsl:param>
     <xsl:param name="lang" as="xs:string">
-      <!--~ The language for the conversion. For the Dutch language . and , are swapped. -->
+      <!--~ The language for the conversion. -->
     </xsl:param>
 
     <xsl:variable name="nr-string" as="xs:string">
@@ -48,13 +48,15 @@
 
   <xsl:function name="xtlc:format-amount" as="xs:string">
     <!--~
-      Formats an amount by adding a € sign and always use double digits. For the Dutch language . and , are swapped.
+      Formats an amount by adding a € sign and always use double digits.
+      
+      For the Dutch language, `.` and `,` are swapped. 
     -->
     <xsl:param name="amount" as="xs:double">
-      <!--~ The amount to format  -->
+      <!--~ The amount to format. -->
     </xsl:param>
     <xsl:param name="lang" as="xs:string">
-      <!--~ The language for the conversion. For the Dutch language . and , are swapped. -->
+      <!--~ The language for the conversion. -->
     </xsl:param>
 
     <xsl:sequence select="local:nr-finalize(format-number($amount, '&#x20AC;&#xa0;#,##0.00'), $lang)"/>
@@ -64,7 +66,7 @@
 
   <xsl:function name="xtlc:size2str" as="xs:string">
     <!--~ 
-      Turns an integer (e.g. a filesize) into a (rounded) number using the Kb/Mb/Gb suffix.
+      Turns an integer (e.g. a file size) into a (rounded) number using a `Kb`/`Mb`/`Gb` suffix.
     -->
     <xsl:param name="size" as="xs:integer">
       <!--~ The size to convert. -->
@@ -94,7 +96,7 @@
 
   <xsl:function name="xtlc:duration2str" as="xs:string">
     <!--~ 
-      Turns a day/time duration into a more readable string 
+      Turns a day/time duration into a more readable string, e.g. `1d3h40m12s`
     -->
     <xsl:param name="duration" as="xs:dayTimeDuration">
       <!--~ The duration to convert. -->

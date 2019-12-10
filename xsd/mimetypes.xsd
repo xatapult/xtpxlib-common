@@ -2,7 +2,9 @@
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified"
   targetNamespace="http://www.xtpxlib.nl/ns/mimetypes" xmlns="http://www.xtpxlib.nl/ns/mimetypes">
   <xs:annotation>
-    <xs:documentation>Schema for the mimetype association datafile. This list is in data/mimetypes-table.xml and is used by xslmod/mimetypes.mod.xsl.</xs:documentation>
+    <xs:documentation>Schema for the MIME type association datafile. 
+
+See also [mimetypes-table.xml](%mimetypes-table.xml) and [mimetypes.mod.xsl](%mimetypes.mod.xsl).</xs:documentation>
   </xs:annotation>
   <xs:element name="mimetypes">
     <xs:annotation>

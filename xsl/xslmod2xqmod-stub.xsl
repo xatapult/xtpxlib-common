@@ -4,14 +4,18 @@
   xmlns:xtlc="http://www.xtpxlib.nl/ns/common" xmlns:fn="http://www.w3.org/2005/xpath-functions" xmlns:local="#local" exclude-result-prefixes="#all">
   <!-- ================================================================== -->
   <!--~	
-    This XSL translates an XSL Module (in xtpxlib style) into a stub for an XQuery Module. 
+    This stylesheet translates an XSLT module (in `xtpxlib` "style") into a stub for an XQuery Module. After this you still need to hand-edit
+    it to make it all work.
+    
+    See as an example [href.mod.xsl](%href.mod.xsl). Large parts of this module were turned into XQuery by this stylesheet. 
+    The result (edited after this initial conversion) is in the `xqmod` directory of this component.
 	-->
   <!-- ================================================================== -->
   <!-- SETUP: -->
 
   <xsl:output method="text" indent="no" encoding="UTF-8"/>
 
-  <xsl:include href="../xslmod/common.mod.xsl"/>
+  <xsl:include href="../xslmod/general.mod.xsl"/>
 
   <!-- ================================================================== -->
   <!-- GLOBAL VARIABLES -->

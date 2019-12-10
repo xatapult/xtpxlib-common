@@ -26,21 +26,10 @@
 
   <!-- Straight copy of XML file: -->
   <xtlc:copy-file>
-    <p:with-option name="dref-source" select="static-base-uri()"/>
-    <p:with-option name="dref-target" select="resolve-uri('../../../../../xtpxlib2-tmp/test-copy-file-result 1.xml', static-base-uri())"/>
+    <p:with-option name="href-source" select="static-base-uri()"/>
+    <p:with-option name="href-target" select="resolve-uri('../../../tmp/test-copy-file-result-1.xml', static-base-uri())"/>
   </xtlc:copy-file>
 
-  <!-- Copy of text file with spaces in name: -->
-  <xtlc:copy-file>
-    <p:with-option name="dref-source" select="resolve-uri('test document for copy.txt', static-base-uri())"/>
-    <p:with-option name="dref-target" select="resolve-uri('../../../../../xtpxlib2-tmp/test-copy-file-result 2.txt', static-base-uri())"/>
-  </xtlc:copy-file>
-  
-  <!-- Copy of text file with spaces in name: -->
-  <xtlc:copy-file>
-    <p:with-option name="dref-source" select="'common/data/test-xml.xml'"/>
-    <p:with-option name="dref-source-zip" select="resolve-uri('test zip for copy.zip', static-base-uri())"/>
-    <p:with-option name="dref-target" select="resolve-uri('../../../../../xtpxlib2-tmp/test-copy-file-result 3.xml', static-base-uri())"/>
-  </xtlc:copy-file>
+  <!-- Any whitespace or other difficult characters must be % escaped! -->
   
 </p:declare-step>

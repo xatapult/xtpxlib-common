@@ -19,9 +19,9 @@
   <!-- ================================================================== -->
   
   <xtlc:zip-directory>
-    <p:with-option name="base-path" select="resolve-uri('../../..', static-base-uri())"/>
-    <p:with-option name="dref-target-zip" select="resolve-uri('../../../../../xtpxlib2-tmp/test-zip-directory-result.zip', static-base-uri())"/>
-    <p:with-option name="include-base" select="'true'"/>
+    <p:with-option name="base-path" select="resolve-uri('../../../tmp', static-base-uri())"/>
+    <p:with-option name="href-target-zip" select="resolve-uri('../../../tmp/test-zip-directory-result.zip', static-base-uri())"/>
+    <p:with-option name="include-base" select="false()"/>
   </xtlc:zip-directory>
   
 </p:declare-step>

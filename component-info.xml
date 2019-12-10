@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component-info xmlns="http://www.xtpxlib.nl/ns/webdoc" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns:xml="http://www.w3.org/XML/1998/namespace" xsi:schemaLocation="http://www.xtpxlib.nl/ns/webdoc ../xtpxlib-webdoc/xsd/component-info.xsd" name="xtpxlib-common">
+
+  <releases>
+    <release version="0.9" date="2019-12-10">
+      Pre-release to test GitHub pages functionality
+    </release>
+  </releases>
+
+  <dependencies/>
+
+  <title>Common component: Shared libraries and IDE support</title>
+  <summary>
+    `xtpxlib-common` is `xtpxlib`'s communal component. Most other `xtpxlib` components rely on it. It contains:
+    * XSLT libraries, with functionality for handling parameters, manipulating filenames/URIs, MIME types, etc.
+    * Parts of the functionality of the XSLT libraries were translated into XQuery. 
+    * XProc (1.0) steps, implementing things like recursive directory lists, tee, creating ZIP files from directories, etc.
+    * Templates (empty XSLT, XProc, XQuery, etc. files) for use in the oXygen IDE.
+  </summary>
+  
+  <documentation-uri>http://common.xtpxlib.org</documentation-uri>
+
+  <git-uri>git@github.com:xatapult/xtpxlib-common.git</git-uri>
+  <git-site-uri>https://github.com/xatapult/xtpxlib-common</git-site-uri>
+
+</component-info>

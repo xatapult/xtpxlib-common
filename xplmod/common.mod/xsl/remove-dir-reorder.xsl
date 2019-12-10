@@ -3,7 +3,7 @@
   xmlns:fn="http://www.w3.org/2005/xpath-functions" xmlns:c="http://www.w3.org/ns/xproc-step" xmlns:xtlc="http://www.xtpxlib.nl/ns/common"
   xmlns:local="#local" exclude-result-prefixes="#all">
   <!-- ================================================================== -->
-  <!--*	
+  <!--~	
     Reorders a directory list so all files/directories are in order for removal.
 	-->
   <!-- ================================================================== -->

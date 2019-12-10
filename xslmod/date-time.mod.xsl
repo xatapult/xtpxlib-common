@@ -6,10 +6,8 @@
   <!--~
     XSLT library module containing functions for working with dates and times.
     
-    When language based, we only distinguish between Dutch and non-Dutch (usually English).
+    When language based, it only distinguishes between Dutch and non-Dutch (usually English).
     Some functions will not work using Saxon HE (week-numbers for instance).
-   
-    Module dependencies: general.mod.xsl
 	-->
   <!-- ================================================================== -->
   <!-- GLOBAL DECLARTIONS: -->
@@ -31,7 +29,7 @@
       <!--~ The month number (1-12). -->
     </xsl:param>
     <xsl:param name="lang" as="xs:string">
-      <!--~ The language you want the month in. -->
+      <!--~ The language you want the month name in. -->
     </xsl:param>
 
     <xsl:choose>
@@ -57,7 +55,7 @@
       <!--~ The month number (1-12). -->
     </xsl:param>
     <xsl:param name="lang" as="xs:string">
-      <!--~ The language you want the month in. -->
+      <!--~ The language you want the month name in. -->
     </xsl:param>
 
     <xsl:choose>
@@ -73,7 +71,7 @@
   <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 
   <xsl:function name="xtlc:format-date-as-text" as="xs:string">
-    <!--~ Formats a date as a string with month name in full.  -->
+    <!--~ Formats a date as a string with the month name in full.  -->
     <xsl:param name="date" as="xs:date">
       <!--~ The date to format. -->
     </xsl:param>
@@ -98,7 +96,7 @@
   <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 
   <xsl:function name="xtlc:format-date-as-text-short" as="xs:string">
-    <!--~ Formats a date as a string with month name in short.  -->
+    <!--~ Formats a date as a string with the month name in short.  -->
     <xsl:param name="date" as="xs:date">
       <!--~ The date to format. -->
     </xsl:param>
@@ -123,7 +121,9 @@
     <xsl:param name="month-number" as="xs:integer">
       <!--~ The month to calculate the number of days for.  -->
     </xsl:param>
-    <xsl:param name="year" as="xs:integer"><!--~ The year this month is in (important because of leap years). --></xsl:param>
+    <xsl:param name="year" as="xs:integer">
+      <!--~ The year this month is in (important because of leap years). -->
+    </xsl:param>
 
     <xsl:variable name="base-month-days" as="xs:integer+" select="(31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31)"/>
     <xsl:choose>
@@ -155,7 +155,6 @@
   <xsl:function name="xtlc:week-number" as="xs:integer">
     <!--~ 
       Computes the week number for a given date.
-      Watch out: I'm not completely sure that this uses the system used in The Netherlands...  
     -->
     <xsl:param name="date" as="xs:date">
       <!--~ Date to use. -->
@@ -224,9 +223,15 @@
 
   <xsl:function name="xtlc:to-date" as="xs:date">
     <!--~ Creates a date from its components. -->
-    <xsl:param name="day" as="xs:integer"/>
-    <xsl:param name="month" as="xs:integer"/>
-    <xsl:param name="year" as="xs:integer"/>
+    <xsl:param name="day" as="xs:integer">
+      <!--~ Day number to use. -->
+    </xsl:param>
+    <xsl:param name="month" as="xs:integer">
+      <!--~ Month number to use. -->
+    </xsl:param>
+    <xsl:param name="year" as="xs:integer">
+      <!--~ Year to use. -->
+    </xsl:param>
 
     <xsl:variable name="date-string" as="xs:string"
       select="concat(xtlc:prefix-to-length(string($year), '0', 4), '-', 
@@ -247,10 +252,10 @@
   <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 
   <xsl:function name="xtlc:unix-epoch" as="xs:decimal">
+    <!--~ Computes the UNIX "epoch" code (number of seconds since 1-1-1970) for a given date/time.  -->
     <xsl:param name="datetime" as="xs:dateTime">
       <!--~ The date/time to compute the epoch code for. -->
     </xsl:param>
-    <!--~ Computes the UNIX "epoch" code (number of seconds since 1-1-1970) for a given date/time.  -->
 
     <xsl:sequence select="round((current-dateTime() - xs:dateTime('1970-01-01T00:00:00')) 
       div xs:dayTimeDuration('PT1S'))"/>

@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.0">
   <xs:annotation>
-    <xs:documentation>Schema for sets of parameters as used by this library. Use xslmod/parameters.mod.xsl for turning these lists into maps.
-Important: This module processes the elements in this schema in *any* namespace!</xs:documentation>
+    <xs:documentation>Schema for sets of parameters as used by this library. 
+
+Use [parameters.mod.xsl](%parameters.mod.xsl) for turning these lists into maps. An explanation of the parameter mechanism can be found [here](%parameters-explanation).
+
+Although this is schema for no namespace, parameters can be in *any* namespace (if you use [parameters.mod.xsl](%parameters.mod.xsl) for processing them).</xs:documentation>
   </xs:annotation>
   <xs:element name="parameters">
     <xs:annotation>

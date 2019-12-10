@@ -27,7 +27,7 @@
   </p:identity>
   
   <xtlc:remove-dir>
-    <p:with-option name="dref-dir" select="resolve-uri('../../../../../xtpxlib2-tmp/test-dir', static-base-uri())"/>
+    <p:with-option name="href-dir" select="resolve-uri('../../../tmp/test-dir/', static-base-uri())"/>
   </xtlc:remove-dir>
   
 </p:declare-step>
