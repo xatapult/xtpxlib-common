@@ -3,7 +3,7 @@
   exclude-inline-prefixes="#all">
 
   <p:documentation>
-    TBD
+    Generates the documentation for this component.
   </p:documentation>
 
   <!-- ================================================================== -->
@@ -21,7 +21,7 @@
   <p:variable name="href-parameters" select="resolve-uri('../data/xtpxlib-componentdoc-parameters.xml', static-base-uri())"/>
   <p:variable name="output-directory" select="resolve-uri('../../docs/', static-base-uri())"/>
   <p:variable name="href-readme" select="resolve-uri('../../README.md', static-base-uri())"/>
-  
+
   <!-- Generate the website: -->
   <xwebdoc:xdoc-to-componentdoc-website>
     <p:input port="source">
@@ -30,7 +30,7 @@
     <p:with-option name="component-name" select="(doc('../../component-info.xml')/*/@name, '?COMPONENTNAME?')[1]"/>
     <p:with-option name="href-parameters" select="$href-parameters"/>
     <p:with-option name="output-directory" select="$output-directory"/>
-    <p:with-option name="href-readme" select="$href-readme"/> 
+    <p:with-option name="href-readme" select="$href-readme"/>
   </xwebdoc:xdoc-to-componentdoc-website>
 
 </p:declare-step>
