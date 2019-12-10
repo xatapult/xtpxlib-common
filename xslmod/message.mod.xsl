@@ -6,20 +6,19 @@
   <!--~
     Message related templates.
     
-    A message is a standardized piece of XML used for inserting error, debug, etc., messages into XML documents.
-    Message schema: ../xsd/message.xsd
+    A [message](%message.xsd) is a standardized piece of XML used for inserting (error, debug, etc.) messages into XML documents.
 	-->
   <!-- ================================================================== -->
 
   <xsl:template name="xtlc:msg-create" as="element(xtlc:message)">
     <!--~ 
-      Generates a standard xtlc:message construct.
+      Generates a standard `xtlc:message` element.
     -->
     <xsl:param name="msg-parts" as="item()+" required="yes">
-      <!--~ Message to show (in parts, all parts will be concatenated). -->
+      <!--~ Message to show (parts will be concatenated by `xtlc:items2str()`). -->
     </xsl:param>
     <xsl:param name="status" as="xs:string" required="yes">
-      <!--~ The status of the message. Must be one of the $xtlc:status-* constants. -->
+      <!--~ The status of the message. Must be one of the `$xtlc:status-*` constants as defined in [general.mod.xsl](%general.mod.xsl). -->
     </xsl:param>
     <xsl:param name="extra-attributes" as="attribute()*" required="no" select="()">
       <!--~ Any extra attributes to add to the message. -->

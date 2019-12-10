@@ -6,7 +6,7 @@
   <!--~
     MIME type conversion related functions.
     
-    Module dependencies: None
+    These conversions work with an [external MIME type/extension table](%mimetypes-table.xml).
 	-->
   <!-- ================================================================== -->
   <!-- LOCAL DECLARATIONS: -->
@@ -17,10 +17,9 @@
 
   <xsl:function name="xtlc:ext2mimetype" as="xs:string">
     <!--~ 
-      Turns a dref extension (e.g. 'xml') into the correct MIME type ('text/xml').
-      When it cannot find the extension, it returns the empty string.
-    
-      This conversion works with an external MIME type/extension table in data/mime-types-table.xml
+      Turns an href extension (e.g. `xml')` into the correct MIME type (`'text/xml'`).
+      
+      When it cannot find an appropriate MIME type it returns the empty string.
     -->
     <xsl:param name="ext" as="xs:string">
       <!--~ The extension to convert. -->
@@ -33,10 +32,9 @@
 
   <xsl:function name="xtlc:mimetype2ext" as="xs:string">
     <!--~ 
-      Turns a MIME type (e.g. 'text/xml') into a corresponding dref extension ('xml').
-      When it cannot find the MIME type, it returns the empty string.
-    
-      This conversion works with an external MIME type/extension table in data/mime-types-table.xml
+      Turns a MIME type (e.g. `'text/xml'`) into a corresponding href extension (`'xml'`).
+      
+      When it doesn't recognize the MIME type it returns the empty string.
     -->
     <xsl:param name="mimetype" as="xs:string">
       <!--~ The MIME type to convert. -->

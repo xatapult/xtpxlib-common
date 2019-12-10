@@ -2,12 +2,15 @@
 <?xml-model href="../../../xtpxlib-xdoc/xsd/docbook/docbook.nvdl" type="application/xml" schematypens="http://purl.oclc.org/dsdl/nvdl/ns/structure/1.0"?>
 <book xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xi="http://www.w3.org/2001/XInclude"
   xmlns:xdoc="http://www.xtpxlib.nl/ns/xdoc" version="5.0">
-
-  <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+  <!-- ================================================================== -->
+  <!--
+    Source for this component's documentation.
+  -->
+  <!-- ================================================================== -->
 
   <info>
     <title>{$component-name}</title>
-    <subtitle>Common code</subtitle>
+    <subtitle>Common code and IDE support</subtitle>
     <pubdate>{$DATE}</pubdate>
     <author>
       <personname>{$author-name}</personname>
@@ -106,25 +109,136 @@
     <sect1 xml:id="parameters-explanation">
       <title>Parameter handling in <code>{$component-name}</code></title>
 
-      <para>[TBD]</para>
+      <para role="keep-with-next">Parameters, as referred to here, are name/value pairs meant for customizing software's behavior. Things like
+        prompts, URIs, etc. The <code>{$component-name}</code> component's parameters have the following characteristics:</para>
+      <itemizedlist>
+        <listitem>
+          <para>Parameters in this component are handled by the XSLT module <code><link linkend="parameters.mod.xsl"
+            >parameteres.mod.xsl</link></code>. This includes:</para>
+          <itemizedlist>
+            <listitem>
+              <para>Reading them from an XML document, either a document on its own or embedded into a bigger XML document. The result will be an
+                XPath <code>map(xs:string,&#160;xs:string*)</code>, which can be inspected and used.</para>
+            </listitem>
+            <listitem>
+              <para>Expanding parameter references in strings. Parameter references are constructions like <code>{$parameter-name}</code> (or
+                  <code>${parameter-name}</code>, both will yield the same results).</para>
+            </listitem>
+          </itemizedlist>
+        </listitem>
+        <listitem>
+          <para>Parameters are specified within an XML element called <tag>parameters</tag>, the namespace does not matter. This element can be the
+            root of a document on its own or embedded in a bigger (XML) document. For instance:</para>
+          <programlisting xml:space="preserve">
+<![CDATA[<parameters>
+  <parameter name="greeting">
+    <value>Hello!</value>
+  </parameter>
+</parameters>]]>            
+          </programlisting>
+          <para>There is a <link linkend="parameters.xsd">schema</link> available for this.</para>
+        </listitem>
+        <listitem>
+          <para>A single parameter is specified using a <tag>parameter name="…"</tag> child element. </para>
+          <para>The value of the <code>name</code> attribute will be normalized (whitespace collapsed to a single space character, leading/trailing
+            whitespace removed) and space characters are replaced with an underscore (<code>_</code>). So <code>name=" a b "</code> will become
+            parameter <code>a_b</code>.</para>
+        </listitem>
+        <listitem>
+          <para>Values for a parameter are specified using <tag>value</tag> child element. A parameter can have multiple values. Parameter references
+            inside values (either written as <code>{$parameter-name}</code> or <code>${parameter-name}</code>) are expanded into their values (for
+            multi-valued parameters only the first value is used).</para>
+        </listitem>
+        <listitem>
+          <para>It is often useful to specify values for parameters based on different circumstances. For instance based on language
+              (<code>Hello</code> in English or <code>Bonjour</code> in French), or system type (<code>https://www…</code> for production,
+              <code>http://test…</code> for test). This is implemented as follows:</para>
+          <itemizedlist>
+            <listitem>
+              <para>When initially reading the parameters you can specify a filter map (<code>map(xs:string,&#160;xs:string*)</code>).</para>
+            </listitem>
+            <listitem>
+              <para>The <tag>value</tag> elements can have any attributes. These attributes are handled as whitespace separated lists of values.
+              </para>
+            </listitem>
+            <listitem>
+              <para>The name of such an attribute is held against the entries in filter map. If a filter entry with this name exists, one of the
+                values of the attribute must be present in the filter map.</para>
+            </listitem>
+          </itemizedlist>
+          <para>For instance, assume the parameters look like this:</para>
+          <programlisting xml:space="preserve">
+<![CDATA[<parameters>
+  <parameter name="greeting">
+    <value lang="en">Hello!</value>
+    <value lang="nl de">Hallo!</value>
+    <value lang="fr">Bonjour!</value>
+  </parameter>
+  <parameter name="number">
+    <value>123</value>
+  </parameter>
+</parameters>]]>          
+          </programlisting>
+          <itemizedlist>
+            <listitem>
+              <para>Reading this with an empty (or absent) filter map, or a filter map that does not have a <code>lang</code> entry, will result in a
+                  <code>greeting</code> parameter with multiple values, <code>Hello!</code>, <code>Hallo!</code> and <code>Bonjour!</code>.</para>
+            </listitem>
+            <listitem>
+              <para>Reading this with a filter map <code>map{'lang': 'en'}</code> will return the <code>greeting</code> parameter with value
+                  <code>Hello!</code>.</para>
+            </listitem>
+            <listitem>
+              <para>Reading this with a filter map <code>map{'lang': 'fr'}</code> will return the <code>greeting</code> parameter with value
+                  <code>Bonjour!</code>.</para>
+            </listitem>
+            <listitem>
+              <para>Reading this with a filter map <code>map{'lang': ('en', 'de')}</code> (not particularly useful) will return the
+                  <code>greeting</code> parameter with values <code>Hello!</code>
+                <emphasis>and</emphasis>
+                <code>Hallo!</code>. </para>
+            </listitem>
+            <listitem>
+              <para>In all cases the <code>number</code> parameter will get value <code>123</code> (since it has no filtering attributes on its
+                  <tag>value</tag> element).</para>
+            </listitem>
+          </itemizedlist>
+          <para>It is possible to combine multiple filter attributes on a <tag>value</tag> element.</para>
+        </listitem>
+        <listitem>
+          <para>Another thing that is often useful in specifying parameters is to <emphasis>group</emphasis> them. For this you can put a number of
+              <tag>parameter</tag> elements inside a <tag>group name="…"</tag> element. The name of the group is used as a prefix (with a dot
+              (<code>.</code>) separator) for the parameters in the group. For instance:</para>
+          <programlisting xml:space="preserve">
+<![CDATA[<parameters>
+  <group name="important">
+    <parameter name="greeting">
+      <value>Hello!</value>
+    </parameter>
+  </group>
+</parameters>]]>            
+          </programlisting>
+          <para>This will result in a parameter called <code>important.greeting</code>.</para>
+        </listitem>
+      </itemizedlist>
     </sect1>
 
   </chapter>
 
   <!-- ================================================================== -->
 
-  <chapter xml:id="chapter-xml-data-files" xreflabel="XML Data Files">
-    <title>XML Data Files</title>
+  <chapter xml:id="chapter-xslt-modules" xreflabel="XSLT Modules">
+    <title>XSLT Modules</title>
 
-    <para>The {$component-name} component contains the following XML data files:</para>
+    <para>The {$component-name} component contains the following XSLT modules. The ones used most frequently are <code><link linkend="general.mod.xsl"
+          >general.mod.xsl</link></code> and <code><link linkend="href.mod.xsl">href.mod.xsl</link></code>.</para>
 
-    <xdoc:transform href="$xdoc/code-docgen-dir.xpl" dir="../../../xtpxlib-common/data/" filter="\.xml$" header-level="1" filecomponents="2"
+    <xdoc:transform href="$xdoc/code-docgen-dir.xpl" dir="../../../xtpxlib-common/xslmod/" filter="\.mod\.xsl$" header-level="1" filecomponents="2"
       sublevels="false"/>
 
   </chapter>
 
   <!-- ================================================================== -->
-
 
   <chapter xml:id="chapter-xproc-libraries" xreflabel="XProc Libraries">
     <title>XProc Libraries</title>
@@ -132,18 +246,6 @@
     <para>The {$component-name} component contains the following XProc (1.0) library module:</para>
 
     <xdoc:transform href="$xdoc/code-docgen-dir.xpl" dir="../../../xtpxlib-common/xplmod/" filter="\.mod\.xpl$" header-level="1" filecomponents="3"
-      sublevels="false"/>
-
-  </chapter>
-
-  <!-- ================================================================== -->
-
-  <chapter xml:id="chapter-xml-schemas" xreflabel="XML Schemas">
-    <title>XML Schemas</title>
-
-    <para>The {$component-name} component contains the following XML Schemas:</para>
-
-    <xdoc:transform href="$xdoc/code-docgen-dir.xpl" dir="../../../xtpxlib-common/xsd/" filter="\.xsd$" header-level="1" filecomponents="2"
       sublevels="false"/>
 
   </chapter>
@@ -162,18 +264,26 @@
 
   <!-- ================================================================== -->
 
-  <chapter xml:id="chapter-xslt-modules" xreflabel="XSLT Modules">
-    <title>XSLT Modules</title>
+  <chapter xml:id="chapter-xml-data-files" xreflabel="XML Data Files">
+    <title>XML Data Files</title>
 
-    <para>The {$component-name} component contains the following XSLT modules. The ones used most frequently are <code><link linkend="general.mod.xsl"
-          >general.mod.xsl</link></code> and <code><link linkend="href.mod.xsl">href.mod.xsl</link></code>.</para>
+    <para>The {$component-name} component contains the following XML data files:</para>
 
-    <xdoc:transform href="$xdoc/code-docgen-dir.xpl" dir="../../../xtpxlib-common/xslmod/" filter="\.mod\.xsl$" header-level="1" filecomponents="2"
+    <xdoc:transform href="$xdoc/code-docgen-dir.xpl" dir="../../../xtpxlib-common/data/" filter="\.xml$" header-level="1" filecomponents="2"
       sublevels="false"/>
 
   </chapter>
 
+  <!-- ================================================================== -->
 
+  <chapter xml:id="chapter-xml-schemas" xreflabel="XML Schemas">
+    <title>XML Schemas</title>
+
+    <para>The {$component-name} component contains the following XML Schemas:</para>
+
+    <xdoc:transform href="$xdoc/code-docgen-dir.xpl" dir="../../../xtpxlib-common/xsd/" filter="\.xsd$" header-level="1" filecomponents="2"
+      sublevels="false"/>
+
+  </chapter>
 
 </book>
-<!-- ================================================================== -->

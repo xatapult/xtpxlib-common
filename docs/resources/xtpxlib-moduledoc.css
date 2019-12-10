@@ -9,6 +9,10 @@ code {
   font-size: 100%;
 }
 
+pre {
+  background-color: lightgrey;
+}
+
 div.sidebar,
 div.warning,
 div.note {
