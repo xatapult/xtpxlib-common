@@ -18,7 +18,8 @@
     * XProc (1.0) steps, implementing things like recursive directory lists, tee, creating ZIP files from directories, etc.
     * Templates (empty XSLT, XProc, XQuery, etc. files) for use in the oXygen IDE.
   </summary>
-  <documentation-uri>http://www.xatapult.nl</documentation-uri>
+  
+  <documentation-uri>http://common.xtpxlib.org</documentation-uri>
 
   <git-uri>git@github.com:xatapult/xtpxlib-common.git</git-uri>
   <git-site-uri>https://github.com/xatapult/xtpxlib-common</git-site-uri>
