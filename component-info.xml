@@ -19,7 +19,7 @@
     * Templates (empty XSLT, XProc, XQuery, etc. files) for use in the oXygen IDE.
   </summary>
   
-  <documentation-uri>http://common.xtpxlib.org</documentation-uri>
+  <documentation-uri>https://common.xtpxlib.org</documentation-uri>
 
   <git-uri>git@github.com:xatapult/xtpxlib-common.git</git-uri>
   <git-site-uri>https://github.com/xatapult/xtpxlib-common</git-site-uri>
