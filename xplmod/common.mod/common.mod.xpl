@@ -109,7 +109,7 @@
     <p:viewport match="/c:directory/c:directory">
       <p:variable name="name" select="/*/@name"/>
       <p:choose>
-        <p:when test="$depth != 0">
+        <p:when test="xs:integer($depth) ne 1">
           <p:choose>
             <p:when test="p:value-available('include-filter') and p:value-available('exclude-filter')">
               <xtlc:recursive-directory-list>
@@ -123,20 +123,20 @@
               <xtlc:recursive-directory-list>
                 <p:with-option name="path" select="concat($path,'/',$name)"/>
                 <p:with-option name="include-filter" select="$include-filter"/>
-                <p:with-option name="depth" select="$depth - 1"/>
+                <p:with-option name="depth" select="xs:integer($depth) - 1"/>
               </xtlc:recursive-directory-list>
             </p:when>
             <p:when test="p:value-available('exclude-filter')">
               <xtlc:recursive-directory-list>
                 <p:with-option name="path" select="concat($path,'/',$name)"/>
                 <p:with-option name="exclude-filter" select="$exclude-filter"/>
-                <p:with-option name="depth" select="$depth - 1"/>
+                <p:with-option name="depth" select="xs:integer($depth) - 1"/>
               </xtlc:recursive-directory-list>
             </p:when>
             <p:otherwise>
               <xtlc:recursive-directory-list>
                 <p:with-option name="path" select="concat($path,'/',$name)"/>
-                <p:with-option name="depth" select="$depth - 1"/>
+                <p:with-option name="depth" select="xs:integer($depth) - 1"/>
               </xtlc:recursive-directory-list>
             </p:otherwise>
           </p:choose>
