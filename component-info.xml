@@ -3,6 +3,9 @@
   xmlns:xml="http://www.w3.org/XML/1998/namespace" xsi:schemaLocation="http://www.xtpxlib.nl/ns/webdoc ../xtpxlib-webdoc/xsd/component-info.xsd" name="xtpxlib-common">
 
   <releases>
+    <release version="1.0" date="2019-12-18">
+      Initial release
+    </release>
     <release version="0.9" date="2019-12-10">
       Pre-release to test GitHub pages functionality
     </release>
