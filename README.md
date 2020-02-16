@@ -12,7 +12,7 @@
 
 ## Technical information
 
-Component version: V1.0 - 2019-12-18
+Component version: V1.0.A - 2020-02-16
 
 Documentation: [`https://common.xtpxlib.org`](https://common.xtpxlib.org)
 
@@ -24,7 +24,11 @@ Git site: [`https://github.com/xatapult/xtpxlib-common`](https://github.com/xata
 
 ## Version history
 
-**V1.0 - 2019-12-18 (current)**
+**V1.0.A - 2020-02-16 (current)**
+
+New logo and minor fixes
+
+**V1.0 - 2019-12-18**
 
 Initial release
 
