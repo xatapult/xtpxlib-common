@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" targetNamespace="http://www.xtpxlib.nl/ns/common"
+  xmlns:xtlc="http://www.xtpxlib.nl/ns/common">
+
+  <xs:element name="load-list">
+    <xs:complexType>
+      <xs:choice maxOccurs="unbounded" minOccurs="0">
+        <xs:element name="load-from-disk">
+          <xs:complexType>
+            <xs:attributeGroup ref="xtlc:ag-href"/>
+            <xs:attributeGroup ref="xtlc:ag-load-flags"/>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="load-from-zip">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element maxOccurs="unbounded" minOccurs="0" name="entry">
+                <xs:complexType>
+                  <xs:attribute name="name" type="xs:anyURI" use="required">
+                    <xs:annotation>
+                      <xs:documentation>Name of the entry in the zip as a relative filename.</xs:documentation>
+                    </xs:annotation>
+                  </xs:attribute>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+            <xs:attributeGroup ref="xtlc:ag-href"/>
+          </xs:complexType>
+        </xs:element>
+      </xs:choice>
+      <xs:attributeGroup ref="xtlc:ag-load-flags"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:attributeGroup name="ag-href">
+    <xs:attribute name="href" type="xs:anyURI" use="required">
+      <xs:annotation>
+        <xs:documentation>The URI of the file we want to process.</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+  </xs:attributeGroup>
+  <xs:attributeGroup name="ag-load-flags">
+    <xs:attribute default="false" name="force-xdm" type="xs:boolean"/>
+    <xs:attribute default="true" name="fail-on-error" type="xs:boolean"/>
+  </xs:attributeGroup>
+</xs:schema>
