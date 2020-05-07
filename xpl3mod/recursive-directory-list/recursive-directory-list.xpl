@@ -4,7 +4,7 @@
   xmlns:local="#local.cxw_yt1_xkb" version="3.0" exclude-inline-prefixes="#all" type="xtlc:recursive-directory-list">
 
   <p:documentation>
-    
+    TBD TBD TBD
   </p:documentation>
 
   <!-- ================================================================== -->
@@ -37,32 +37,22 @@
   <p:option name="detailed" as="xs:boolean" required="false" select="false()">
     <p:documentation>Whether to add detailed information.</p:documentation>
   </p:option>
-  
+
   <p:option name="override-content-types" as="array(array(xs:string))?" required="false" select="()">
     <p:documentation>Override content types specification (see description of `p:directory-list`).</p:documentation>
   </p:option>
-  
+
   <p:output port="result" primary="true" content-types="xml" sequence="false" serialization="map{'method': 'xml', 'indent': true()}">
     <p:documentation> </p:documentation>
   </p:output>
 
   <!-- ================================================================== -->
 
-  <p:try>
-    <p:directory-list path="{$path}" max-depth="{if ($depth lt 0) then 'unbounded' else $depth}" detailed="{$detailed}">
-      <p:with-option name="include-filter" select="$include-filter"/>
-      <p:with-option name="exclude-filter" select="$exclude-filter"/>
-      <!-- TBD: Enable when implemented! -->
-      <!--<p:with-option name="override-content-types" select="$override-content-types"/>-->
-    </p:directory-list>
-    <p:catch>
-      <p:identity>
-        <p:with-input port="source">
-          <c:directory error="true" xml:base="{$path}"/>
-        </p:with-input>
-      </p:identity>
-    </p:catch>
-  </p:try>
+  <p:directory-list path="{$path}" max-depth="{if ($depth lt 0) then 'unbounded' else $depth}" detailed="{$detailed}">
+    <p:with-option name="include-filter" select="$include-filter"/>
+    <p:with-option name="exclude-filter" select="$exclude-filter"/>
+    <p:with-option name="override-content-types" select="$override-content-types"/>
+  </p:directory-list>
 
   <p:if test="$flatten">
     <p:xslt>
