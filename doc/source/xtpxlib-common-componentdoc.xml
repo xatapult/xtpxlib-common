@@ -240,8 +240,8 @@
 
   <!-- ================================================================== -->
 
-  <chapter xml:id="chapter-xproc-libraries" xreflabel="XProc Libraries">
-    <title>XProc Libraries</title>
+  <chapter xml:id="chapter-xproc-libraries" xreflabel="XProc 1.0 Libraries">
+    <title>XProc 1.0 Libraries</title>
 
     <para>The {$component-name} component contains the following XProc (1.0) library module:</para>
 
@@ -249,7 +249,19 @@
       sublevels="true"/>
 
   </chapter>
-
+  
+  <!-- ================================================================== -->
+  
+  <chapter xml:id="chapter-xproc-3-support" xreflabel="XProc 3.0 Support">
+    <title>XProc 3.0 Support</title>
+    
+    <para>The {$component-name} component contains the following support (pipelines and/or libraries) for XProc 3.0:</para>
+    
+    <xdoc:transform href="$xdoc/code-docgen-dir.xpl" dir="../../../xtpxlib-common/xpl3mod/" filter="\.xpl$" header-level="1" filecomponents="3"
+      sublevels="true"/>
+    
+  </chapter>
+  
   <!-- ================================================================== -->
 
   <chapter xml:id="chapter-xsl-stylesheets" xreflabel="XSLT Stylesheets">

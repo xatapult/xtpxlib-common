@@ -12,7 +12,7 @@
 
 ## Technical information
 
-Component version: V1.0.A - 2020-02-16
+Component version: V1.1 - 2020-06-08
 
 Documentation: [`https://common.xtpxlib.org`](https://common.xtpxlib.org)
 
@@ -24,7 +24,11 @@ Git site: [`https://github.com/xatapult/xtpxlib-common`](https://github.com/xata
 
 ## Version history
 
-**V1.0.A - 2020-02-16 (current)**
+**V1.1 - 2020-06-08 (current)**
+
+Added first XProc 3.0 support. Fixed some minor issues in templates.
+
+**V1.0.A - 2020-02-16**
 
 New logo and minor fixes
 
