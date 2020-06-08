@@ -4,7 +4,9 @@
   xmlns:local="#local.cxw_yt1_xkb" version="3.0" exclude-inline-prefixes="#all" type="xtlc:recursive-directory-list">
 
   <p:documentation>
-    TBD TBD TBD
+    Extension of standard the `p:directory` list step.
+    Returns the contents of a directory, going into sub-directories recursively. 
+    Adds the possibility to "flatten" the list.
   </p:documentation>
 
   <!-- ================================================================== -->
@@ -43,7 +45,8 @@
   </p:option>
 
   <p:output port="result" primary="true" content-types="xml" sequence="false" serialization="map{'method': 'xml', 'indent': true()}">
-    <p:documentation> </p:documentation>
+    <p:documentation>The resulting directory structure in XML format. See the standard `p:directory-list` step for a more detailed description.
+    </p:documentation>
   </p:output>
 
   <!-- ================================================================== -->
