@@ -18,7 +18,7 @@
   <!-- ================================================================== -->
   <!-- GLOBAL DECLARATIONS: -->
 
-  <xsl:variable name="global:page-title" as="xs:string" select="'PAGE TITLE TBD'"/>
+  <xsl:variable name="page-title" as="xs:string" select="'PAGE TITLE TBD'"/>
 
   <!-- ================================================================== -->
   <!-- MAIN TEMPLATES: -->
@@ -29,12 +29,12 @@
       <head>
         <meta HTTP-EQUIV="Content-Type" content="text/html; charset=UTF-8"/>
         <title>
-          <xsl:value-of select="$global:page-title"/>
+          <xsl:value-of select="$page-title"/>
         </title>
       </head>
       <body>
         <h1>
-          <xsl:value-of select="$global:page-title"/>
+          <xsl:value-of select="$page-title"/>
         </h1>
         <p>TBD</p>
       </body>
