@@ -204,11 +204,12 @@
     <!-- Split the href into parts: -->
     <xsl:variable name="protocol" as="xs:string" select="xtlc:href-protocol($href)"/>
     <xsl:variable name="href-no-protocol" as="xs:string" select="xtlc:href-protocol-remove($href)"/>
+    <xsl:variable name="href-start-slash" as="xs:string?" select="if (starts-with($href-no-protocol, '/')) then '/' else ()"/>
     <xsl:variable name="href-components" as="xs:string*" select="tokenize($href-no-protocol, '/')[. ne '']"/>
 
     <!-- Assemble it together again: -->
     <xsl:variable name="href-canonical-filename" as="xs:string"
-      select="string-join(local:href-canonical-process-components($href-components, 0), '/')"/>
+      select="$href-start-slash || string-join(local:href-canonical-process-components($href-components, 0), '/')"/>
     <xsl:sequence select="xtlc:href-protocol-add($href-canonical-filename, $protocol, false())"/>
   </xsl:function>
 
