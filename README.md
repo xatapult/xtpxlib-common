@@ -12,7 +12,7 @@
 
 ## Technical information
 
-Component version: V1.1 - 2020-06-08
+Component version: V1.1.1 - 2020-06-16
 
 Documentation: [`https://common.xtpxlib.org`](https://common.xtpxlib.org)
 
@@ -24,7 +24,11 @@ Git site: [`https://github.com/xatapult/xtpxlib-common`](https://github.com/xata
 
 ## Version history
 
-**V1.1 - 2020-06-08 (current)**
+**V1.1.1 - 2020-06-16 (current)**
+
+Fixed bug in creating canonical filenames on Unix
+
+**V1.1 - 2020-06-08**
 
 Added first XProc 3.0 support. Fixed some minor issues in templates.
 
