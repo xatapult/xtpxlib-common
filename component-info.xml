@@ -3,6 +3,12 @@
   xmlns:xml="http://www.w3.org/XML/1998/namespace" xsi:schemaLocation="http://www.xtpxlib.nl/ns/webdoc ../xtpxlib-webdoc/xsd/component-info.xsd" name="xtpxlib-common">
 
   <releases>
+    <release version="1.2" date="2020-08-13">
+      Several enhancements:
+      * Added str2regexp function to `xslmod/general.mod.xsl`
+      * Added URI decoding function to `xslmod/href.mod.xsl`
+      * Added the option to get decoded URIs in `xpl3mod/recursive-directory-list/recursive-directory-list.xpl`
+    </release>
     <release version="1.1.1" date="2020-06-16">
       Fixed bug in creating canonical filenames on Unix
     </release>
