@@ -133,7 +133,33 @@
     </xsl:choose>
 
   </xsl:function>
-
+  
+  <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+  
+  <xsl:function name="xtlc:str2regexp" as="xs:string">
+    <!--~ Turns a string into a regular expression that matches the input exactly. Optionally anchors the regular expression so
+      the match will be on this string *only* (result starts with `^` and ends with `$`). -->
+    <xsl:param name="in" as="xs:string?">
+      <!--~ String to convert  -->
+    </xsl:param>
+    <xsl:param name="anchor" as="xs:boolean" >
+      <!--~ If true, the resulting string will be anchored (start with `^` and ends with `$`)  -->
+    </xsl:param>
+    
+    <xsl:variable name="regexp-string" as="xs:string" select="replace(string($in), '([.\\?*+|\^${}()\[\]])', '\\$1')"/>
+    <xsl:sequence select="if ($anchor) then ('^'  || $regexp-string || '$') else $regexp-string"/>
+  </xsl:function>
+  
+  <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+  
+  <xsl:function name="xtlc:str2regexp" as="xs:string">
+    <!--~ Turns a string into a regular expression that matches the input exactly. -->
+    <xsl:param name="in" as="xs:string?">
+      <!--~ String to convert  -->
+    </xsl:param>
+    <xsl:sequence select="xtlc:str2regexp($in, false())"/>
+  </xsl:function>
+  
   <!-- ================================================================== -->
   <!-- CONTEXT: -->
 
