@@ -14,6 +14,11 @@
   <xsl:include href="../../../xslmod/href.mod.xsl"/>
   
   <xsl:mode on-no-match="shallow-copy"/>
+
+  <!-- ======================================================================= -->
+  <!-- PARAMETERS: -->
+
+  <xsl:param name="add-decoded" as="xs:boolean" required="yes"/>
   
   <!-- ================================================================== -->
   
@@ -28,8 +33,13 @@
         <xsl:copy copy-namespaces="no">
           <xsl:copy-of select="@* except @xml:base" copy-namespaces="no"/>
           <xsl:variable name="href-abs" as="xs:string" select="xtlc:href-canonical(xtlc:href-concat(ancestor-or-self::*/@xml:base))"/>
+          <xsl:variable name="href-rel" as="xs:string" select="xtlc:href-relative-from-path($base-dir, $href-abs)"/>
           <xsl:attribute name="href-abs" select="$href-abs"/>
-          <xsl:attribute name="href-rel" select="xtlc:href-relative-from-path($base-dir, $href-abs)"/>
+          <xsl:attribute name="href-rel" select="$href-rel"/>
+          <xsl:if test="$add-decoded">
+            <xsl:attribute name="href-abs-decoded" select="xtlc:href-decode-uri($href-abs)"/>
+            <xsl:attribute name="href-rel-decoded" select="xtlc:href-decode-uri($href-rel)"/>
+          </xsl:if>
         </xsl:copy>
       </xsl:for-each>
       

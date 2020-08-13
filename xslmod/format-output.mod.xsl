@@ -115,9 +115,9 @@
       <xsl:sequence select="if ($days gt 0) then concat(string($days), 'd') else ()"/>
       <xsl:sequence select="if ($hours gt 0) then concat(string($hours), 'h') else ()"/>
       <xsl:sequence select="if ($minutes gt 0) then concat(string($minutes), 'm') else ()"/>
-      <xsl:sequence select="concat(string($seconds), 's')"/>
+      <xsl:sequence select="if ($seconds gt 0) then concat(string($seconds), 's') else ()"/>
     </xsl:variable>
-    <xsl:sequence select="string-join($string-parts, '')"/>
+    <xsl:sequence select="if (exists($string-parts)) then string-join($string-parts, '') else '0s'"/>
 
   </xsl:function>
 

@@ -35,6 +35,14 @@
         These `c:file` elements get a `@name`, `@href-abs` (absolute filename) and `@href-rel` (relative filename) attribute.
      </p:documentation>
   </p:option>
+  
+  <p:option name="add-decoded" as="xs:boolean" required="false" select="false()">
+    <p:documentation>
+        When `true` and `$flatten` is `true`, attributes `@href-rel-decoded` and `@href-abs-decoded` are added in which any percent 
+        encoded characters are decoded.
+     </p:documentation>
+  </p:option>
+  
 
   <p:option name="detailed" as="xs:boolean" required="false" select="false()">
     <p:documentation>Whether to add detailed information.</p:documentation>
@@ -59,9 +67,8 @@
 
   <p:if test="$flatten">
     <p:xslt>
-      <p:with-input port="stylesheet">
-        <p:document href="xsl/flatten-directory-list.xsl"/>
-      </p:with-input>
+      <p:with-input port="stylesheet" href="xsl/flatten-directory-list.xsl"/>
+      <p:with-option name="parameters" select="map{'add-decoded': $add-decoded}"/> 
     </p:xslt>
   </p:if>
 
