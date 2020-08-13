@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet version="2.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xs="http://www.w3.org/2001/XMLSchema"
-  xmlns:fn="http://www.w3.org/2005/xpath-functions" xmlns:xtlc="http://www.xtpxlib.nl/ns/common" xmlns:local="#local.href.mod.xsl"
-  exclude-result-prefixes="#all">
+  xmlns:xtlc="http://www.xtpxlib.nl/ns/common" xmlns:local="#local.href.mod.xsl" exclude-result-prefixes="#all">
   <!-- ================================================================== -->
   <!--~
     XSLT library module with functions for the generic handling of href-s (filenames/paths).
@@ -489,7 +488,7 @@
 
   <xsl:function name="xtlc:href-add-encoding" as="xs:string">
     <!--~ 
-      Percentage encodes all "strange" characters (`%xx`). Any existing percentage encodings will be kept as is.
+      Percent encodes all "strange" characters (`%xx`). Any existing percentage encodings will be kept as is.
     -->
     <xsl:param name="href" as="xs:string">
       <!--~ href to work on. -->
@@ -526,5 +525,46 @@
 
     <xsl:sequence select="xtlc:href-protocol-add(string-join($href-parts-uri, '/'), $protocol, false())"/>
   </xsl:function>
- 
+
+  <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+
+  <xsl:function name="xtlc:href-decode-uri" as="xs:string">
+    <!--~ Reverse function of encode-fo-uri(). Translates percent encodings (`%xx`) into their actual characters. -->
+    <xsl:param name="href" as="xs:string">
+      <!--~ href to work on. -->
+    </xsl:param>
+
+    <xsl:variable name="result-fragments" as="xs:string*">
+      <xsl:analyze-string select="$href" regex="%[a-fA-F0-9]{{2}}">
+        <xsl:matching-substring>
+          <xsl:variable name="char-code" as="xs:integer"
+            select="(local:hex-char2int(substring(., 2, 1)) * 16) + local:hex-char2int(substring(., 3, 1))"/>
+          <xsl:sequence select="codepoints-to-string($char-code)"/>
+        </xsl:matching-substring>
+        <xsl:non-matching-substring>
+          <xsl:sequence select="."/>
+        </xsl:non-matching-substring>
+      </xsl:analyze-string>
+    </xsl:variable>
+    <xsl:sequence select="string-join($result-fragments, '')"/>
+  </xsl:function>
+
+  <xsl:variable name="local:charcode-0" as="xs:integer" select="string-to-codepoints('0')"/>
+  <xsl:variable name="local:charcode-9" as="xs:integer" select="string-to-codepoints('9')"/>
+  <xsl:variable name="local:charcode-a" as="xs:integer" select="string-to-codepoints('a')"/>
+  <xsl:function name="local:hex-char2int" as="xs:integer">
+    <xsl:param name="char" as="xs:string">
+      <!-- Assumed to be exactly one character long and hex (a-f0-9) -->
+    </xsl:param>
+    <xsl:variable name="char-code" as="xs:integer" select="string-to-codepoints(lower-case(substring($char, 1, 1)))"/>
+    <xsl:choose>
+      <xsl:when test="($char-code ge $local:charcode-0) and ($char-code le $local:charcode-9)">
+        <xsl:sequence select="$char-code - $local:charcode-0"/>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:sequence select="$char-code - $local:charcode-a + 10"/>
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:function>
+
 </xsl:stylesheet>
