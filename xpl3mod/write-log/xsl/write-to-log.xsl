@@ -10,42 +10,44 @@
   -->
   <!-- ================================================================== -->
   <!-- SETUP: -->
-
+  
   <xsl:output method="xml" indent="no" encoding="UTF-8"/>
-
+  
   <xsl:mode on-no-match="fail"/>
-
+  
   <!-- ================================================================== -->
   <!-- PARAMETERS: -->
-
+  
   <xsl:param name="href-log" as="xs:string" required="yes"/>
   <xsl:param name="log-comments" as="xs:string*" required="yes"/>
   <xsl:param name="status" as="xs:string" required="yes"/>
   <xsl:param name="messages" as="xs:string+" required="yes"/>
   <xsl:param name="keep-entries" as="xs:integer" required="yes"/>
-  <xsl:param name="additional-attributes" as="map(xs:QName, xs:string)" required="yes"/>
+  <xsl:param name="additional-attributes" as="map(xs:QName, xs:string)?" required="yes"/>
   <xsl:param name="additional-elements" as="element()*" required="yes"/>
-
+  
   <!-- ================================================================== -->
-
+  
   <xsl:template match="/">
-
+    
     <!-- Create the log entry: -->
     <xsl:variable name="new-log-entry" as="element()">
       <entry timestamp="{current-dateTime()}" status="{$status}">
-        <xsl:for-each select="map:keys($additional-attributes)">
-          <xsl:attribute name="{.}" select="$additional-attributes(.)"/>
-        </xsl:for-each>
+        <xsl:if test="exists($additional-attributes)">
+          <xsl:for-each select="map:keys($additional-attributes)">
+            <xsl:attribute name="{.}" select="$additional-attributes(.)"/>
+          </xsl:for-each>
+        </xsl:if>
         <xsl:for-each select="$messages">
           <message>{.}</message>
         </xsl:for-each>
         <xsl:sequence select="$additional-elements"/>
       </entry>
     </xsl:variable>
-
+    
     <!-- Log it: -->
     <xsl:choose>
-
+      
       <!-- There is not a log file available. Create it: -->
       <xsl:when test="not(doc-available($href-log))">
         <log timestamp="{current-dateTime()}">
@@ -60,7 +62,7 @@
           <xsl:sequence select="$new-log-entry"/>
         </log>
       </xsl:when>
-
+      
       <!-- Yes, there is already an existing log file, amend it: -->
       <xsl:otherwise>
         <xsl:for-each select="doc($href-log)/*">
@@ -80,9 +82,9 @@
           </xsl:copy>
         </xsl:for-each>
       </xsl:otherwise>
-
+      
     </xsl:choose>
-
+    
   </xsl:template>
-
+  
 </xsl:stylesheet>
