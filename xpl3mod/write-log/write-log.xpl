@@ -13,6 +13,7 @@
   <!-- SETUP: -->
 
   <p:input port="source" primary="true" sequence="true" content-types="any">
+    <p:empty/>
     <p:documentation>Documents will be passed unchanged to the `result` port.</p:documentation>
   </p:input>
 
