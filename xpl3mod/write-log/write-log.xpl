@@ -11,21 +11,15 @@
 
   <!-- ================================================================== -->
   <!-- SETUP: -->
-  
-  <p:option name="develop" static="true" as="xs:boolean" required="false" select="false()"/>
 
   <p:input port="source" primary="true" sequence="true" content-types="any">
-    <p:inline use-when="$develop">
-      <dummy/>
-    </p:inline>
     <p:documentation>Documents will be passed unchanged to the `result` port.</p:documentation>
   </p:input>
 
-  <p:option use-when="not($develop)" name="href-log" as="xs:string" required="true">
+  <p:option name="href-log" as="xs:string" required="true">
     <p:documentation>URI of the file to write the log entries to.</p:documentation>
   </p:option>
-  <p:option use-when="$develop" name="href-log" as="xs:string" required="false" select="resolve-uri('tmp/test.log.xml', static-base-uri())"/>
-  
+
   <p:option name="log-comments" as="xs:string*" required="false" select="()">
     <p:documentation>Any comments to write as file header when creating a new log file. Ignored on an existing log file.</p:documentation>
   </p:option>
@@ -42,11 +36,10 @@
     <p:documentation>Status of the entry. Must be `info`, `warning`, `error` or `debug`.</p:documentation>
   </p:option>
 
-  <p:option use-when="not($develop)" name="messages" as="xs:string+" required="true">
+  <p:option name="messages" as="xs:string+" required="true">
     <p:documentation>The actual texts/lines of the log entry to write. All will become a separate `message` element.</p:documentation>
   </p:option>
-  <p:option use-when="$develop" name="messages" as="xs:string+" required="false" select="('Log message 1', 'Log message 2')"/>
-    
+
   <p:option name="additional-attributes" as="map(xs:QName, xs:string)?" required="false" select="()">
     <p:documentation>A map with additional attributes to add to the log entry's `entry` element.</p:documentation>
   </p:option>
@@ -84,7 +77,7 @@
         }"
       />
     </p:xslt>
-    
+
     <p:store href="{$href-log}" serialization="map{ 'method': 'xml', 'indent': true() }"/>
 
   </p:if>
