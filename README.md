@@ -12,7 +12,7 @@
 
 ## Technical information
 
-Component version: V1.2 - 2020-08-13
+Component version: V1.3 - 2020-08-18
 
 Documentation: [`https://common.xtpxlib.org`](https://common.xtpxlib.org)
 
@@ -24,10 +24,14 @@ Git site: [`https://github.com/xatapult/xtpxlib-common`](https://github.com/xata
 
 ## Version history
 
-**V1.2 - 2020-08-13 (current)**
+**V1.3 - 2020-08-18 (current)**
+
+Added `xtlc:write-log` XProc 3.0 step
+
+**V1.2 - 2020-08-13**
 
 Several enhancements:
-* Added str2regexp function to `xslmod/general.mod.xsl`
+* Added `str2regexp()` function to `xslmod/general.mod.xsl`
 * Added URI decoding function to `xslmod/href.mod.xsl`
 * Added the option to get decoded URIs in `xpl3mod/recursive-directory-list/recursive-directory-list.xpl`
 
