@@ -12,7 +12,7 @@
 
 ## Technical information
 
-Component version: V1.3.1 - 2020-08-18
+Component version: V1.3.2 - 2022-03-24
 
 Documentation: [`https://common.xtpxlib.org`](https://common.xtpxlib.org)
 
@@ -24,7 +24,11 @@ Git site: [`https://github.com/xatapult/xtpxlib-common`](https://github.com/xata
 
 ## Version history
 
-**V1.3.1 - 2020-08-18 (current)**
+**V1.3.2 - 2022-03-24 (current)**
+
+Added indent option to `xtlc:tee`
+
+**V1.3.1 - 2020-08-18**
 
 Some bugfixes for `xtlc:log-write`
 
