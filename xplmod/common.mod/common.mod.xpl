@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<p:library xmlns:p="http://www.w3.org/ns/xproc" xmlns:c="http://www.w3.org/ns/xproc-step" xmlns:xtlc="http://www.xtpxlib.nl/ns/common"
-  xmlns:cx="http://xmlcalabash.com/ns/extensions" xmlns:pxp="http://exproc.org/proposed/steps" xmlns:pxf="http://exproc.org/proposed/steps/file"
+<p:library xmlns:p="http://www.w3.org/ns/xproc" xmlns:c="http://www.w3.org/ns/xproc-step"
+  xmlns:xtlc="http://www.xtpxlib.nl/ns/common" xmlns:cx="http://xmlcalabash.com/ns/extensions"
+  xmlns:pxp="http://exproc.org/proposed/steps" xmlns:pxf="http://exproc.org/proposed/steps/file"
   version="1.0" xpath-version="2.0" exclude-inline-prefixes="#all">
- 
+
   <p:documentation>
     XProc (1.0) library with generic steps.
   </p:documentation>
@@ -111,7 +112,8 @@
       <p:choose>
         <p:when test="xs:integer($depth) ne 1">
           <p:choose>
-            <p:when test="p:value-available('include-filter') and p:value-available('exclude-filter')">
+            <p:when
+              test="p:value-available('include-filter') and p:value-available('exclude-filter')">
               <xtlc:recursive-directory-list>
                 <p:with-option name="path" select="concat($path,'/',$name)"/>
                 <p:with-option name="include-filter" select="$include-filter"/>
@@ -277,6 +279,10 @@
       </p:documentation>
     </p:option>
 
+    <p:option name="indent" required="false" select="true()">
+      <p:documentation>Whether or not to indent the tee-d output.</p:documentation>
+    </p:option>
+
     <p:output port="result" primary="true" sequence="false">
       <p:documentation>
         The input unchanged (unless a `$root-attribute-href` was specified).
@@ -293,10 +299,11 @@
       <p:when test="xs:boolean($enable) and ($href ne '')">
 
         <!-- Store the file: -->
-        <p:store method="xml" encoding="UTF-8" indent="true" omit-xml-declaration="false">
+        <p:store method="xml" encoding="UTF-8" omit-xml-declaration="false">
           <!-- Since normal usage will be for debug outputs, we always indent so the result 
             is more directly legible. -->
           <p:with-option name="href" select="$href"/>
+          <p:with-option name="indent" select="$indent"/>
         </p:store>
 
         <!-- Get the input back (we're not interested in the store result -->
@@ -608,7 +615,7 @@
       <p:with-param name="href-source-dir" select="$href-source-dir"/>
       <p:with-param name="href-target-dir" select="$href-target-dir"/>
     </p:xslt>
-    
+
     <!-- Do the copying: -->
     <p:for-each>
       <p:iteration-source select="/*/copy-file"/>
@@ -618,7 +625,7 @@
         <p:with-option name="fail-on-error" select="true()"/>
       </pxf:copy>
     </p:for-each>
-    
+
 
     <!-- Revert back to original input: -->
     <p:identity>
