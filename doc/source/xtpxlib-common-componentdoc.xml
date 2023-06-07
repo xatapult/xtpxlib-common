@@ -249,19 +249,64 @@
       sublevels="true"/>
 
   </chapter>
-  
+
   <!-- ================================================================== -->
-  
+
   <chapter xml:id="chapter-xproc-3-support" xreflabel="XProc 3.0 Support">
     <title>XProc 3.0 Support</title>
-    
-    <para>The {$component-name} component contains the following support (pipelines and/or libraries) for XProc 3.0:</para>
-    
+
+    <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+
+    <sect1>
+      <title>oXygen XProc 3.0 support</title>
+
+      <para>The component contains a framework for oXygen that enables it to validate XProc 3.0 documents. To use this:</para>
+      <itemizedlist>
+        <listitem>
+          <para>Add the framework to the oXygen configuration:</para>
+          <itemizedlist>
+            <listitem>
+              <para>Menu: Options / Preferences…</para>
+            </listitem>
+            <listitem>
+              <para>Navigate to: Document Type Association / Locations</para>
+            </listitem>
+            <listitem>
+              <para>Add the full path to <code>xtpxlib-common/frameworks</code></para>
+            </listitem>
+            <listitem>
+              <para>Navigate on up to: Document Type Association</para>
+            </listitem>
+            <listitem>
+              <para>Check that the XProc 3.0 framework is enabled</para>
+            </listitem>
+          </itemizedlist>
+        </listitem>
+        <listitem>
+          <para>Disable the use of the XProc 1.0 support in oXygen. To do this:</para>
+          <itemizedlist>
+            <listitem>
+              <para>Menu: Options / Preferences…</para>
+            </listitem>
+            <listitem>
+              <para>Navigate to: File types</para>
+            </listitem>
+            <listitem>
+              <para>Associate the file types that you use for XProc 3.0 (in my case <code>.xpl</code> files) with the plain XML editor</para>
+            </listitem>
+          </itemizedlist>
+        </listitem>
+      </itemizedlist>
+      
+    </sect1>
+
+    <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+
     <xdoc:transform href="$xdoc/code-docgen-dir.xpl" dir="../../../xtpxlib-common/xpl3mod/" filter="\.xpl$" header-level="1" filecomponents="3"
       sublevels="true"/>
-    
+
   </chapter>
-  
+
   <!-- ================================================================== -->
 
   <chapter xml:id="chapter-xsl-stylesheets" xreflabel="XSLT Stylesheets">
