@@ -7,6 +7,9 @@
     Extension of standard the `p:directory` list step.
     Returns the contents of a directory, going into sub-directories recursively. 
     Adds the possibility to "flatten" the list.
+    
+    This step will also *not* throw an error when the directory does not exist. 
+    Instead it will simply return an empty result (with an `error="true` attribute).
   </p:documentation>
 
   <!-- ================================================================== -->
@@ -35,14 +38,14 @@
         These `c:file` elements get a `@name`, `@href-abs` (absolute filename) and `@href-rel` (relative filename) attribute.
      </p:documentation>
   </p:option>
-  
+
   <p:option name="add-decoded" as="xs:boolean" required="false" select="false()">
     <p:documentation>
         When `true` and `$flatten` is `true`, attributes `@href-rel-decoded` and `@href-abs-decoded` are added in which any percent 
         encoded characters are decoded.
      </p:documentation>
   </p:option>
-  
+
 
   <p:option name="detailed" as="xs:boolean" required="false" select="false()">
     <p:documentation>Whether to add detailed information.</p:documentation>
@@ -59,16 +62,25 @@
 
   <!-- ================================================================== -->
 
-  <p:directory-list path="{$path}" max-depth="{if ($depth lt 0) then 'unbounded' else $depth}" detailed="{$detailed}">
-    <p:with-option name="include-filter" select="$include-filter"/>
-    <p:with-option name="exclude-filter" select="$exclude-filter"/>
-    <p:with-option name="override-content-types" select="$override-content-types"/>
-  </p:directory-list>
+  <p:try>
+    <p:directory-list path="{$path}" max-depth="{if ($depth lt 0) then 'unbounded' else $depth}" detailed="{$detailed}">
+      <p:with-option name="include-filter" select="$include-filter"/>
+      <p:with-option name="exclude-filter" select="$exclude-filter"/>
+      <p:with-option name="override-content-types" select="$override-content-types"/>
+    </p:directory-list>
+    <p:catch>
+      <p:identity>
+        <p:with-input>
+          <c:directory xml:base="{$path}" name="{(tokenize($path, '/')[.])[last()]}" error="true"/>
+        </p:with-input>
+      </p:identity>
+    </p:catch>
+  </p:try>
 
   <p:if test="$flatten">
     <p:xslt>
       <p:with-input port="stylesheet" href="xsl/flatten-directory-list.xsl"/>
-      <p:with-option name="parameters" select="map{'add-decoded': $add-decoded}"/> 
+      <p:with-option name="parameters" select="map{'add-decoded': $add-decoded}"/>
     </p:xslt>
   </p:if>
 
