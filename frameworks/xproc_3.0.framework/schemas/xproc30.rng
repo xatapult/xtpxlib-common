@@ -2359,15 +2359,11 @@
          </optional>
          <ref name="step.attributes"/>
          <interleave>
-            <zeroOrMore>
-               <ref name="WithInput"/>
-            </zeroOrMore>
-            <zeroOrMore>
-               <choice>
-                  <ref name="Documentation"/>
-                  <ref name="PipeInfo"/>
-               </choice>
-            </zeroOrMore>
+           <!-- ES: Adapted! -->
+           <zeroOrMore>
+             <ref name="AnyElement"/>
+           </zeroOrMore>
+            
          </interleave>
       </element>
    </define>
