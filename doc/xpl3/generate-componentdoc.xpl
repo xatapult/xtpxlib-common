@@ -34,7 +34,6 @@
   <xwebdoc:xdoc-to-componentdoc-website>
     <p:with-input port="source" href="../source/xtpxlib-common-componentdoc.xml"/>
     <p:with-option name="component-name" select="(doc('../../component-info.xml')/*/@name, '?COMPONENTNAME?')[1]"/>
-    <p:with-option name="component-display-name" select="'xtpxlib'"/>
     <p:with-option name="href-parameters" select="$href-parameters"/>
     <p:with-option name="output-directory" select="$output-directory"/>
     <p:with-option name="href-readme" select="$href-readme"/>
