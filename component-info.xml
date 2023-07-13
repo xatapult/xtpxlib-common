@@ -41,8 +41,8 @@
   <summary>
     `xtpxlib-common` is `xtpxlib`'s communal component. Most other `xtpxlib` components rely on it. It contains:
     * XSLT libraries, with functionality for handling parameters, manipulating filenames/URIs, MIME types, etc.
-    * Parts of the functionality of the XSLT libraries were translated into XQuery. 
-    * XProc (1.0) steps, implementing things like recursive directory lists, tee, creating ZIP files from directories, etc.
+    * Parts of the functionality of the XSLT libraries are translated into XQuery. 
+    * XProc (1.0 and 3.0) steps, implementing things like recursive directory lists, creating ZIP files from directories, etc.
     * Templates (empty XSLT, XProc, XQuery, etc. files) for use in the oXygen IDE.
   </summary>
   

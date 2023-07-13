@@ -54,7 +54,7 @@
           <tbody>
             <row>
               <entry><code role="code-width-limited">data</code></entry>
-              <entry>XML data files. See <xref linkend="chapter-xml-data-files"/></entry>
+              <entry>XML data files.</entry>
             </row>
             <row>
               <entry><code role="code-width-limited">doc</code></entry>
@@ -78,8 +78,20 @@
               </entry>
             </row>
             <row>
+              <entry><code role="code-width-limited"/>xpl</entry>
+              <entry>General purpose XProc (1.0) pipelines. .</entry>
+            </row>
+            <row>
               <entry><code role="code-width-limited"/>xplmod</entry>
-              <entry>General purpose XProc (1.0) modules. See <xref linkend="chapter-xproc-libraries"/>.</entry>
+              <entry>General purpose XProc (1.0) modules. </entry>
+            </row>
+            <row>
+              <entry><code role="code-width-limited"/>xpl3</entry>
+              <entry>General purpose XProc (3.0) pipelines. .</entry>
+            </row>
+            <row>
+              <entry><code role="code-width-limited"/>xpl3mod</entry>
+              <entry>General purpose XProc (3.0) modules. </entry>
             </row>
             <row>
               <entry><code role="code-width-limited"/>xqmod</entry>
@@ -88,15 +100,15 @@
             </row>
             <row>
               <entry><code role="code-width-limited">xsd</code></entry>
-              <entry>Schemas for some of the document types used in <code>{$library-name}</code>. See <xref linkend="chapter-xml-schemas"/>.</entry>
+              <entry>Schemas for some of the document types used in <code>{$library-name}</code>. </entry>
             </row>
             <row>
               <entry><code role="code-width-limited"/>xsl</entry>
-              <entry>Some general purpose XSLT stylesheets. See <xref linkend="chapter-xsl-stylesheets"/>.</entry>
+              <entry>Some general purpose XSLT stylesheets.</entry>
             </row>
             <row>
               <entry><code role="code-width-limited">xslmod</code></entry>
-              <entry>General purpose XSLT modules. See <xref linkend="chapter-xslt-modules"/>.</entry>
+              <entry>General purpose XSLT modules.</entry>
             </row>
           </tbody>
         </tgroup>
@@ -303,7 +315,7 @@
     <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 
     <xdoc:transform href="$xdoc/code-docgen-dir.xpl" dir="../../../xtpxlib-common/xpl3mod/" filter="\.xpl$" header-level="1" filecomponents="3"
-      sublevels="true"/>
+      sublevels="true" depth="2"/>
 
   </chapter>
 

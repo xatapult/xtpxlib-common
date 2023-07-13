@@ -431,5 +431,6 @@
         <folder path="../"/>
         <folder path="../../xtpxlib-webdoc/"/>
         <folder path="../../xtpxlib-xdoc/"/>
+        <folder path="../../../../../../xdata/"/>
     </projectTree>
 </project>
