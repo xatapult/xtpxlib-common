@@ -6,13 +6,13 @@
 
 `xtpxlib-common` is `xtpxlib`'s communal component. Most other `xtpxlib` components rely on it. It contains:
 * XSLT libraries, with functionality for handling parameters, manipulating filenames/URIs, MIME types, etc.
-* Parts of the functionality of the XSLT libraries were translated into XQuery. 
-* XProc (1.0) steps, implementing things like recursive directory lists, tee, creating ZIP files from directories, etc.
+* Parts of the functionality of the XSLT libraries are translated into XQuery. 
+* XProc (1.0 and 3.0) steps, implementing things like recursive directory lists, creating ZIP files from directories, etc.
 * Templates (empty XSLT, XProc, XQuery, etc. files) for use in the oXygen IDE.
 
 ## Technical information
 
-Component version: V1.3.2 - 2022-03-24
+Component version: V2.0 - 2023-07-19
 
 Documentation: [`https://common.xtpxlib.org`](https://common.xtpxlib.org)
 
@@ -24,7 +24,11 @@ Git site: [`https://github.com/xatapult/xtpxlib-common`](https://github.com/xata
 
 ## Version history
 
-**V1.3.2 - 2022-03-24 (current)**
+**V2.0 - 2023-07-19 (current)**
+
+Added XProc 3.0 support.
+
+**V1.3.2 - 2022-03-24**
 
 Added indent option to `xtlc:tee`
 
@@ -63,4 +67,7 @@ Initial release
 
 Pre-release to test GitHub pages functionality
 
+
+-----------
+*Generated: 2023-07-19 08:52:10*
 
