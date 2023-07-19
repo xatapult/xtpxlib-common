@@ -12,7 +12,7 @@
 
 ## Technical information
 
-Component version: V1.3.2 - 2022-03-24
+Component version: V2.0 - 2023-07-19
 
 Documentation: [`https://common.xtpxlib.org`](https://common.xtpxlib.org)
 
@@ -24,7 +24,11 @@ Git site: [`https://github.com/xatapult/xtpxlib-common`](https://github.com/xata
 
 ## Version history
 
-**V1.3.2 - 2022-03-24 (current)**
+**V2.0 - 2023-07-19 (current)**
+
+Added XProc 3.0 support.
+
+**V1.3.2 - 2022-03-24**
 
 Added indent option to `xtlc:tee`
 
@@ -65,5 +69,5 @@ Pre-release to test GitHub pages functionality
 
 
 -----------
-*Generated: 2023-07-13 15:28:36*
+*Generated: 2023-07-19 08:52:10*
 
