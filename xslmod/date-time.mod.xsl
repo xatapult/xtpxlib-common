@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet version="2.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xs="http://www.w3.org/2001/XMLSchema"
-  xmlns:fn="http://www.w3.org/2005/xpath-functions" xmlns:local="#local.format-output.mod.xsl" xmlns:xtlc="http://www.xtpxlib.nl/ns/common"
-  exclude-result-prefixes="#all">
+  xmlns:local="#local.format-output.mod.xsl" xmlns:xtlc="http://www.xtpxlib.nl/ns/common" exclude-result-prefixes="#all">
   <!-- ================================================================== -->
   <!--~
     XSLT library module containing functions for working with dates and times.
@@ -16,9 +15,18 @@
     select="('januari', 'februari', 'maart', 'april', 'mei', 'juni', 'juli', 'augustus', 'september', 'oktober', 'november', 'december')">
     <!--~ Sequence with the names of the months in Dutch -->
   </xsl:variable>
+
   <xsl:variable name="xtlc:month-names-en" as="xs:string+"
     select="('January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December')">
     <!--~ Sequence with the names of the months in English -->
+  </xsl:variable>
+
+  <xsl:variable name="xtlc:day-names-nl" as="xs:string+" select="('maandag', 'dinsdag', 'woensdag', 'donderdag', 'vrijdag', 'zaterdag', 'zondag')">
+    <!--~ Sequence with the names of the days in Dutch -->
+  </xsl:variable>
+
+  <xsl:variable name="xtlc:day-names-en" as="xs:string+" select="('Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saterday', 'Sunday')">
+    <!--~ Sequence with the names of the days in English -->
   </xsl:variable>
 
   <!-- ================================================================== -->
@@ -152,6 +160,28 @@
 
   <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 
+  <xsl:function name="xtlc:day-in-year-number" as="xs:integer">
+    <!--~ 
+      Computes the day number in the year: January 1 is 1, December 31 is 365 (or 366 in leap years).
+    -->
+    <xsl:param name="date" as="xs:date">
+      <!--~ Date to use. -->
+    </xsl:param>
+
+    <xsl:variable name="month" as="xs:integer" select="month-from-date($date)"/>
+    <xsl:choose>
+      <xsl:when test="$month eq 1">
+        <xsl:sequence select="day-from-date($date)"/>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:variable name="year" as="xs:integer" select="year-from-date($date)"/>
+        <xsl:sequence select="sum(for $m in (1 to ($month - 1)) return xtlc:days-in-month($m, $year)) + day-from-date($date)"/>
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:function>
+
+  <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+
   <xsl:function name="xtlc:week-number" as="xs:integer">
     <!--~ 
       Computes the week number for a given date.
@@ -160,21 +190,52 @@
       <!--~ Date to use. -->
     </xsl:param>
 
-    <xsl:sequence select="xtlc:str2int(format-date($date, '[W]', 'nl', (), 'nl'), -1)"/>
+    <!-- Inspired by https://home.hccnet.nl/s.f.boukes/html-1/html-188.htm -->
+
+    <xsl:variable name="days-since-january-1" as="xs:integer" select="xtlc:day-in-year-number($date) - 1"/>
+    <xsl:variable name="week-number-raw" as="xs:integer" select="($days-since-january-1 + 10 - xtlc:weekday-number($date)) idiv 7"/>
+    <xsl:choose>
+      <xsl:when test="$week-number-raw le 0">
+        <!-- We need the week number of the last week of the previous year. -->
+        <xsl:sequence select="xtlc:week-number(xs:date((year-from-date($date) - 1) || '-12-31'))"/>
+      </xsl:when>
+      <xsl:when test="$week-number-raw eq 53">
+        <!-- We might have to adjust: if December 31 of this year is a Monday, Tuesday or Wednesday. -->
+        <xsl:variable name="weekday-number-last-day-of-year" as="xs:integer"
+          select="xtlc:weekday-number(xs:date(year-from-date($date) || '-12-31'))"/>
+        <xsl:sequence select="if ($weekday-number-last-day-of-year le 3) then 1 else $week-number-raw"/>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:sequence select="$week-number-raw"/>
+      </xsl:otherwise>
+    </xsl:choose>
+   
   </xsl:function>
 
   <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 
   <xsl:function name="xtlc:weekday-name" as="xs:string">
-    <!--~ Computes the name of the weekday for a given language. Will be capitalized. -->
-    <xsl:param name="date" as="xs:date">
-      <!--~ Date to use. -->
+    <!--~ Returns the name of a month. -->
+    <xsl:param name="day-number" as="xs:integer">
+      <!--~ The day number (1-7). -->
     </xsl:param>
     <xsl:param name="lang" as="xs:string">
-      <!--~ The language you want the name in. -->
+      <!--~ The language you want the month name in. -->
     </xsl:param>
 
-    <xsl:sequence select="format-date($date, '[F]', $lang, (), 'nl')"/>
+    <xsl:choose>
+      <xsl:when test="($day-number lt 1) or ($day-number gt 7)">
+        <xsl:call-template name="xtlc:raise-error">
+          <xsl:with-param name="msg-parts" select="('Invalid day number: ', $day-number)"/>
+        </xsl:call-template>
+      </xsl:when>
+      <xsl:when test="$lang eq $xtlc:language-nl">
+        <xsl:sequence select="$xtlc:day-names-nl[$day-number]"/>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:sequence select="$xtlc:day-names-en[$day-number]"/>
+      </xsl:otherwise>
+    </xsl:choose>
   </xsl:function>
 
   <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
@@ -185,38 +246,25 @@
       <!--~ Date to use. -->
     </xsl:param>
 
-    <!-- Get first three characters of weekday: -->
-    <xsl:variable name="day-name" as="xs:string" select="lower-case(substring(xtlc:weekday-name($date, $xtlc:language-en), 1, 3))"/>
+    <!-- We use Zeller's rule, see: https://beginnersbook.com/2013/04/calculating-day-given-date/ -->
 
-    <!-- And do a crude compare: -->
-    <xsl:choose>
-      <xsl:when test="$day-name eq 'mon'">
-        <xsl:sequence select="1"/>
-      </xsl:when>
-      <xsl:when test="$day-name eq 'tue'">
-        <xsl:sequence select="2"/>
-      </xsl:when>
-      <xsl:when test="$day-name eq 'wed'">
-        <xsl:sequence select="3"/>
-      </xsl:when>
-      <xsl:when test="$day-name eq 'thu'">
-        <xsl:sequence select="4"/>
-      </xsl:when>
-      <xsl:when test="$day-name eq 'fri'">
-        <xsl:sequence select="5"/>
-      </xsl:when>
-      <xsl:when test="$day-name eq 'sat'">
-        <xsl:sequence select="6"/>
-      </xsl:when>
-      <xsl:when test="$day-name eq 'sun'">
-        <xsl:sequence select="7"/>
-      </xsl:when>
-      <xsl:otherwise>
-        <xsl:call-template name="xtlc:raise-error">
-          <xsl:with-param name="msg-parts" select="($xtlc:internal-error-prompt, 'Could not determine weekday number from ', xtlc:q($day-name))"/>
-        </xsl:call-template>
-      </xsl:otherwise>
-    </xsl:choose>
+    <xsl:variable name="k" as="xs:integer" select="day-from-date($date)"/>
+    <!-- Month numbering starts in March. -->
+    <xsl:variable name="m-base" as="xs:integer" select="month-from-date($date)"/>
+    <xsl:variable name="m" as="xs:integer" select="if ($m-base ge 3) then ($m-base - 2) else ($m-base + 10)"/>
+    <!-- In this calculation the year starts in March. We only need the last two digits. -->
+    <xsl:variable name="year" as="xs:integer" select="year-from-date($date)"/>
+    <xsl:variable name="D-base" as="xs:integer" select="substring(string($year), string-length(string($year)) - 1, 2) => xs:integer()"/>
+    <xsl:variable name="D" as="xs:integer" select="if ($m-base le 2) then ($D-base -1) else $D-base"/>
+    <!-- And the first two digits: -->
+    <xsl:variable name="C" as="xs:integer" select="$year idiv 100"/>
+    <!-- Now the complex and mysterious calculation: -->
+    <xsl:variable name="F" as="xs:integer"
+      select="$k + xs:integer(((13 * $m) - 1) div 5) + $D + xs:integer($D div 4) + xs:integer($C div 4) - (2 * $C)"/>
+    <!-- This can become negative, adjust for that: -->
+    <xsl:variable name="day-of-week-base" as="xs:integer" select="if ($F lt 0) then (7 + ($F mod 7)) else ($F mod 7)"/>
+
+    <xsl:sequence select="if ($day-of-week-base eq 0) then 7 else $day-of-week-base"/>
   </xsl:function>
 
   <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
@@ -233,8 +281,7 @@
       <!--~ Year to use. -->
     </xsl:param>
 
-    <xsl:variable name="date-string" as="xs:string"
-      select="concat(xtlc:prefix-to-length(string($year), '0', 4), '-', 
+    <xsl:variable name="date-string" as="xs:string" select="concat(xtlc:prefix-to-length(string($year), '0', 4), '-', 
         xtlc:prefix-to-length(string($month), '0', 2), '-', 
         xtlc:prefix-to-length(string($day), '0', 2))"/>
     <xsl:choose>
