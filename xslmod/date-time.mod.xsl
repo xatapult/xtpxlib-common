@@ -29,6 +29,24 @@
     <!--~ Sequence with the names of the days in English -->
   </xsl:variable>
 
+  <!-- ======================================================================= -->
+  <!-- LOCAL DECLARATIONS: -->
+  
+  <xsl:variable name="local:base-monthdays" as="xs:integer+" select="(31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31)">
+    <!-- Number of days in each month, uncorrected for leap years. -->
+  </xsl:variable>
+  
+  <xsl:variable name="local:day-in-year-computation-monthdays-base" as="xs:integer+">
+    <!-- For every month, how much days are there in the months before (uncorrected for leap years). -->
+    <xsl:sequence select="0"/>
+    <xsl:for-each select="2 to 12">
+      <xsl:variable name="month" as="xs:integer" select="."/>
+      <xsl:sequence select="sum(for $m in (1 to ($month - 1)) return $local:base-monthdays[$m])"/>
+    </xsl:for-each>
+  </xsl:variable>
+  
+  <xsl:variable name="local:february" as="xs:integer" select="2"/>
+
   <!-- ================================================================== -->
 
   <xsl:function name="xtlc:month-name" as="xs:string">
@@ -133,16 +151,15 @@
       <!--~ The year this month is in (important because of leap years). -->
     </xsl:param>
 
-    <xsl:variable name="base-month-days" as="xs:integer+" select="(31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31)"/>
     <xsl:choose>
       <xsl:when test="($month-number lt 1) or ($month-number gt 12)">
         <xsl:sequence select="0"/>
       </xsl:when>
-      <xsl:when test="($month-number ne 2) or not(xtlc:is-leap-year($year))">
-        <xsl:sequence select="$base-month-days[$month-number]"/>
+      <xsl:when test="($month-number ne $local:february) or not(xtlc:is-leap-year($year))">
+        <xsl:sequence select="$local:base-monthdays[$month-number]"/>
       </xsl:when>
       <xsl:otherwise>
-        <xsl:sequence select="$base-month-days[2] + 1"/>
+        <xsl:sequence select="$local:base-monthdays[$local:february] + 1"/>
       </xsl:otherwise>
     </xsl:choose>
   </xsl:function>
@@ -168,23 +185,18 @@
       <!--~ Date to use. -->
     </xsl:param>
 
+    <xsl:variable name="day" as="xs:integer" select="day-from-date($date)"/>
     <xsl:variable name="month" as="xs:integer" select="month-from-date($date)"/>
-    <xsl:choose>
-      <xsl:when test="$month eq 1">
-        <xsl:sequence select="day-from-date($date)"/>
-      </xsl:when>
-      <xsl:otherwise>
-        <xsl:variable name="year" as="xs:integer" select="year-from-date($date)"/>
-        <xsl:sequence select="sum(for $m in (1 to ($month - 1)) return xtlc:days-in-month($m, $year)) + day-from-date($date)"/>
-      </xsl:otherwise>
-    </xsl:choose>
+    <xsl:variable name="year" as="xs:integer" select="year-from-date($date)"/>
+    <xsl:variable name="leap-year-correction" as="xs:integer" select="if (($month gt $local:february) and xtlc:is-leap-year($year)) then 1 else 0"/>
+    <xsl:sequence select="$local:day-in-year-computation-monthdays-base[$month] + $day + $leap-year-correction"/>
   </xsl:function>
 
   <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 
   <xsl:function name="xtlc:week-number" as="xs:integer">
     <!--~ 
-      Computes the week number for a given date.
+      Computes the ISO week number for a given date.
     -->
     <xsl:param name="date" as="xs:date">
       <!--~ Date to use. -->
@@ -194,6 +206,7 @@
 
     <xsl:variable name="days-since-january-1" as="xs:integer" select="xtlc:day-in-year-number($date) - 1"/>
     <xsl:variable name="week-number-raw" as="xs:integer" select="($days-since-january-1 + 10 - xtlc:weekday-number($date)) idiv 7"/>
+    
     <xsl:choose>
       <xsl:when test="$week-number-raw le 0">
         <!-- We need the week number of the last week of the previous year. -->
@@ -201,15 +214,14 @@
       </xsl:when>
       <xsl:when test="$week-number-raw eq 53">
         <!-- We might have to adjust: if December 31 of this year is a Monday, Tuesday or Wednesday. -->
-        <xsl:variable name="weekday-number-last-day-of-year" as="xs:integer"
-          select="xtlc:weekday-number(xs:date(year-from-date($date) || '-12-31'))"/>
+        <xsl:variable name="weekday-number-last-day-of-year" as="xs:integer" select="xtlc:weekday-number(xs:date(year-from-date($date) || '-12-31'))"/>
         <xsl:sequence select="if ($weekday-number-last-day-of-year le 3) then 1 else $week-number-raw"/>
       </xsl:when>
       <xsl:otherwise>
         <xsl:sequence select="$week-number-raw"/>
       </xsl:otherwise>
     </xsl:choose>
-   
+
   </xsl:function>
 
   <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
@@ -254,10 +266,9 @@
     <xsl:variable name="m" as="xs:integer" select="if ($m-base ge 3) then ($m-base - 2) else ($m-base + 10)"/>
     <!-- In this calculation the year starts in March. We only need the last two digits. -->
     <xsl:variable name="year" as="xs:integer" select="year-from-date($date)"/>
-    <xsl:variable name="D-base" as="xs:integer" select="substring(string($year), string-length(string($year)) - 1, 2) => xs:integer()"/>
-    <xsl:variable name="D" as="xs:integer" select="if ($m-base le 2) then ($D-base -1) else $D-base"/>
-    <!-- And the first two digits: -->
     <xsl:variable name="C" as="xs:integer" select="$year idiv 100"/>
+    <xsl:variable name="D-base" as="xs:integer" select="$year - ($C * 100)"/>
+    <xsl:variable name="D" as="xs:integer" select="if ($m-base le 2) then ($D-base - 1) else $D-base"/>
     <!-- Now the complex and mysterious calculation: -->
     <xsl:variable name="F" as="xs:integer"
       select="$k + xs:integer(((13 * $m) - 1) div 5) + $D + xs:integer($D div 4) + xs:integer($C div 4) - (2 * $C)"/>
