@@ -31,11 +31,11 @@
 
   <!-- ======================================================================= -->
   <!-- LOCAL DECLARATIONS: -->
-  
+
   <xsl:variable name="local:base-monthdays" as="xs:integer+" select="(31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31)">
     <!-- Number of days in each month, uncorrected for leap years. -->
   </xsl:variable>
-  
+
   <xsl:variable name="local:day-in-year-computation-monthdays-base" as="xs:integer+">
     <!-- For every month, how much days are there in the months before (uncorrected for leap years). -->
     <xsl:sequence select="0"/>
@@ -44,7 +44,7 @@
       <xsl:sequence select="sum(for $m in (1 to ($month - 1)) return $local:base-monthdays[$m])"/>
     </xsl:for-each>
   </xsl:variable>
-  
+
   <xsl:variable name="local:february" as="xs:integer" select="2"/>
 
   <!-- ================================================================== -->
@@ -204,9 +204,14 @@
 
     <!-- Inspired by https://home.hccnet.nl/s.f.boukes/html-1/html-188.htm -->
 
-    <xsl:variable name="days-since-january-1" as="xs:integer" select="xtlc:day-in-year-number($date) - 1"/>
+    <xsl:variable name="days-since-january-1" as="xs:integer" select="xtlc:day-in-year-number($date)">
+      <!-- Remark: This is not truly the "days since", since for January 1 itself it is 1, not 0... 
+        (I would have expected it to be 0 if named like this, but anyway, whatever works) -->
+    </xsl:variable>
     <xsl:variable name="week-number-raw" as="xs:integer" select="($days-since-january-1 + 10 - xtlc:weekday-number($date)) idiv 7"/>
-    
+
+    <!--<xsl:message xml:space="preserve">xtlc:week-number: date=<xsl:value-of select="$date"/> - days-since-january-1=<xsl:value-of select="$days-since-january-1"/> - weekday-number=<xsl:value-of select="xtlc:weekday-number($date)"/> - week-number-raw=<xsl:value-of select="$week-number-raw"/></xsl:message>-->
+
     <xsl:choose>
       <xsl:when test="$week-number-raw le 0">
         <!-- We need the week number of the last week of the previous year. -->
@@ -261,19 +266,27 @@
     <!-- We use Zeller's rule, see: https://beginnersbook.com/2013/04/calculating-day-given-date/ -->
 
     <xsl:variable name="k" as="xs:integer" select="day-from-date($date)"/>
+
     <!-- Month numbering starts in March. -->
     <xsl:variable name="m-base" as="xs:integer" select="month-from-date($date)"/>
-    <xsl:variable name="m" as="xs:integer" select="if ($m-base ge 3) then ($m-base - 2) else ($m-base + 10)"/>
-    <!-- In this calculation the year starts in March. We only need the last two digits. -->
-    <xsl:variable name="year" as="xs:integer" select="year-from-date($date)"/>
+    <xsl:variable name="month-jan-or-feb" as="xs:boolean" select="$m-base le $local:february"/>
+    <xsl:variable name="m" as="xs:integer" select="if ($month-jan-or-feb) then ($m-base + 10) else ($m-base - 2)"/>
+
+    <!-- In this calculation the year starts in March. -->
+    <xsl:variable name="year-base" as="xs:integer" select="year-from-date($date)"/>
+    <xsl:variable name="year" as="xs:integer" select="if ($month-jan-or-feb) then ($year-base - 1) else $year-base"/>
+
+    <!-- First and last two digits of the year -->
     <xsl:variable name="C" as="xs:integer" select="$year idiv 100"/>
-    <xsl:variable name="D-base" as="xs:integer" select="$year - ($C * 100)"/>
-    <xsl:variable name="D" as="xs:integer" select="if ($m-base le 2) then ($D-base - 1) else $D-base"/>
+    <xsl:variable name="D" as="xs:integer" select="$year - ($C * 100)"/>
+
     <!-- Now the complex and mysterious calculation: -->
     <xsl:variable name="F" as="xs:integer"
       select="$k + xs:integer(((13 * $m) - 1) div 5) + $D + xs:integer($D div 4) + xs:integer($C div 4) - (2 * $C)"/>
     <!-- This can become negative, adjust for that: -->
     <xsl:variable name="day-of-week-base" as="xs:integer" select="if ($F lt 0) then (7 + ($F mod 7)) else ($F mod 7)"/>
+
+    <!--<xsl:message xml:space="preserve">xtlc:weekday-number: date=<xsl:value-of select="$date"/> - k=<xsl:value-of select="$k"/> - m=<xsl:value-of select="$m"/> - D=<xsl:value-of select="$D"/> - C=<xsl:value-of select="$C"/> - F=<xsl:value-of select="$F"/> - dwb=<xsl:value-of select="$day-of-week-base"/></xsl:message>-->
 
     <xsl:sequence select="if ($day-of-week-base eq 0) then 7 else $day-of-week-base"/>
   </xsl:function>

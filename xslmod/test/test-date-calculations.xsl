@@ -52,8 +52,24 @@
         <xsl:with-param name="expected-weekday-number" select="3"/>
       </xsl:call-template>
     
-    
-    
+      <!-- From the https://beginnersbook.com/2013/04/calculating-day-given-date/ given examples: -->
+      <xsl:call-template name="test">
+        <xsl:with-param name="datestring" select="'1983-04-01'"/>
+        <xsl:with-param name="expected-weeknumber" select="13"/>
+        <xsl:with-param name="expected-weekday-number" select="5"/>
+      </xsl:call-template>
+      <xsl:call-template name="test">
+        <xsl:with-param name="datestring" select="'2004-03-02'"/>
+        <xsl:with-param name="expected-weeknumber" select="10"/>
+        <xsl:with-param name="expected-weekday-number" select="2"/>
+      </xsl:call-template>
+      
+      <!-- Some other randoms -->
+      <xsl:call-template name="test">
+        <xsl:with-param name="datestring" select="'2012-01-01'"/>
+        <xsl:with-param name="expected-weeknumber" select="52"/>
+        <xsl:with-param name="expected-weekday-number" select="7"/>
+      </xsl:call-template>
     
     </test-date-calculations>
   </xsl:template>
