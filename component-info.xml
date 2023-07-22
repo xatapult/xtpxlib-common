@@ -3,6 +3,9 @@
   xmlns:xml="http://www.w3.org/XML/1998/namespace" xsi:schemaLocation="http://www.xtpxlib.nl/ns/webdoc ../xtpxlib-webdoc/xsd/component-info.xsd" name="xtpxlib-common">
 
   <releases>
+    <release version="2.0.1" date="2023-07-22">
+      Weekday-number and week-number calculations now also work with Saxon HE.
+    </release>
     <release version="2.0" date="2023-07-19">
       Added XProc 3.0 support.
     </release>
