@@ -12,7 +12,7 @@
 
 ## Technical information
 
-Component version: V2.0 - 2023-07-19
+Component version: V2.0.1 - 2023-07-22
 
 Documentation: [`https://common.xtpxlib.org`](https://common.xtpxlib.org)
 
@@ -24,7 +24,11 @@ Git site: [`https://github.com/xatapult/xtpxlib-common`](https://github.com/xata
 
 ## Version history
 
-**V2.0 - 2023-07-19 (current)**
+**V2.0.1 - 2023-07-22 (current)**
+
+Weekday-number and week-number calculations now also work with Saxon HE.
+
+**V2.0 - 2023-07-19**
 
 Added XProc 3.0 support.
 
@@ -69,5 +73,5 @@ Pre-release to test GitHub pages functionality
 
 
 -----------
-*Generated: 2023-07-19 08:52:10*
+*Generated: 2023-07-22 15:32:43*
 
