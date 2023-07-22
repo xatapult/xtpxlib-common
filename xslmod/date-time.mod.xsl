@@ -5,8 +5,7 @@
   <!--~
     XSLT library module containing functions for working with dates and times.
     
-    When language based, it only distinguishes between Dutch and non-Dutch (usually English).
-    Some functions will not work using Saxon HE (week-numbers for instance).
+    When language based, it only distinguishes between Dutch and non-Dutch (which now means: English).
 	-->
   <!-- ================================================================== -->
   <!-- GLOBAL DECLARTIONS: -->
