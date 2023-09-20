@@ -52,7 +52,7 @@
   <p:if test="exists($href-schematron)">
     <p:validate-with-schematron assert-valid="true">
       <p:with-input port="source" pipe="source@validate"/>
-      <p:with-input port="schema" href="{$href-schema}"/>
+      <p:with-input port="schema" href="{$href-schematron}"/>
     </p:validate-with-schematron>
   </p:if>
   
