@@ -309,8 +309,8 @@
     <!-- Now find it out: -->
     <xsl:choose>
 
-      <!-- Unequal protocols or no from-href/to-href means there is no relative path... -->
-      <xsl:when test="empty($to-components-no-filename) or (lower-case($from-protocol) ne lower-case($to-protocol))">
+      <!-- Unequal protocols means there is no relative path... -->
+      <xsl:when test="(lower-case($from-protocol) ne lower-case($to-protocol))">
         <xsl:sequence select="$to-href-canonical"/>
       </xsl:when>
       <xsl:otherwise>
@@ -329,7 +329,7 @@
     <xsl:param name="to-components" as="xs:string*"/>
 
     <xsl:choose>
-      <xsl:when test="$from-components[1] eq $to-components[1]">
+      <xsl:when test="exists($from-components) and exists($to-components) and ($from-components[1] eq $to-components[1])">
         <xsl:sequence select="local:relative-href-components-compare(subsequence($from-components, 2), subsequence($to-components, 2))"/>
       </xsl:when>
       <xsl:otherwise>
