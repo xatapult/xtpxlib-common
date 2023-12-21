@@ -133,25 +133,25 @@
     </xsl:choose>
 
   </xsl:function>
-  
+
   <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
-  
+
   <xsl:function name="xtlc:str2regexp" as="xs:string">
     <!--~ Turns a string into a regular expression that matches the input exactly. Optionally anchors the regular expression so
       the match will be on this string *only* (result starts with `^` and ends with `$`). -->
     <xsl:param name="in" as="xs:string?">
       <!--~ String to convert  -->
     </xsl:param>
-    <xsl:param name="anchor" as="xs:boolean" >
+    <xsl:param name="anchor" as="xs:boolean">
       <!--~ If true, the resulting string will be anchored (start with `^` and ends with `$`)  -->
     </xsl:param>
-    
+
     <xsl:variable name="regexp-string" as="xs:string" select="replace(string($in), '([.\\?*+|\^${}()\[\]])', '\\$1')"/>
     <xsl:sequence select="if ($anchor) then ('^'  || $regexp-string || '$') else $regexp-string"/>
   </xsl:function>
-  
+
   <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
-  
+
   <xsl:function name="xtlc:str2regexp" as="xs:string">
     <!--~ Turns a string into a regular expression that matches the input exactly. -->
     <xsl:param name="in" as="xs:string?">
@@ -159,7 +159,33 @@
     </xsl:param>
     <xsl:sequence select="xtlc:str2regexp($in, false())"/>
   </xsl:function>
-  
+
+  <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+
+  <xsl:function name="xtlc:str2filename-safe" as="xs:string">
+    <!--~ Replaces all characters in a string that are not allowed in filenames with another character.  -->
+    <xsl:param name="in" as="xs:string?">
+      <!--~ String to convert  -->
+    </xsl:param>
+    <xsl:param name="replace-char" as="xs:string?">
+      <!--~ String to replace invalid characters with. Only first character is used. If empty, `_` is used. -->
+    </xsl:param>
+
+    <xsl:variable name="replace-char-to-use" as="xs:string"
+      select="if (string-length($replace-char) lt 1) then '_' else substring($replace-char, 1, 1)"/>
+    <xsl:sequence select="replace($in, '[\\/:*?&quot;&lt;&gt;|]', $replace-char-to-use)"/>
+  </xsl:function>
+
+  <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+
+  <xsl:function name="xtlc:str2filename-safe" as="xs:string">
+    <!--~ Replaces all characters in a string that are not allowed in filenames with an underscore.  -->
+    <xsl:param name="in" as="xs:string?">
+      <!--~ String to convert  -->
+    </xsl:param>
+    <xsl:sequence select="xtlc:str2filename-safe($in, '_')"/>
+  </xsl:function>
+
   <!-- ================================================================== -->
   <!-- CONTEXT: -->
 
@@ -471,8 +497,7 @@
     <xsl:choose>
       <xsl:when test="$normalize-indents">
         <!-- Find the minimum indent: -->
-        <xsl:variable name="minimum-leading-whitespace" as="xs:integer"
-          select="if (empty($textlines-2)) 
+        <xsl:variable name="minimum-leading-whitespace" as="xs:integer" select="if (empty($textlines-2)) 
             then 0 
             else min(for $markdown-line in $textlines-2[normalize-space(.) ne ''] return xtlc:count-leading-whitespace($markdown-line))"/>
         <xsl:for-each select="$textlines-2">
