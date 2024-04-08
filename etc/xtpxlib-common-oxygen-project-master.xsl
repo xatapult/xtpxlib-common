@@ -22,8 +22,7 @@
   <xsl:include href="../xslmod/compare.mod.xsl"/>
   <xsl:include href="../xslmod/format-output.mod.xsl"/>
   <xsl:include href="../xslmod/date-time.mod.xsl"/>
+  <xsl:include href="../xslmod/macrodefs.mod.xsl"/>
   <xsl:include href="../xslmod/simple-macros.mod.xsl"/>
   
 </xsl:stylesheet>
-
-

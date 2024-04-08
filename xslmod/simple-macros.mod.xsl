@@ -10,6 +10,8 @@
        What is expanded must be in a map formatted as map{macro: expansion}, e.g. map{'NAME': 'thenameofthething'}
        
        Macros in the string must start with the xtlc:simpleMacroStart character ($).
+       
+       DEPRECATED: Consider using macrodefs.mod.xsl instead! There are bugs in the macro expansion (that will not be solved for now).
   -->
   <!-- ================================================================== -->
   <!-- GLOBAL DECLARATIONS: -->
