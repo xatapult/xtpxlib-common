@@ -4,35 +4,72 @@
   xmlns:xtlc="http://www.xtpxlib.nl/ns/common" exclude-result-prefixes="#all" expand-text="true">
   <!-- ================================================================== -->
   <!--~	
-       Module for handling macro definitions and expansions.
+       Module for handling macro definitions.
        
-       * Macro's are written as `${...}` or `{$...}`. 
-       * Their value comes from a `map(macro-name, value)`
-       * Macro values can reference other macros
-       * A macro reference can be followed by flags, like ${MACRONAME:uc:compact}
-       * You can auto-process a document or element with <*:macrodefs> as first children
+       A macro definition is a simple `name=value` construct. They are passed around in maps (`map(xs:string, xs:string)`). 
+       
+       The `xtlc:expand-macrodefs()` function expands macro definition references within strings by using `${…}` or `{$…}`. 
+       To prevent the expansion of these constructions, simply double the opening curly brace. All referenced macro definitions must exist, otherwise an error will be raised. 
+
+       Macro definitions can reference other macro definitions.
+
+       Additionally, you can modify the value of a macro definition reference by appending one or more flags. 
+       For more information on the available flags, refer to the `$macrodef-flag-*` global variables.
 	-->
   <!-- ================================================================== -->
   <!-- GLOBAL DECLARATIONS: -->
 
-  <xsl:variable name="xtlc:macrodef-start-character" as="xs:string" select="'$'"/>
+  <xsl:variable name="xtlc:macrodef-start-character" as="xs:string" select="'$'">
+    <!--~ Character that starts a macro definition reference. -->
+  </xsl:variable>
 
   <!-- Flags: -->
-  <xsl:variable name="xtlc:macrodef-flag-upper-case" as="xs:string" select="'uc'"/>
-  <xsl:variable name="xtlc:macrodef-flag-lower-case" as="xs:string" select="'lc'"/>
-  <xsl:variable name="xtlc:macrodef-flag-compact" as="xs:string" select="'compact'"/>
-  <xsl:variable name="xtlc:macrodef-flag-normalize" as="xs:string" select="'normalize'"/>
-  <xsl:variable name="xtlc:macrodef-flag-filename-safe" as="xs:string" select="'fns'"/>
-  <xsl:variable name="xtlc:macrodef-flag-filename-safe-extra" as="xs:string" select="'fnsx'"/>
+  <xsl:variable name="xtlc:macrodef-flag-upper-case" as="xs:string" select="'uc'">
+    <!--~ Macro definition reference flag: upper-case  -->
+  </xsl:variable>
+  <xsl:variable name="xtlc:macrodef-flag-lower-case" as="xs:string" select="'lc'">
+    <!--~ Macro definition reference flag: lower-case -->
+  </xsl:variable>
+  <xsl:variable name="xtlc:macrodef-flag-capitalize" as="xs:string" select="'cap'">
+    <!--~ Macro definition reference flag: capitalize (upper-case first character) -->
+  </xsl:variable>
+  <xsl:variable name="xtlc:macrodef-flag-compact" as="xs:string" select="'compact'">
+    <!--~ Macro definition reference flag: remove all whitespace -->
+  </xsl:variable>
+  <xsl:variable name="xtlc:macrodef-flag-normalize" as="xs:string" select="'normalize'">
+    <!--~ Macro definition reference flag: normalize space -->
+  </xsl:variable>
+  <xsl:variable name="xtlc:macrodef-flag-filename-safe" as="xs:string" select="'fns'">
+    <!--~ Macro definition reference flag: make filename safe (replace all characters forbidden in file/directory names with underscores) -->
+  </xsl:variable>
+  <xsl:variable name="xtlc:macrodef-flag-filename-safe-extra" as="xs:string" select="'fnsx'">
+    <!--~ Macro definition reference flag: make filename safe, extended (replace all characters forbidden in file/directory names and all whitespace with underscores) -->
+  </xsl:variable>
 
   <!-- Standard macro definitions (see function xtlc:get-standard-macrodef-map()): -->
-  <xsl:variable name="xtlc:macrodef-standard-datetimeiso" as="xs:string" select="'DATETIMEISO'"/>
-  <xsl:variable name="xtlc:macrodef-standard-date" as="xs:string" select="'DATE'"/>
-  <xsl:variable name="xtlc:macrodef-standard-date-compact" as="xs:string" select="'DATECOMPACT'"/>
-  <xsl:variable name="xtlc:macrodef-standard-time" as="xs:string" select="'TIME'"/>
-  <xsl:variable name="xtlc:macrodef-standard-time-compact" as="xs:string" select="'TIMECOMPACT'"/>
-  <xsl:variable name="xtlc:macrodef-standard-time-short" as="xs:string" select="'TIMESHORT'"/>
-  <xsl:variable name="xtlc:macrodef-standard-time-short-compact" as="xs:string" select="'TIMESHORTCOMPACT'"/>
+  <xsl:variable name="xtlc:macrodef-standard-datetimeiso" as="xs:string" select="'DATETIMEISO'">
+    <!--~ Standard macro definition: date/time in ISO format -->
+  </xsl:variable>
+  <xsl:variable name="xtlc:macrodef-standard-date" as="xs:string" select="'DATE'">
+    <!--~ Standard macro definition: date only (`YYYY-MM-DD`) -->
+  </xsl:variable>
+  <xsl:variable name="xtlc:macrodef-standard-date-compact" as="xs:string" select="'DATECOMPACT'">
+    <!--~ Standard macro definition: date only, compact (`YYYYMMDD`) -->
+  </xsl:variable>
+  <xsl:variable name="xtlc:macrodef-standard-time" as="xs:string" select="'TIME'">
+    <!--~ Standard macro definition: time only (`hh:mm:ss`) -->
+  </xsl:variable>
+  <xsl:variable name="xtlc:macrodef-standard-time-compact" as="xs:string" select="'TIMECOMPACT'">
+    <!--~ Standard macro definition: time only, compact (`hhmmss`) -->
+  </xsl:variable>
+  <xsl:variable name="xtlc:macrodef-standard-time-short" as="xs:string" select="'TIMESHORT'">
+    <!--~ Standard macro definition: time only without seconds (`hh:mm`) -->
+  </xsl:variable>
+  <xsl:variable name="xtlc:macrodef-standard-time-short-compact" as="xs:string" select="'TIMESHORTCOMPACT'">
+    <!--~ Standard macro definition: time only without seconds, compact (`hhmm`) -->
+  </xsl:variable>
+  <!-- ======================================================================= -->
+  <!-- LOCAL DECLARATIONS: -->
 
   <xsl:mode name="local:mode-expand-macro-definitions" on-no-match="shallow-copy"/>
 
@@ -41,7 +78,7 @@
 
   <xsl:function name="xtlc:expand-macrodefs" as="xs:string">
     <!--~ 
-      Expands a string value against the macro definitions in $macrodef-map. Checks for circular references.
+      Expands macro definition references in a string against the macro definitions in `$macrodef-map`. Checks for circular references.
     -->
     <xsl:param name="text" as="xs:string"/>
     <xsl:param name="macrodef-map" as="map(xs:string, xs:string)"/>
@@ -149,6 +186,9 @@
             <xsl:when test="$current-flag eq $xtlc:macrodef-flag-lower-case">
               <xsl:sequence select="lower-case($value)"/>
             </xsl:when>
+            <xsl:when test="$current-flag eq $xtlc:macrodef-flag-capitalize">
+              <xsl:sequence select="xtlc:capitalize($value)"/>
+            </xsl:when>
             <xsl:when test="$current-flag eq $xtlc:macrodef-flag-compact">
               <xsl:sequence select="replace($value, '\s', '')"/>
             </xsl:when>
@@ -177,7 +217,7 @@
   <!-- STANDARD MACRO DEFINITIONS: -->
 
   <xsl:function name="xtlc:get-standard-macrodef-map" as="map(xs:string, xs:string)">
-    <!--~ Returns a map with standard macro definitions.  -->
+    <!--~ Returns a map with standard macro definitions. See the `$xtlc:macrodef-standard-*` global variable definitions. -->
     <xsl:variable name="date-time" as="xs:dateTime" select="current-dateTime()"/>
     <xsl:map>
       <xsl:map-entry key="$xtlc:macrodef-standard-datetimeiso" select="string($date-time)"/>
@@ -193,47 +233,73 @@
   <!-- ======================================================================= -->
   <!-- HELPER FUNCTIONS/TEMPLATES: -->
 
-  <xsl:function name="xtlc:add-macrodefs" as="map(xs:string, xs:string)">
-    <!--Merges two macro definition maps, taking care that newer definitions override existing ones.  -->
-    <xsl:param name="existing-macrodefs" as="map(xs:string, xs:string)"/>
-    <xsl:param name="new-macrodefs" as="map(xs:string, xs:string)?"/>
+  <xsl:function name="xtlc:merge-macrodefs" as="map(xs:string, xs:string)">
+    <!--~ Merges multiple macro definition maps, taking care that newer definitions override existing ones. 
+          Will return an empty map if the input is the empty sequence. -->
+    <xsl:param name="macrodefs" as="map(xs:string, xs:string)*">
+      <!--~ The macro definition maps to merge. -->
+    </xsl:param>
 
-    <xsl:sequence select="map:merge(($existing-macrodefs, $new-macrodefs), map{'duplicates': 'use-last'})"/>
+    <xsl:sequence select="map:merge($macrodefs, map{'duplicates': 'use-last'})"/>
   </xsl:function>
-  
+
   <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
-  
+
   <xsl:template name="xtlc:macrodefs-as-comment">
-    <!-- Outputs a comment showing the contents of $macrodef-map.  -->
-    <xsl:param name="macrodef-map" as="map(xs:string, xs:string)" required="yes"/>
-    
+    <!--~ Outputs a simple comment showing the contents of `$macrodef-map`.  -->
+    <xsl:param name="macrodef-map" as="map(xs:string, xs:string)" required="yes">
+      <!--~ The macro definitions to show in the comment. -->
+    </xsl:param>
+
     <xsl:variable name="lf" as="xs:string" select="'&#10;'"/>
     <xsl:variable name="parts" as="xs:string*">
       <xsl:for-each select="map:keys($macrodef-map)">
         <xsl:sort select="."/>
         <xsl:variable name="name" as="xs:string" select="."/>
         <xsl:sequence select="$name || '=' || xtlc:q($macrodef-map($name))"/>
-      </xsl:for-each>      
+      </xsl:for-each>
     </xsl:variable>
     <xsl:comment>{$lf}{string-join($parts, $lf)}{$lf}</xsl:comment>
   </xsl:template>
-  
+
   <!-- ======================================================================= -->
   <!-- EXPANSION OF MACRO DEFINITIONS IN AN XML DOCUMENT -->
 
   <xsl:template name="xtlc:expand-macro-definitions">
-    <!-- Expands all macrodefs in a node (recursively). -->
-    <xsl:param name="in" as="node()" required="false" select="."/>
-    <xsl:param name="macrodef-map" as="map(xs:string, xs:string)" required="false" select="map{}"/>
-    <xsl:param name="expand-in-text" as="xs:boolean" required="false" select="true()"/>
-    <xsl:param name="expand-in-attributes" as="xs:boolean" required="false" select="true()"/>
-    <xsl:param name="use-local-macrodefs" as="xs:boolean" required="false" select="true()">
-      <!-- Check for <*:macrodefs> as first child and process this accordingly -->
+    <!--~ Expands macro definitions in text nodes and/or attribute values.
+      
+          The template checks for `<:macrodefs>` elements that are the first child of any element. 
+          If so, any `<:macrodef>` children are used to define (or override) macro definitions. These elements can be in any namespace.
+          
+          See also `xsdmod/macrodefs.mod.xsd`.
+    
+          You can customize its functionality by using the template parameters.
+    -->
+    <xsl:param name="in" as="node()" required="false" select=".">
+      <!--~ The node for which to expand the macro definitions. Must be an element or a document node. -->
     </xsl:param>
-    <xsl:param name="add-macrodef-comments" as="xs:boolean" required="false" select="false()"/>
+    <xsl:param name="use-standard-macrodefs" as="xs:boolean" required="false" select="true()">
+      <!--~ Whether to use the standard macro definitions. -->
+    </xsl:param>
+    <xsl:param name="macrodefs" as="map(xs:string, xs:string)*" required="false" select="()">
+      <!--~ Any initial macro definitions. -->
+    </xsl:param>
+    <xsl:param name="expand-in-text" as="xs:boolean" required="false" select="true()">
+      <!--~ Whether to expand the macro definitions in text nodes. -->
+    </xsl:param>
+    <xsl:param name="expand-in-attributes" as="xs:boolean" required="false" select="true()">
+      <!--~ Whether to expand the macro definitions in attributes. -->
+    </xsl:param>
+    <xsl:param name="use-local-macrodefs" as="xs:boolean" required="false" select="true()">
+      <!--~ Check for `<*:macrodefs>` element as first child and process accordingly -->
+    </xsl:param>
+    <xsl:param name="add-macrodef-comments" as="xs:boolean" required="false" select="false()">
+      <!--~ Whether to add a macro definition comment (summarizing all macro definitions) when a `<*:macrodefs>` element is processed. -->
+    </xsl:param>
 
     <xsl:apply-templates select="$in" mode="local:mode-expand-macro-definitions">
-      <xsl:with-param name="macrodef-map" select="$macrodef-map" tunnel="true"/>
+      <xsl:with-param name="macrodef-map"
+        select="xtlc:merge-macrodefs((if ($use-standard-macrodefs) then xtlc:get-standard-macrodef-map() else (), $macrodefs))" tunnel="true"/>
       <xsl:with-param name="expand-in-text" select="$expand-in-text" tunnel="true"/>
       <xsl:with-param name="expand-in-attributes" select="$expand-in-attributes" tunnel="true"/>
       <xsl:with-param name="use-local-macrodefs" select="$use-local-macrodefs" tunnel="true"/>
@@ -247,7 +313,7 @@
     <xsl:param name="use-local-macrodefs" as="xs:boolean" required="true" tunnel="true"/>
     <xsl:param name="macrodef-map" as="map(xs:string, xs:string)" required="true" tunnel="true"/>
     <xsl:param name="add-macrodef-comments" as="xs:boolean" required="true" tunnel="true"/>
-    
+
     <xsl:copy>
       <xsl:apply-templates select="@*" mode="#current"/>
 
@@ -264,7 +330,7 @@
               </xsl:for-each-group>
             </xsl:map>
           </xsl:variable>
-          <xsl:variable name="current-macrodefs" as="map(xs:string, xs:string)" select="xtlc:add-macrodefs($macrodef-map, $new-macrodefs)"/>
+          <xsl:variable name="current-macrodefs" as="map(xs:string, xs:string)" select="xtlc:merge-macrodefs(($macrodef-map, $new-macrodefs))"/>
           <xsl:if test="$add-macrodef-comments">
             <xsl:call-template name="xtlc:macrodefs-as-comment">
               <xsl:with-param name="macrodef-map" select="$current-macrodefs"/>
@@ -276,7 +342,7 @@
         </xsl:when>
         <xsl:otherwise>
           <xsl:apply-templates mode="#current"/>
-        </xsl:otherwise>  
+        </xsl:otherwise>
       </xsl:choose>
 
     </xsl:copy>
@@ -317,8 +383,8 @@
   <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 
   <xsl:function name="local:has-local-macrodefs" as="xs:boolean">
-    <!-- Returns true() if the first child element (without non-whitespace text nodes before it) is a <*:macrodefs> 
-         and this element has valid <*:macrodef> children  -->
+    <!-- Returns true() if the first child element of $elm (without non-whitespace text nodes before it) is a <*:macrodefs> 
+         and this element has valid <*:macrodef> children.  -->
     <xsl:param name="elm" as="element()"/>
 
     <xsl:variable name="macrodefs-element" as="element()?" select="(($elm/(text()[normalize-space() ne ''] | *))[1])/self::*:macrodefs"/>

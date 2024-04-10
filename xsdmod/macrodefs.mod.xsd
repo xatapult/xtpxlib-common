@@ -4,6 +4,9 @@
     <xs:documentation>Schema module with the definition of the macrodefs element. See  xslmod/macrodefs.mod.xsl</xs:documentation>
   </xs:annotation>
   <xs:group name="g-macrodefs">
+    <xs:annotation>
+      <xs:documentation>Macro definitions</xs:documentation>
+    </xs:annotation>
     <xs:sequence>
       <xs:element name="macrodefs">
         <xs:complexType>

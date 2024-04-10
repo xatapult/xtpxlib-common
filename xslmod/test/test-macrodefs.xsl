@@ -77,7 +77,6 @@
       <xsl:call-template name="xtlc:expand-macro-definitions">
         <xsl:with-param name="in" select="$testdoc"/>
         <xsl:with-param name="add-macrodef-comments" select="true()"/>
-        <xsl:with-param name="macrodef-map" select="xtlc:get-standard-macrodef-map()"/>
       </xsl:call-template>
       
     </macrodefs-test>
