@@ -13,7 +13,7 @@
 
        Macro definitions can reference other macro definitions.
 
-       Additionally, you can modify the value of a macro definition reference by appending one or more flags. 
+       Additionally, you can modify the value of a macro definition reference by appending one or more flags (separated by colons). 
        For more information on the available flags, refer to the `$macrodef-flag-*` global variables.
 	-->
   <!-- ================================================================== -->
@@ -356,7 +356,7 @@
 
     <xsl:choose>
       <xsl:when test="$expand-in-attributes">
-        <xsl:attribute name="{node-name(.)}" select="xtlc:expand-macrodefs(string(.), $macrodef-map)"/>
+        <xsl:attribute name="{local-name(.)}" namespace="{namespace-uri(.)}" select="xtlc:expand-macrodefs(string(.), $macrodef-map)"/>
       </xsl:when>
       <xsl:otherwise>
         <xsl:copy/>
