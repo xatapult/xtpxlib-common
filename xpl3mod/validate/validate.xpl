@@ -54,10 +54,7 @@
             <p:with-input port="source" pipe="source@validate"/>
             <p:with-input port="schema" href="{$href-schema}"/>
           </p:validate-with-xml-schema>
-          <p:catch name="schema-validate-error">
-            <p:identity>
-              <p:with-input pipe="error@schema-validate-error"/>
-            </p:identity>
+          <p:catch>
             <p:error code="xtlc:schema-validate-error">
               <p:with-input>
                 <p:inline content-type="text/plain">{string(/*/c:error[1])}</p:inline>
@@ -83,10 +80,7 @@
             <p:with-input port="source" pipe="source@validate"/>
             <p:with-input port="schema" href="{$href-schematron}"/>
           </p:validate-with-schematron>
-          <p:catch name="schematron-validate-error">
-            <p:identity>
-              <p:with-input pipe="error@schematron-validate-error"/>
-            </p:identity>
+          <p:catch>
             <p:error code="xtlc:schematron-validate-error">
               <p:with-input>
                 <p:inline content-type="text/plain">{string(/*//svrl:failed-assert[1])}</p:inline>
