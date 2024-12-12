@@ -3,15 +3,16 @@
   xmlns:array="http://www.w3.org/2005/xpath-functions/array" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xtlc="http://www.xtpxlib.nl/ns/common"
   xmlns:local="#local.oxn_n4k_bzb" exclude-result-prefixes="#all" expand-text="true">
   <!-- ================================================================== -->
-  <!-- 
-       Support code for simple macro expansion in strings, e.g. $NAME.
+  <!--~ 
+       (DEPRECATED) Support code for simple macro expansion in strings, e.g. $NAME.
+       
+       Consider using macrodefs.mod.xsl instead! There are bugs in the macro expansion (that will not be solved for now).
+
        To stop a macro from expanding, double the $ character ($$NAME becomes $NAME).
        
        What is expanded must be in a map formatted as map{macro: expansion}, e.g. map{'NAME': 'thenameofthething'}
        
        Macros in the string must start with the xtlc:simpleMacroStart character ($).
-       
-       DEPRECATED: Consider using macrodefs.mod.xsl instead! There are bugs in the macro expansion (that will not be solved for now).
   -->
   <!-- ================================================================== -->
   <!-- GLOBAL DECLARATIONS: -->
@@ -20,7 +21,7 @@
 
   <!-- ======================================================================= -->
 
-  <xsl:function name="xtlc:expand-simple-macros" as="xs:string">
+  <xsl:function name="xtlc:expand-simple-macros" as="xs:string" visibility="public">
     <!--~ Expands simple macro's in a string with values. All macros to expand must start with 
           $xtlc:simple-macro-start-character ($), for instance: $DATE.
           
@@ -54,7 +55,8 @@
              - replace('\$', '\\\$') ==> Replace all occurrences of a $ with \$
         -->
         <xsl:variable name="substitutionRaw" as="xs:string" select="$macros-map($key)"/>
-        <xsl:variable name="substitutionSafe" as="xs:string" select="if ($filename-safe) then xtlc:str2filename-safe($substitutionRaw, '_') else $substitutionRaw"/>
+        <xsl:variable name="substitutionSafe" as="xs:string"
+          select="if ($filename-safe) then xtlc:str2filename-safe($substitutionRaw, '_') else $substitutionRaw"/>
         <xsl:variable name="substitution" as="xs:string" select="$substitutionSafe => replace('\\', '\\\\') => replace('\$', '\\\$')"/>
 
         <!-- Turn the $macro value into a regular expression. Since we have to deal with the $$macro variant as well,
@@ -83,10 +85,10 @@
       </xsl:otherwise>
     </xsl:choose>
   </xsl:function>
-  
+
   <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
-  
-  <xsl:function name="xtlc:expand-simple-macros" as="xs:string">
+
+  <xsl:function name="xtlc:expand-simple-macros" as="xs:string" visibility="public">
     <!--~ Expands simple macro's in a string with values. See xtlc:expand-simple-macros#3 -->
     <xsl:param name="in" as="xs:string">
       <!--~ The string to convert. -->
@@ -94,8 +96,8 @@
     <xsl:param name="macros-map" as="map(xs:string, xs:string)">
       <!--~ The map with the macro/substitution values. -->
     </xsl:param>
-    
+
     <xsl:sequence select="xtlc:expand-simple-macros($in, $macros-map, false())"/>
   </xsl:function>
-  
+
 </xsl:stylesheet>

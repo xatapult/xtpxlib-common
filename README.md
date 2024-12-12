@@ -1,4 +1,5 @@
-# `xtpxlib-common`: Xatapult XML Library - Common component: Shared libraries and IDE support
+<?xml version="1.0" encoding="UTF-8"?>
+<README xml:space="preserve"># `xtpxlib-common`: Xatapult XML Library - Common component: Shared libraries and IDE support
 
 **Xatapult Content Engineering - [`http://www.xatapult.com`](http://www.xatapult.com)**
 
@@ -73,5 +74,6 @@ Pre-release to test GitHub pages functionality
 
 
 -----------
-*Generated: 2024-04-10 09:53:10*
+*Generated: 2024-12-12 14:15:32*
 
+</README>

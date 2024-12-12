@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet version="2.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xs="http://www.w3.org/2001/XMLSchema"
+<xsl:stylesheet version="3.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xs="http://www.w3.org/2001/XMLSchema"
   xmlns:fn="http://www.w3.org/2005/xpath-functions" xmlns:local="#local.format-output.mod.xsl" xmlns:xtlc="http://www.xtpxlib.nl/ns/common"
   exclude-result-prefixes="#all">
   <!-- ================================================================== -->
@@ -10,7 +10,7 @@
 	-->
   <!-- ================================================================== -->
 
-  <xsl:function name="xtlc:format-double" as="xs:string">
+  <xsl:function name="xtlc:format-double" as="xs:string" visibility="public">
     <!--~
       Formats a double as a string with a given amount of digits. 
       
@@ -46,7 +46,7 @@
 
   <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 
-  <xsl:function name="xtlc:format-amount" as="xs:string">
+  <xsl:function name="xtlc:format-amount" as="xs:string" visibility="public">
     <!--~
       Formats an amount by adding a € sign and always use double digits.
       
@@ -64,7 +64,7 @@
 
   <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 
-  <xsl:function name="xtlc:size2str" as="xs:string">
+  <xsl:function name="xtlc:size2str" as="xs:string" visibility="public">
     <!--~ 
       Turns an integer (e.g. a file size) into a (rounded) number using a `Kb`/`Mb`/`Gb` suffix.
     -->
@@ -94,7 +94,7 @@
 
   <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 
-  <xsl:function name="xtlc:duration2str" as="xs:string">
+  <xsl:function name="xtlc:duration2str" as="xs:string" visibility="public">
     <!--~ 
       Turns a day/time duration into a more readable string, e.g. `1d3h40m12s`
     -->
@@ -124,7 +124,7 @@
   <!-- ================================================================== -->
   <!-- SUPPORT: -->
 
-  <xsl:function name="local:nr-finalize" as="xs:string">
+  <xsl:function name="local:nr-finalize" as="xs:string" visibility="private">
     <!-- Finalizes a number by swapping . and , for Dutch. -->
     <xsl:param name="nr-string" as="xs:string"/>
     <xsl:param name="lang" as="xs:string"/>

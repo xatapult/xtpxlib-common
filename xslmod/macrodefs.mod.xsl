@@ -9,74 +9,81 @@
        A macro definition is a simple `name=value` construct. They are passed around in maps (`map(xs:string, xs:string)`). 
        
        The `xtlc:expand-macrodefs()` function expands macro definition references within strings by using `${…}` or `{$…}`. 
-       To prevent the expansion of these constructions, simply double the opening curly brace. All referenced macro definitions must exist, otherwise an error will be raised. 
+       To prevent the expansion of these constructions, simply double the opening curly brace. All referenced macro definitions must exist, 
+       otherwise an error will be raised. 
 
        Macro definitions can reference other macro definitions.
 
-       Additionally, you can modify the value of a macro definition reference by appending one or more flags (separated by colons). 
-       For more information on the available flags, refer to the `$macrodef-flag-*` global variables.
+       Additionally, you can modify the value of a macro by appending one or more flags (separated by colons), for instance `${MACRO:cap:fnsx}`. 
+       For more information on the available flags, refer to the `$xtlc:macrodef-flag-*` global variables.
+       
+       There are a number of standard macros that can be used. See the `$xtlc:macrodef-standard-*` global variables.
 	-->
   <!-- ================================================================== -->
   <!-- GLOBAL DECLARATIONS: -->
 
-  <xsl:variable name="xtlc:macrodef-start-character" as="xs:string" select="'$'">
+  <xsl:variable name="xtlc:macrodef-start-character" as="xs:string" select="'$'" visibility="public">
     <!--~ Character that starts a macro definition reference. -->
+  </xsl:variable>
+  <xsl:variable name="xtlc:macrodef-flag-separator-character" as="xs:string" select="':'" visibility="public">
+    <!--~ Character that separates a macro reference from its flags. -->
   </xsl:variable>
 
   <!-- Flags: -->
-  <xsl:variable name="xtlc:macrodef-flag-upper-case" as="xs:string" select="'uc'">
-    <!--~ Macro definition reference flag: upper-case  -->
+  <xsl:variable name="xtlc:macrodef-flag-upper-case" as="xs:string" select="'uc'" visibility="public">
+    <!--~ Macro flag: upper-case  -->
   </xsl:variable>
-  <xsl:variable name="xtlc:macrodef-flag-lower-case" as="xs:string" select="'lc'">
-    <!--~ Macro definition reference flag: lower-case -->
+  <xsl:variable name="xtlc:macrodef-flag-lower-case" as="xs:string" select="'lc'" visibility="public">
+    <!--~ Macro flag: lower-case -->
   </xsl:variable>
-  <xsl:variable name="xtlc:macrodef-flag-capitalize" as="xs:string" select="'cap'">
-    <!--~ Macro definition reference flag: capitalize (upper-case first character) -->
+  <xsl:variable name="xtlc:macrodef-flag-capitalize" as="xs:string" select="'cap'" visibility="public">
+    <!--~ Macro flag: capitalize (upper-case first character) -->
   </xsl:variable>
-  <xsl:variable name="xtlc:macrodef-flag-compact" as="xs:string" select="'compact'">
-    <!--~ Macro definition reference flag: remove all whitespace -->
+  <xsl:variable name="xtlc:macrodef-flag-compact" as="xs:string" select="'compact'" visibility="public">
+    <!--~ Macro flag: remove all whitespace -->
   </xsl:variable>
-  <xsl:variable name="xtlc:macrodef-flag-normalize" as="xs:string" select="'normalize'">
-    <!--~ Macro definition reference flag: normalize space -->
+  <xsl:variable name="xtlc:macrodef-flag-normalize" as="xs:string" select="'normalize'" visibility="public">
+    <!--~ Macro flag: normalize space -->
   </xsl:variable>
-  <xsl:variable name="xtlc:macrodef-flag-filename-safe" as="xs:string" select="'fns'">
-    <!--~ Macro definition reference flag: make filename safe (replace all characters forbidden in file/directory names with underscores) -->
+  <xsl:variable name="xtlc:macrodef-flag-filename-safe" as="xs:string" select="'fns'" visibility="public">
+    <!--~ Macro flag: make filename safe (replace all characters forbidden in file/directory names with underscores) -->
   </xsl:variable>
-  <xsl:variable name="xtlc:macrodef-flag-filename-safe-extra" as="xs:string" select="'fnsx'">
-    <!--~ Macro definition reference flag: make filename safe, extended (replace all characters forbidden in file/directory names and all whitespace with underscores) -->
+  <xsl:variable name="xtlc:macrodef-flag-filename-safe-extra" as="xs:string" select="'fnsx'" visibility="public">
+    <!--~ Macro flag: make filename safe, extended (replace all characters forbidden in file/directory names and all whitespace with underscores) -->
   </xsl:variable>
 
   <!-- Standard macro definitions (see function xtlc:get-standard-macrodef-map()): -->
-  <xsl:variable name="xtlc:macrodef-standard-datetimeiso" as="xs:string" select="'DATETIMEISO'">
-    <!--~ Standard macro definition: date/time in ISO format -->
+  <xsl:variable name="xtlc:macrodef-standard-datetimeiso" as="xs:string" select="'DATETIMEISO'" visibility="public">
+    <!--~ Standard macro: date/time in ISO format -->
   </xsl:variable>
-  <xsl:variable name="xtlc:macrodef-standard-date" as="xs:string" select="'DATE'">
-    <!--~ Standard macro definition: date only (`YYYY-MM-DD`) -->
+  <xsl:variable name="xtlc:macrodef-standard-date" as="xs:string" select="'DATE'" visibility="public">
+    <!--~ Standard macro: date only (`YYYY-MM-DD`) -->
   </xsl:variable>
-  <xsl:variable name="xtlc:macrodef-standard-date-compact" as="xs:string" select="'DATECOMPACT'">
-    <!--~ Standard macro definition: date only, compact (`YYYYMMDD`) -->
+  <xsl:variable name="xtlc:macrodef-standard-date-compact" as="xs:string" select="'DATECOMPACT'" visibility="public">
+    <!--~ Standard macro: date only, compact (`YYYYMMDD`) -->
   </xsl:variable>
-  <xsl:variable name="xtlc:macrodef-standard-time" as="xs:string" select="'TIME'">
-    <!--~ Standard macro definition: time only (`hh:mm:ss`) -->
+  <xsl:variable name="xtlc:macrodef-standard-time" as="xs:string" select="'TIME'" visibility="public">
+    <!--~ Standard macro: time only (`hh:mm:ss`) -->
   </xsl:variable>
-  <xsl:variable name="xtlc:macrodef-standard-time-compact" as="xs:string" select="'TIMECOMPACT'">
-    <!--~ Standard macro definition: time only, compact (`hhmmss`) -->
+  <xsl:variable name="xtlc:macrodef-standard-time-compact" as="xs:string" select="'TIMECOMPACT'" visibility="public">
+    <!--~ Standard macro: time only, compact (`hhmmss`) -->
   </xsl:variable>
-  <xsl:variable name="xtlc:macrodef-standard-time-short" as="xs:string" select="'TIMESHORT'">
-    <!--~ Standard macro definition: time only without seconds (`hh:mm`) -->
+  <xsl:variable name="xtlc:macrodef-standard-time-short" as="xs:string" select="'TIMESHORT'" visibility="public">
+    <!--~ Standard macro: time only without seconds (`hh:mm`) -->
   </xsl:variable>
-  <xsl:variable name="xtlc:macrodef-standard-time-short-compact" as="xs:string" select="'TIMESHORTCOMPACT'">
-    <!--~ Standard macro definition: time only without seconds, compact (`hhmm`) -->
+  <xsl:variable name="xtlc:macrodef-standard-time-short-compact" as="xs:string" select="'TIMESHORTCOMPACT'" visibility="public">
+    <!--~ Standard macro: time only without seconds, compact (`hhmm`) -->
   </xsl:variable>
+
   <!-- ======================================================================= -->
   <!-- LOCAL DECLARATIONS: -->
 
-  <xsl:mode name="local:mode-expand-macro-definitions" on-no-match="shallow-copy"/>
+  <xsl:mode name="local:mode-expand-macro-definitions" on-no-match="shallow-copy" visibility="private"/>
 
   <!-- ======================================================================= -->
   <!-- EXPANSION OF MACRO DEFINITIONS: -->
 
-  <xsl:function name="xtlc:expand-macrodefs" as="xs:string">
+  <xsl:function name="xtlc:expand-macrodefs" as="xs:string" visibility="public">
     <!--~ 
       Expands macro definition references in a string against the macro definitions in `$macrodef-map`. Checks for circular references.
     -->
@@ -88,7 +95,7 @@
 
   <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 
-  <xsl:function name="local:expand-macrodefs" as="xs:string">
+  <xsl:function name="local:expand-macrodefs" as="xs:string" visibility="private">
     <!--
       This function actually expands the macro definitions. It uses an additional parameter to check for circular references.
     -->
@@ -123,7 +130,8 @@
                 <xsl:matching-substring>
                   <xsl:variable name="parameter-name-and-flags" as="xs:string"
                     select="if (regex-group(1) ne '') then regex-group(1) else regex-group(2)"/>
-                  <xsl:variable name="parameter-parts" as="xs:string+" select="tokenize($parameter-name-and-flags, ':')[.]"/>
+                  <xsl:variable name="parameter-parts" as="xs:string+"
+                    select="tokenize($parameter-name-and-flags, xtlc:str2regexp($xtlc:macrodef-flag-separator-character))[.]"/>
 
                   <xsl:variable name="parameter-name" as="xs:string" select="$parameter-parts[1]"/>
                   <xsl:variable name="parameter-flags" as="xs:string*" select="subsequence($parameter-parts, 2)"/>
@@ -167,7 +175,7 @@
 
   <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 
-  <xsl:function name="local:process-macrodef-flags" as="xs:string">
+  <xsl:function name="local:process-macrodef-flags" as="xs:string" visibility="private">
     <!-- Processes any macrodef flags that are on a macro reference. -->
     <xsl:param name="value" as="xs:string"/>
     <xsl:param name="flags" as="xs:string*"/>
@@ -216,7 +224,7 @@
   <!-- ======================================================================= -->
   <!-- STANDARD MACRO DEFINITIONS: -->
 
-  <xsl:function name="xtlc:get-standard-macrodef-map" as="map(xs:string, xs:string)">
+  <xsl:function name="xtlc:get-standard-macrodef-map" as="map(xs:string, xs:string)" visibility="public">
     <!--~ Returns a map with standard macro definitions. See the `$xtlc:macrodef-standard-*` global variable definitions. -->
     <xsl:variable name="date-time" as="xs:dateTime" select="current-dateTime()"/>
     <xsl:map>
@@ -233,7 +241,7 @@
   <!-- ======================================================================= -->
   <!-- HELPER FUNCTIONS/TEMPLATES: -->
 
-  <xsl:function name="xtlc:merge-macrodefs" as="map(xs:string, xs:string)">
+  <xsl:function name="xtlc:merge-macrodefs" as="map(xs:string, xs:string)" visibility="public">
     <!--~ Merges multiple macro definition maps, taking care that newer definitions override existing ones. 
           Will return an empty map if the input is the empty sequence. -->
     <xsl:param name="macrodefs" as="map(xs:string, xs:string)*">
@@ -245,7 +253,7 @@
 
   <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 
-  <xsl:template name="xtlc:macrodefs-as-comment">
+  <xsl:template name="xtlc:macrodefs-as-comment" visibility="public">
     <!--~ Outputs a simple comment showing the contents of `$macrodef-map`.  -->
     <xsl:param name="macrodef-map" as="map(xs:string, xs:string)" required="yes">
       <!--~ The macro definitions to show in the comment. -->
@@ -382,7 +390,7 @@
 
   <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 
-  <xsl:function name="local:has-local-macrodefs" as="xs:boolean">
+  <xsl:function name="local:has-local-macrodefs" as="xs:boolean" visibility="private">
     <!-- Returns true() if the first child element of $elm (without non-whitespace text nodes before it) is a <*:macrodefs> 
          and this element has valid <*:macrodef> children.  -->
     <xsl:param name="elm" as="element()"/>
