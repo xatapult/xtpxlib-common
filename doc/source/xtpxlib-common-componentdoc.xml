@@ -53,23 +53,33 @@
           </thead>
           <tbody>
             <row>
-              <entry><code role="code-width-limited">data</code></entry>
+              <entry>
+                <code role="code-width-limited">data</code>
+              </entry>
               <entry>XML data files.</entry>
             </row>
             <row>
-              <entry><code role="code-width-limited">doc</code></entry>
+              <entry>
+                <code role="code-width-limited">doc</code>
+              </entry>
               <entry>Sources for the generation of the component's documentation. Internal use only.</entry>
             </row>
             <row>
-              <entry><code role="code-width-limited">docs</code></entry>
+              <entry>
+                <code role="code-width-limited">docs</code>
+              </entry>
               <entry>GitHub pages site for this component.</entry>
             </row>
             <row>
-              <entry><code role="code-width-limited">etc</code></entry>
+              <entry>
+                <code role="code-width-limited">etc</code>
+              </entry>
               <entry>Auxiliary files, mainly for use in the oXygen IDE.</entry>
             </row>
             <row>
-              <entry><code role="code-width-limited">template</code></entry>
+              <entry>
+                <code role="code-width-limited">template</code>
+              </entry>
               <entry>
                 <para>Template files. These files contain XSLT, XQuery, XProc, etc. files with the main structure and headers filled in. Contain
                   macros for use in the oXygen IDE.</para>
@@ -99,7 +109,9 @@
                     linkend="href.mod.xsl">href.mod.xsl</link></code>) into XQuery.</entry>
             </row>
             <row>
-              <entry><code role="code-width-limited">xsd</code></entry>
+              <entry>
+                <code role="code-width-limited">xsd</code>
+              </entry>
               <entry>Schemas for some of the document types used in <code>{$library-name}</code>. </entry>
             </row>
             <row>
@@ -107,7 +119,9 @@
               <entry>Some general purpose XSLT stylesheets.</entry>
             </row>
             <row>
-              <entry><code role="code-width-limited">xslmod</code></entry>
+              <entry>
+                <code role="code-width-limited">xslmod</code>
+              </entry>
               <entry>General purpose XSLT modules.</entry>
             </row>
           </tbody>
@@ -252,27 +266,21 @@
 
   <!-- ================================================================== -->
 
-  <chapter xml:id="chapter-xproc-libraries" xreflabel="XProc 1.0 Libraries">
-    <title>XProc 1.0 Libraries</title>
-
-    <para>The {$component-name} component contains the following XProc (1.0) library module:</para>
-
-    <xdoc:transform href="$xdoc/code-docgen-dir.xpl" dir="../../../xtpxlib-common/xplmod/" filter="\.mod\.xpl$" header-level="1" filecomponents="3"
-      sublevels="true"/>
-
-  </chapter>
-
-  <!-- ================================================================== -->
-
   <chapter xml:id="chapter-xproc-3-support" xreflabel="XProc 3.0 Support">
     <title>XProc 3.0 Support</title>
 
     <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 
+    <xdoc:transform href="$xdoc/code-docgen-dir.xpl" dir="../../../xtpxlib-common/xpl3mod/" filter="\.xpl$" header-level="1" filecomponents="3"
+      sublevels="true" depth="2"/>
+    
+    <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+    
     <sect1>
-      <title>oXygen XProc 3.0 support</title>
-
-      <para>The component contains a framework for oXygen that enables it to validate XProc 3.0 documents. To use this:</para>
+      <title>oXygen XProc 3.0 support (oXygen versions &lt;&#160;26)</title>
+      
+      <para>oXygen versions &lt;&#160;26 had nor editing support for XProc 3.0. The component contains an oXygen framework that enables validating XProc
+        3.0 documents. To use this:</para>
       <itemizedlist>
         <listitem>
           <para>Add the framework to the oXygen configuration:</para>
@@ -311,12 +319,20 @@
       </itemizedlist>
       
     </sect1>
-
-    <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
-
-    <xdoc:transform href="$xdoc/code-docgen-dir.xpl" dir="../../../xtpxlib-common/xpl3mod/" filter="\.xpl$" header-level="1" filecomponents="3"
-      sublevels="true" depth="2"/>
-
+    
+  </chapter>
+  
+  <!-- ================================================================== -->
+  
+  <chapter xml:id="chapter-xproc-libraries" xreflabel="XProc 1.0 Support">
+    <title>XProc 1.0 Support</title>
+    
+    <para>The {$component-name} component contains the following XProc&#160;1.0 library module:</para>
+    <para><emphasis role="bold">WARNING</emphasis>: XProc&#160;1.0 support is considered deprecated and will be removed in the near future!</para>
+    
+    <xdoc:transform href="$xdoc/code-docgen-dir.xpl" dir="../../../xtpxlib-common/xplmod/" filter="\.mod\.xpl$" header-level="1" filecomponents="3"
+      sublevels="true"/>
+    
   </chapter>
 
   <!-- ================================================================== -->

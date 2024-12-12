@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet version="2.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xs="http://www.w3.org/2001/XMLSchema"
+<xsl:stylesheet version="3.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xs="http://www.w3.org/2001/XMLSchema"
   xmlns:xtlc="http://www.xtpxlib.nl/ns/common" xmlns:local="#local.href.mod.xsl" exclude-result-prefixes="#all">
   <!-- ================================================================== -->
   <!--~
@@ -15,7 +15,7 @@
   <!-- ================================================================== -->
   <!-- BASIC FUNCTIONS:  -->
 
-  <xsl:function name="xtlc:href-concat" as="xs:string">
+  <xsl:function name="xtlc:href-concat" as="xs:string" visibility="public">
     <!--~ 
       Performs a safe concatenation of href components: 
       
@@ -54,7 +54,7 @@
 
   <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 
-  <xsl:function name="xtlc:href-is-absolute" as="xs:boolean">
+  <xsl:function name="xtlc:href-is-absolute" as="xs:boolean" visibility="public">
     <!--~ 
       Returns `true` if the href is considered absolute.
       
@@ -71,7 +71,7 @@
 
   <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 
-  <xsl:function name="xtlc:href-name" as="xs:string">
+  <xsl:function name="xtlc:href-name" as="xs:string" visibility="public">
     <!--~ 
       Returns the (file)name part of an href. 
     
@@ -88,7 +88,7 @@
 
   <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 
-  <xsl:function name="xtlc:href-noext" as="xs:string">
+  <xsl:function name="xtlc:href-noext" as="xs:string" visibility="public">
     <!--~ 
       Returns the complete href path without its extension.
     
@@ -105,7 +105,7 @@
 
   <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 
-  <xsl:function name="xtlc:href-name-noext" as="xs:string">
+  <xsl:function name="xtlc:href-name-noext" as="xs:string" visibility="public">
     <!--~ 
       Returns the (file)name part of an href without its extension. 
     
@@ -122,7 +122,7 @@
 
   <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 
-  <xsl:function name="xtlc:href-ext" as="xs:string">
+  <xsl:function name="xtlc:href-ext" as="xs:string" visibility="public">
     <!--~ 
       Returns the extension part of an href. 
     
@@ -147,7 +147,7 @@
 
   <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 
-  <xsl:function name="xtlc:href-path" as="xs:string">
+  <xsl:function name="xtlc:href-path" as="xs:string" visibility="public">
     <!--~ 
       Returns the path part of an href.
     
@@ -172,7 +172,7 @@
 
   <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 
-  <xsl:function name="xtlc:href-result-doc" as="xs:string">
+  <xsl:function name="xtlc:href-result-doc" as="xs:string" visibility="public">
     <!--~ 
       Transforms an href into something `xsl:result-document/@href` can use. 
       
@@ -189,7 +189,7 @@
   <!-- ================================================================== -->
   <!-- CANONICALIZATION OF HREFs: -->
 
-  <xsl:function name="xtlc:href-canonical" as="xs:string">
+  <xsl:function name="xtlc:href-canonical" as="xs:string" visibility="public">
     <!--~ 
       Makes an href canonical (remove any .. and . directory specifiers).
       
@@ -214,7 +214,7 @@
 
   <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 
-  <xsl:function name="local:href-canonical-process-components" as="xs:string*">
+  <xsl:function name="local:href-canonical-process-components" as="xs:string*" visibility="private">
     <!-- Helper function for xtlc:href-canonical -->
     <xsl:param name="href-components-unprocessed" as="xs:string*"/>
     <xsl:param name="parent-directory-marker-count" as="xs:integer"/>
@@ -258,7 +258,7 @@
   <!-- ================================================================== -->
   <!-- RELATIVE HREFs: -->
 
-  <xsl:function name="xtlc:href-relative" as="xs:string">
+  <xsl:function name="xtlc:href-relative" as="xs:string" visibility="public">
     <!--~ 
       Computes a relative href from one document to another.
       
@@ -278,7 +278,7 @@
 
   <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 
-  <xsl:function name="xtlc:href-relative-from-path" as="xs:string">
+  <xsl:function name="xtlc:href-relative-from-path" as="xs:string" visibility="public">
     <!--~
       Computes a relative href from a directory path to a document.
       
@@ -309,8 +309,8 @@
     <!-- Now find it out: -->
     <xsl:choose>
 
-      <!-- Unequal protocols or no from-href/to-href means there is no relative path... -->
-      <xsl:when test="empty($to-components-no-filename) or (lower-case($from-protocol) ne lower-case($to-protocol))">
+      <!-- Unequal protocols means there is no relative path... -->
+      <xsl:when test="(lower-case($from-protocol) ne lower-case($to-protocol))">
         <xsl:sequence select="$to-href-canonical"/>
       </xsl:when>
       <xsl:otherwise>
@@ -323,13 +323,13 @@
 
   <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 
-  <xsl:function name="local:relative-href-components-compare" as="xs:string*">
+  <xsl:function name="local:relative-href-components-compare" as="xs:string*" visibility="private">
     <!-- Local helper function for computing relative paths. -->
     <xsl:param name="from-components" as="xs:string*"/>
     <xsl:param name="to-components" as="xs:string*"/>
 
     <xsl:choose>
-      <xsl:when test="$from-components[1] eq $to-components[1]">
+      <xsl:when test="exists($from-components) and exists($to-components) and ($from-components[1] eq $to-components[1])">
         <xsl:sequence select="local:relative-href-components-compare(subsequence($from-components, 2), subsequence($to-components, 2))"/>
       </xsl:when>
       <xsl:otherwise>
@@ -344,7 +344,7 @@
   <xsl:variable name="local:protocol-match-regexp" as="xs:string" select="'^[a-z]+://'"/>
   <xsl:variable name="local:protocol-file-special" as="xs:string" select="concat($xtlc:protocol-file, ':/')"/>
 
-  <xsl:function name="xtlc:href-protocol-present" as="xs:boolean">
+  <xsl:function name="xtlc:href-protocol-present" as="xs:boolean" visibility="public">
     <!--~ Returns true when an href has a protocol specifier (e.g. `file://` or `http://`). -->
     <xsl:param name="href" as="xs:string">
       <!--~ href to work on. -->
@@ -358,7 +358,7 @@
 
   <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 
-  <xsl:function name="xtlc:href-protocol-remove" as="xs:string">
+  <xsl:function name="xtlc:href-protocol-remove" as="xs:string" visibility="public">
     <!--~ 
       Removes the protocol part from an href.  
     
@@ -404,7 +404,7 @@
 
   <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 
-  <xsl:function name="xtlc:href-protocol-add" as="xs:string">
+  <xsl:function name="xtlc:href-protocol-add" as="xs:string" visibility="public">
     <!--~ Adds a protocol specifier (written without the trailing `://`, e.g. `http`) to an href. -->
     <xsl:param name="href" as="xs:string">
       <!--~ href to work on. -->
@@ -442,7 +442,7 @@
 
   <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 
-  <xsl:function name="xtlc:href-protocol" as="xs:string">
+  <xsl:function name="xtlc:href-protocol" as="xs:string" visibility="public">
     <!--~ 
       Returns the protocol part of an href (without the `://`). 
     
@@ -458,7 +458,7 @@
 
   <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 
-  <xsl:function name="xtlc:href-protocol" as="xs:string">
+  <xsl:function name="xtlc:href-protocol" as="xs:string" visibility="public">
     <!--~ 
       Returns the protocol part of an href (without the `://`) or a default value when none present. 
     
@@ -486,7 +486,7 @@
 
   <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 
-  <xsl:function name="xtlc:href-add-encoding" as="xs:string">
+  <xsl:function name="xtlc:href-add-encoding" as="xs:string" visibility="public">
     <!--~ 
       Percent encodes all "strange" characters (`%xx`). Any existing percentage encodings will be kept as is.
     -->
@@ -528,7 +528,7 @@
 
   <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 
-  <xsl:function name="xtlc:href-decode-uri" as="xs:string">
+  <xsl:function name="xtlc:href-decode-uri" as="xs:string" visibility="public">
     <!--~ Reverse function of encode-fo-uri(). Translates percent encodings (`%xx`) into their actual characters. -->
     <xsl:param name="href" as="xs:string">
       <!--~ href to work on. -->
@@ -552,7 +552,8 @@
   <xsl:variable name="local:charcode-0" as="xs:integer" select="string-to-codepoints('0')"/>
   <xsl:variable name="local:charcode-9" as="xs:integer" select="string-to-codepoints('9')"/>
   <xsl:variable name="local:charcode-a" as="xs:integer" select="string-to-codepoints('a')"/>
-  <xsl:function name="local:hex-char2int" as="xs:integer">
+
+  <xsl:function name="local:hex-char2int" as="xs:integer" visibility="private">
     <xsl:param name="char" as="xs:string">
       <!-- Assumed to be exactly one character long and hex (a-f0-9) -->
     </xsl:param>

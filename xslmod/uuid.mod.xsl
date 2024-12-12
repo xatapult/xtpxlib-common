@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet version="2.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xs="http://www.w3.org/2001/XMLSchema"
+<xsl:stylesheet version="3.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xs="http://www.w3.org/2001/XMLSchema"
   xmlns:fn="http://www.w3.org/2005/xpath-functions" xmlns:local="#local.uuid.mod.xsl" xmlns:xtlc="http://www.xtpxlib.nl/ns/common"
   exclude-result-prefixes="#all">
   <!-- ================================================================== -->
@@ -10,16 +10,15 @@
 	-->
   <!-- ================================================================== -->
 
-  <xsl:function name="xtlc:get-uuid" as="xs:string" xmlns:uuid="java:java.util.UUID">
+  <xsl:function name="xtlc:get-uuid" as="xs:string" xmlns:uuid="java:java.util.UUID" visibility="public">
     <!--~ Returns a random unique UUID (by calling an underlying Java function)  -->
 
     <xsl:sequence select="uuid:randomUUID()"/>
-
   </xsl:function>
 
   <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 
-  <xsl:function name="xtlc:is-real-uuid" as="xs:boolean">
+  <xsl:function name="xtlc:is-real-uuid" as="xs:boolean" visibility="public">
     <!--~ 
       Checks whether a string contains a "real" UUID (conforms to the UUID formatting rules).  
     
@@ -29,10 +28,7 @@
       <!--~ UUID to check. -->
     </xsl:param>
 
-    <!--  -->
-
     <xsl:sequence select="matches(string($id), '^[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}$')"/>
-
   </xsl:function>
 
 </xsl:stylesheet>

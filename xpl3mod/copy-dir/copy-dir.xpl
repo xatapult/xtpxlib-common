@@ -72,7 +72,7 @@
     <p:with-input select="/*/c:file"/>
     <p:variable name="href-source-file" as="xs:string" select="/*/@href-abs"/>
     <p:variable name="href-target-file" as="xs:string" select="string-join(($href-target, /*/@href-rel), '/')"/>
-    <p:file-copy href="{$href-source-file}" target="{$href-target-file}" message="*** {$href-source-file} ---- {$href-target-file}"/>
+    <p:file-copy href="{$href-source-file}" target="{$href-target-file}"/>
   </p:for-each>
 
 </p:declare-step>

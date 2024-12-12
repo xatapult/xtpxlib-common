@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet version="2.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xs="http://www.w3.org/2001/XMLSchema"
+<xsl:stylesheet version="3.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xs="http://www.w3.org/2001/XMLSchema"
   xmlns:local="#local.format-output.mod.xsl" xmlns:xtlc="http://www.xtpxlib.nl/ns/common" exclude-result-prefixes="#all">
   <!-- ================================================================== -->
   <!--~
@@ -48,7 +48,7 @@
 
   <!-- ================================================================== -->
 
-  <xsl:function name="xtlc:month-name" as="xs:string">
+  <xsl:function name="xtlc:month-name" as="xs:string" visibility="public">
     <!--~ Returns the name of a month. -->
     <xsl:param name="month-number" as="xs:integer">
       <!--~ The month number (1-12). -->
@@ -74,7 +74,7 @@
 
   <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 
-  <xsl:function name="xtlc:month-name-short" as="xs:string">
+  <xsl:function name="xtlc:month-name-short" as="xs:string" visibility="public">
     <!--~ Returns the name of a month in short (abbreviated to 3 characters). -->
     <xsl:param name="month-number" as="xs:integer">
       <!--~ The month number (1-12). -->
@@ -95,7 +95,7 @@
 
   <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 
-  <xsl:function name="xtlc:format-date-as-text" as="xs:string">
+  <xsl:function name="xtlc:format-date-as-text" as="xs:string" visibility="public">
     <!--~ Formats a date as a string with the month name in full.  -->
     <xsl:param name="date" as="xs:date">
       <!--~ The date to format. -->
@@ -120,7 +120,7 @@
 
   <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 
-  <xsl:function name="xtlc:format-date-as-text-short" as="xs:string">
+  <xsl:function name="xtlc:format-date-as-text-short" as="xs:string" visibility="public">
     <!--~ Formats a date as a string with the month name in short.  -->
     <xsl:param name="date" as="xs:date">
       <!--~ The date to format. -->
@@ -141,7 +141,7 @@
 
   <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 
-  <xsl:function name="xtlc:days-in-month" as="xs:integer">
+  <xsl:function name="xtlc:days-in-month" as="xs:integer" visibility="public">
     <!--~ Computes the number of days in a particular month. If values are out of range it returns 0. -->
     <xsl:param name="month-number" as="xs:integer">
       <!--~ The month to calculate the number of days for.  -->
@@ -165,7 +165,7 @@
 
   <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 
-  <xsl:function name="xtlc:is-leap-year" as="xs:boolean">
+  <xsl:function name="xtlc:is-leap-year" as="xs:boolean" visibility="public">
     <!--~ Returns true when a given year is a leap year  -->
     <xsl:param name="year" as="xs:integer">
       <!--~ The year to check. -->
@@ -176,7 +176,7 @@
 
   <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 
-  <xsl:function name="xtlc:day-in-year-number" as="xs:integer">
+  <xsl:function name="xtlc:day-in-year-number" as="xs:integer" visibility="public">
     <!--~ 
       Computes the day number in the year: January 1 is 1, December 31 is 365 (or 366 in leap years).
     -->
@@ -193,7 +193,7 @@
 
   <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 
-  <xsl:function name="xtlc:week-number" as="xs:integer">
+  <xsl:function name="xtlc:week-number" as="xs:integer" visibility="public">
     <!--~ 
       Computes the ISO week number for a given date.
     -->
@@ -230,7 +230,7 @@
 
   <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 
-  <xsl:function name="xtlc:weekday-name" as="xs:string">
+  <xsl:function name="xtlc:weekday-name" as="xs:string" visibility="public">
     <!--~ Returns the name of a month. -->
     <xsl:param name="day-number" as="xs:integer">
       <!--~ The day number (1-7). -->
@@ -256,7 +256,7 @@
 
   <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 
-  <xsl:function name="xtlc:weekday-number" as="xs:integer">
+  <xsl:function name="xtlc:weekday-number" as="xs:integer" visibility="public">
     <!--~ The number of the weekday (1=Monday, 7=Sunday). -->
     <xsl:param name="date" as="xs:date">
       <!--~ Date to use. -->
@@ -292,7 +292,7 @@
 
   <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 
-  <xsl:function name="xtlc:to-date" as="xs:date">
+  <xsl:function name="xtlc:to-date" as="xs:date" visibility="public">
     <!--~ Creates a date from its components. -->
     <xsl:param name="day" as="xs:integer">
       <!--~ Day number to use. -->
@@ -321,7 +321,7 @@
 
   <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 
-  <xsl:function name="xtlc:unix-epoch" as="xs:decimal">
+  <xsl:function name="xtlc:unix-epoch" as="xs:decimal" visibility="public">
     <!--~ Computes the UNIX "epoch" code (number of seconds since 1-1-1970) for a given date/time.  -->
     <xsl:param name="datetime" as="xs:dateTime">
       <!--~ The date/time to compute the epoch code for. -->

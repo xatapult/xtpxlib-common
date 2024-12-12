@@ -27,7 +27,7 @@
   <!-- ================================================================== -->
   <!-- INTERFACE: -->
 
-  <xsl:function name="xtlc:parameters-get" as="map(xs:string, xs:string*)">
+  <xsl:function name="xtlc:parameters-get" as="map(xs:string, xs:string*)" visibility="public">
     <!--~
       Tries to locate a `<parameters>` element (in any namespace) underneath `$root-item` and processes the child `<parameter>` and 
       `<group>` elements in here into a parameter map.
@@ -56,14 +56,14 @@
         <xsl:with-param name="filters" as="map(xs:string, xs:string*)?" tunnel="yes" select="$filters"/>
       </xsl:apply-templates>
     </xsl:variable>
-    
+
     <!-- Merge the maps and expand any parameter references in the values: -->
     <xsl:sequence select="map:merge($parameter-maps, map{'duplicates': 'combine'}) => local:expand-map()"/>
   </xsl:function>
 
   <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 
-  <xsl:function name="xtlc:expand-text-against-parameters" as="xs:string">
+  <xsl:function name="xtlc:expand-text-against-parameters" as="xs:string" visibility="public">
     <!--~
       Expands parameter references in `$text` (either `{$...}` or `${...}`) against the parameters in `$parameter-map`. 
       If a parameter has multiple values, only the first one is used.
@@ -106,7 +106,7 @@
   <!-- ================================================================== -->
   <!-- SUPPORT: -->
 
-  <xsl:function name="local:normalize-name" as="xs:string">
+  <xsl:function name="local:normalize-name" as="xs:string" visibility="private">
     <!-- Normalizes a name and replaces spaces by underscores. -->
     <xsl:param name="name-raw" as="xs:string"/>
     <xsl:sequence select="$name-raw => normalize-space() => translate(' ', '_')"/>
@@ -114,7 +114,7 @@
 
   <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 
-  <xsl:function name="local:check-filters" as="xs:boolean">
+  <xsl:function name="local:check-filters" as="xs:boolean" visibility="private">
     <!-- 
       Checks the attributes on a <value> element against the settings in $filters.
       Attributes are considered to be whitespace separated lists of values.
@@ -145,7 +145,7 @@
 
   <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 
-  <xsl:function name="local:expand-map" as="map(xs:string, xs:string*)?">
+  <xsl:function name="local:expand-map" as="map(xs:string, xs:string*)?" visibility="private">
     <!-- 
       Expands all parameter references (either ${...} or {$...}) in the entries of $parameter-map. Returns a new map.
       Checks for circular references.
@@ -167,7 +167,7 @@
 
   <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 
-  <xsl:function name="local:expand-text" as="xs:string">
+  <xsl:function name="local:expand-text" as="xs:string" visibility="private">
     <!-- 
       Expands a string value against the parameters in $parameter-map. Checks for circular references.
       If a parameter has multiple values, only the first one is used.

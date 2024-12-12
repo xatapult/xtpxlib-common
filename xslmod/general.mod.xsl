@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet version="2.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xs="http://www.w3.org/2001/XMLSchema"
+<xsl:stylesheet version="3.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xs="http://www.w3.org/2001/XMLSchema"
   xmlns:local="#local.btj_4bn_zhb" xmlns:xtlc="http://www.xtpxlib.nl/ns/common" exclude-result-prefixes="#all">
   <!-- ================================================================== -->
   <!--~
@@ -65,7 +65,7 @@
   <!-- ================================================================== -->
   <!-- GENERAL STRING HANDLING: -->
 
-  <xsl:function name="xtlc:char-repeat" as="xs:string">
+  <xsl:function name="xtlc:char-repeat" as="xs:string" visibility="public">
     <!--~ Returns a string with a single character repeated a given number of times. -->
     <xsl:param name="char" as="xs:string">
       <!--~ The first character of this string is the character to repeat. If empty, an empty string is returned. -->
@@ -87,7 +87,7 @@
 
   <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 
-  <xsl:function name="xtlc:q" as="xs:string">
+  <xsl:function name="xtlc:q" as="xs:string" visibility="public">
     <!--~ Returns the input string quoted (`"$in"`) -->
     <xsl:param name="in" as="xs:string?">
       <!--~ String to convert. -->
@@ -98,7 +98,7 @@
 
   <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 
-  <xsl:function name="xtlc:capitalize" as="xs:string">
+  <xsl:function name="xtlc:capitalize" as="xs:string" visibility="public">
     <!--~ Capitalizes a string (makes the first character uppercase). -->
     <xsl:param name="in" as="xs:string">
       <!--~ The string to work on. -->
@@ -109,7 +109,7 @@
 
   <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 
-  <xsl:function name="xtlc:prefix-to-length" as="xs:string">
+  <xsl:function name="xtlc:prefix-to-length" as="xs:string" visibility="public">
     <!--~ Prefixes a string with a given character so it will get at least a given length. -->
     <xsl:param name="in" as="xs:string">
       <!--~ String to prefix -->
@@ -133,37 +133,63 @@
     </xsl:choose>
 
   </xsl:function>
-  
+
   <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
-  
-  <xsl:function name="xtlc:str2regexp" as="xs:string">
+
+  <xsl:function name="xtlc:str2regexp" as="xs:string" visibility="public">
     <!--~ Turns a string into a regular expression that matches the input exactly. Optionally anchors the regular expression so
       the match will be on this string *only* (result starts with `^` and ends with `$`). -->
     <xsl:param name="in" as="xs:string?">
       <!--~ String to convert  -->
     </xsl:param>
-    <xsl:param name="anchor" as="xs:boolean" >
+    <xsl:param name="anchor" as="xs:boolean">
       <!--~ If true, the resulting string will be anchored (start with `^` and ends with `$`)  -->
     </xsl:param>
-    
+
     <xsl:variable name="regexp-string" as="xs:string" select="replace(string($in), '([.\\?*+|\^${}()\[\]])', '\\$1')"/>
     <xsl:sequence select="if ($anchor) then ('^'  || $regexp-string || '$') else $regexp-string"/>
   </xsl:function>
-  
+
   <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
-  
-  <xsl:function name="xtlc:str2regexp" as="xs:string">
+
+  <xsl:function name="xtlc:str2regexp" as="xs:string" visibility="public">
     <!--~ Turns a string into a regular expression that matches the input exactly. -->
     <xsl:param name="in" as="xs:string?">
       <!--~ String to convert  -->
     </xsl:param>
     <xsl:sequence select="xtlc:str2regexp($in, false())"/>
   </xsl:function>
-  
+
+  <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+
+  <xsl:function name="xtlc:str2filename-safe" as="xs:string" visibility="public">
+    <!--~ Replaces all characters in a string that are not allowed in filenames with another character.  -->
+    <xsl:param name="in" as="xs:string?">
+      <!--~ String to convert  -->
+    </xsl:param>
+    <xsl:param name="replace-char" as="xs:string?">
+      <!--~ String to replace invalid characters with. Only first character is used. If empty, `_` is used. -->
+    </xsl:param>
+
+    <xsl:variable name="replace-char-to-use" as="xs:string"
+      select="if (string-length($replace-char) lt 1) then '_' else substring($replace-char, 1, 1)"/>
+    <xsl:sequence select="replace($in, '[\\/:*?&quot;&lt;&gt;|]', $replace-char-to-use)"/>
+  </xsl:function>
+
+  <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+
+  <xsl:function name="xtlc:str2filename-safe" as="xs:string" visibility="public">
+    <!--~ Replaces all characters in a string that are not allowed in filenames with an underscore.  -->
+    <xsl:param name="in" as="xs:string?">
+      <!--~ String to convert  -->
+    </xsl:param>
+    <xsl:sequence select="xtlc:str2filename-safe($in, '_')"/>
+  </xsl:function>
+
   <!-- ================================================================== -->
   <!-- CONTEXT: -->
 
-  <xsl:function name="xtlc:item2element" as="element()?">
+  <xsl:function name="xtlc:item2element" as="element()?" visibility="public">
     <!--~ 
       Tries to find the element belonging to a given item.
       
@@ -226,7 +252,7 @@
   <!-- ================================================================== -->
   <!-- CONVERSIONS FROM STRING: -->
 
-  <xsl:function name="xtlc:str2bln" as="xs:boolean">
+  <xsl:function name="xtlc:str2bln" as="xs:boolean" visibility="public">
     <!--~ 
       Safe conversion of a string into a boolean.
       
@@ -254,7 +280,7 @@
 
   <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 
-  <xsl:function name="xtlc:str2int" as="xs:integer">
+  <xsl:function name="xtlc:str2int" as="xs:integer" visibility="public">
     <!--~ 
       Safe conversion of a string to an integer.
       
@@ -282,7 +308,7 @@
 
   <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 
-  <xsl:function name="xtlc:str2seq" as="xs:string*">
+  <xsl:function name="xtlc:str2seq" as="xs:string*" visibility="public">
     <!--~ Converts a string with a list of words into a sequence of words. -->
     <xsl:param name="in" as="xs:string?">
       <!--~ String to convert. -->
@@ -300,7 +326,7 @@
 
   <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 
-  <xsl:function name="xtlc:str2id" as="xs:string">
+  <xsl:function name="xtlc:str2id" as="xs:string" visibility="public">
     <!--~ 
       Turns a string into a valid identifier, adding a prefix.
       
@@ -328,7 +354,7 @@
 
   <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 
-  <xsl:function name="xtlc:str2id" as="xs:string">
+  <xsl:function name="xtlc:str2id" as="xs:string" visibility="public">
     <!--~ 
       Turns a string into a valid identifier.
       
@@ -346,7 +372,7 @@
   <!-- ================================================================== -->
   <!-- CONVERSIONS TO STRING: -->
 
-  <xsl:function name="xtlc:att2str" as="xs:string">
+  <xsl:function name="xtlc:att2str" as="xs:string" visibility="public">
     <!--~ Turns an attribute into a string representation, suitable for display (e.g. `name="value"`). -->
     <xsl:param name="att" as="attribute()?">
       <!--~ Attribute to convert. -->
@@ -364,7 +390,7 @@
 
   <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 
-  <xsl:function name="xtlc:elm2str" as="xs:string">
+  <xsl:function name="xtlc:elm2str" as="xs:string" visibility="public">
     <!--~ Turns an element into a descriptive string (the element with all its attributes, excluding schema references). -->
     <xsl:param name="elm" as="element()?">
       <!--~ Element to convert  -->
@@ -391,7 +417,7 @@
 
   <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 
-  <xsl:function name="xtlc:items2str" as="xs:string">
+  <xsl:function name="xtlc:items2str" as="xs:string" visibility="public">
     <!--~ Creates a string from a sequence of items. 
       
       Useful for easy creation of messages consisting of multiple parts and pieces. -->
@@ -430,7 +456,7 @@
 
   <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 
-  <xsl:function name="xtlc:text2lines" as="xs:string*">
+  <xsl:function name="xtlc:text2lines" as="xs:string*" visibility="public">
     <!--~
       Converts text into separate lines.
       
@@ -471,8 +497,7 @@
     <xsl:choose>
       <xsl:when test="$normalize-indents">
         <!-- Find the minimum indent: -->
-        <xsl:variable name="minimum-leading-whitespace" as="xs:integer"
-          select="if (empty($textlines-2)) 
+        <xsl:variable name="minimum-leading-whitespace" as="xs:integer" select="if (empty($textlines-2)) 
             then 0 
             else min(for $markdown-line in $textlines-2[normalize-space(.) ne ''] return xtlc:count-leading-whitespace($markdown-line))"/>
         <xsl:for-each select="$textlines-2">
@@ -495,7 +520,7 @@
 
   <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 
-  <xsl:function name="xtlc:count-leading-whitespace" as="xs:integer">
+  <xsl:function name="xtlc:count-leading-whitespace" as="xs:integer" visibility="public">
     <!--~ Counts the number of whitespace characters at the beginning of a string  -->
     <xsl:param name="text" as="xs:string">
       <!--~ Text to work on. -->

@@ -1,4 +1,5 @@
-# `xtpxlib-common`: Xatapult XML Library - Common component: Shared libraries and IDE support
+<?xml version="1.0" encoding="UTF-8"?>
+<README xml:space="preserve"># `xtpxlib-common`: Xatapult XML Library - Common component: Shared libraries and IDE support
 
 **Xatapult Content Engineering - [`http://www.xatapult.com`](http://www.xatapult.com)**
 
@@ -12,7 +13,7 @@
 
 ## Technical information
 
-Component version: V2.0.1 - 2023-07-22
+Component version: V3.0 - 2024-12-12
 
 Documentation: [`https://common.xtpxlib.org`](https://common.xtpxlib.org)
 
@@ -24,7 +25,11 @@ Git site: [`https://github.com/xatapult/xtpxlib-common`](https://github.com/xata
 
 ## Version history
 
-**V2.0.1 - 2023-07-22 (current)**
+**V3.0 - 2024-12-12 (current)**
+
+Deprecation of XProc 1.0. Several fixes.
+
+**V2.0.1 - 2023-07-22**
 
 Weekday-number and week-number calculations now also work with Saxon HE.
 
@@ -73,5 +78,6 @@ Pre-release to test GitHub pages functionality
 
 
 -----------
-*Generated: 2023-07-22 15:32:43*
+*Generated: 2024-12-12 15:04:26*
 
+</README>
