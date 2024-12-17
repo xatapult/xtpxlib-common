@@ -539,7 +539,76 @@
     </xsl:choose>
 
   </xsl:function>
-
+  
+  <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+  
+  <xsl:function name="xtlc:wrap-text" as="xs:string*">
+    <!--~ Takes a string, converts this into words, and puts the words back together again, trying to keep the 
+          maximum length of every line below `$line-length`. This is not guaranteed, because there may be words 
+          that are longer than this!
+          
+          If `$line-length` is le 0, the function acts like normalize-space().
+          
+          Any leading and trailing whitespace gets lost. 
+    -->
+    <xsl:param name="in" as="xs:string">
+      <!--~ The input string. An empty sequence returns an empty sequence. -->
+    </xsl:param>
+    <xsl:param name="line-length" as="xs:integer">
+      <!--~ The maximum line length. If this is le 0, nothing is done beside normalizing the input. -->
+    </xsl:param>
+    
+    <xsl:variable name="in-normalized" as="xs:string" select="normalize-space($in)"/>
+    <xsl:choose>
+      <xsl:when test="$line-length le 0">
+        <!-- Nothing to do. -->
+        <xsl:sequence select="$in-normalized"/>
+      </xsl:when>
+      <xsl:when test="empty($in)">
+        <!-- No input, no output. -->
+        <xsl:sequence select="()"/>
+      </xsl:when>
+      <xsl:when test="string-length($in-normalized) le $line-length">
+        <!-- Line is already short enough. -->
+        <xsl:sequence select="$in-normalized"/>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:sequence select="local:wrap-text-helper($line-length, xtlc:str2seq($in-normalized), (), ())"/>
+      </xsl:otherwise>  
+    </xsl:choose>
+  </xsl:function>
+  
+  <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+  
+  <xsl:function name="local:wrap-text-helper" as="xs:string*">
+    <xsl:param name="line-length" as="xs:integer"/>
+    <xsl:param name="remaining-words" as="xs:string*"/>
+    <xsl:param name="lines-sofar" as="xs:string*" />
+    <xsl:param name="current-line" as="xs:string?">
+      <!-- The line we're currently building up -->
+    </xsl:param>
+    
+    <xsl:choose>
+      <xsl:when test="empty($remaining-words)">
+        <!-- No more words, this is it. -->
+        <xsl:sequence select="($lines-sofar, $current-line)"/>
+      </xsl:when>
+      <xsl:when test="empty($current-line)">
+        <!-- This is the start of a line. There's always at least one word on a line. -->
+        <xsl:sequence select="local:wrap-text-helper($line-length, subsequence($remaining-words, 2), $lines-sofar, $remaining-words[1])"/>
+      </xsl:when>
+      <xsl:when test="(string-length($current-line) + 1 + string-length($remaining-words[1])) gt $line-length">
+        <!-- The next word does no longer fit. Start a new line. -->
+        <xsl:sequence select="local:wrap-text-helper($line-length, $remaining-words, ($lines-sofar, $current-line), ())"/>
+      </xsl:when>
+      <xsl:otherwise>
+        <!-- The next word fits. -->
+        <xsl:sequence select="local:wrap-text-helper($line-length, subsequence($remaining-words, 2), $lines-sofar, string-join(($current-line, $remaining-words[1]), ' '))"/>
+      </xsl:otherwise>  
+    </xsl:choose>
+    
+  </xsl:function>
+  
   <!-- ================================================================== -->
   <!-- ERROR HANDLING/RAISING -->
 
