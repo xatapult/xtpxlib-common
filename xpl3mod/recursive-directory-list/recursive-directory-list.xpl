@@ -71,9 +71,10 @@
     <p:catch>
       <p:identity>
         <p:with-input>
-          <c:directory xml:base="{$path}" name="{(tokenize($path, '/')[.])[last()]}" error="true"/>
+          <c:directory name="{(tokenize($path, '/')[.])[last()]}" error="true"/>
         </p:with-input>
       </p:identity>
+      <p:add-attribute attribute-name="xml:base" attribute-value="$path"/>
     </p:catch>
   </p:try>
 
