@@ -499,7 +499,7 @@
         <!-- Find the minimum indent: -->
         <xsl:variable name="minimum-leading-whitespace" as="xs:integer" select="if (empty($textlines-2)) 
             then 0 
-            else min(for $markdown-line in $textlines-2[normalize-space(.) ne ''] return xtlc:count-leading-whitespace($markdown-line))"/>
+            else min(for $line in $textlines-2[normalize-space(.) ne ''] return xtlc:count-leading-whitespace($line))"/>
         <xsl:for-each select="$textlines-2">
           <xsl:choose>
             <xsl:when test="normalize-space(.) eq ''">
