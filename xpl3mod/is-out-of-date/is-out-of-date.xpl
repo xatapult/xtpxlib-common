@@ -8,37 +8,27 @@
   </p:documentation>
 
   <!-- ======================================================================= -->
-  <!-- IMPORTS: -->
-
-
-  <!-- ======================================================================= -->
-  <!-- DEVELOPMENT SETTINGS: -->
-
-  <p:option name="develop-is-out-of-date" as="xs:boolean" static="true" select="false()"/>
-
-  <!-- ======================================================================= -->
   <!-- PORTS: -->
 
-  <p:output port="result" primary="true" sequence="false" content-types="xml" serialization="map{'method': 'xml', 'indent': true()}">
+  <p:output port="result" primary="true" sequence="false" content-types="xml">
     <p:documentation>A single c:result document, containing either true (out-of-date) or false(not out-of-date).</p:documentation>
   </p:output>
 
   <!-- ======================================================================= -->
   <!-- OPTIONS: -->
 
-  <p:option name="href-sources" as="xs:string+" required="true" use-when="not($develop-is-out-of-date)">
+  <p:option name="href-sources" as="xs:string+" required="true">
     <p:documentation>A list of source files. These files must exist.</p:documentation>
   </p:option>
-  <p:option name="href-sources" as="xs:string+" required="false"
-    select="(resolve-uri('test/source-01.xml', static-base-uri()), resolve-uri('test/source-02.xml', static-base-uri()))"
-    use-when="$develop-is-out-of-date"/>
 
-  <p:option name="href-targets" as="xs:string+" required="true" use-when="not($develop-is-out-of-date)">
+
+  <p:option name="href-targets" as="xs:string+" required="true">
     <p:documentation>A list of target files. If one of these does not exist, the whole thing is out-of-date.</p:documentation>
   </p:option>
-  <p:option name="href-targets" as="xs:string+" required="false"
-    select="(resolve-uri('test/target-01.xml', static-base-uri()), resolve-uri('test/target-02.xml', static-base-uri()))"
-    use-when="$develop-is-out-of-date"/>
+
+  <p:option name="process-xincludes" as="xs:boolean" required="false" select="false()">
+    <p:documentation>Whether to take XInclude-d files also into account (recursively).</p:documentation>
+  </p:option>
 
   <!-- ======================================================================= -->
 
@@ -47,6 +37,7 @@
     <p:output port="result" primary="true" sequence="true" content-types="xml"/>
 
     <p:option name="hrefs" required="true" as="xs:string+"/>
+    <p:option name="process-xincludes" as="xs:boolean" required="false" select="false()"/>
 
     <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 
@@ -55,9 +46,38 @@
         <dummy/>
       </p:with-input>
       <p:variable name="href" as="xs:string" select="string(.)"/>
-      <p:file-info fail-on-error="false">
-        <p:with-option name="href" select="$href"/>
-      </p:file-info>
+
+      <p:choose>
+        <p:when test="$process-xincludes and doc-available($href)">
+
+          <!-- Get a complete file list: -->
+          <p:xslt>
+            <p:with-input href="{$href}"/>
+            <p:with-input port="stylesheet" href="xsl/process-xincludes.xsl"/>
+          </p:xslt>
+          <p:variable name="hrefs-xinclude" as="xs:string*" select=".?_"/>
+
+          <!-- Process this: -->
+          <p:for-each>
+            <p:with-input select="$hrefs-xinclude">
+              <dummy/>
+            </p:with-input>
+            <p:variable name="href" as="xs:string" select="string(.)"/>
+            <p:file-info fail-on-error="false">
+              <p:with-option name="href" select="$href"/>
+            </p:file-info>
+          </p:for-each>
+
+        </p:when>
+
+        <!-- No XInclude checking or the file does not exist, straight file-info: -->
+        <p:otherwise>
+          <p:file-info fail-on-error="false">
+            <p:with-option name="href" select="$href"/>
+          </p:file-info>
+        </p:otherwise>
+      </p:choose>
+
     </p:for-each>
 
   </p:declare-step>
@@ -68,10 +88,11 @@
   <!-- Create a single document with info about all sources and targets: -->
   <local:get-file-infos>
     <p:with-option name="hrefs" select="$href-sources"/>
+    <p:with-option name="process-xincludes" select="$process-xincludes"/>
   </local:get-file-infos>
   <p:wrap-sequence wrapper="sources" name="sources-info"/>
 
-  <local:get-file-infos>
+  <local:get-file-infos process-xincludes="false">
     <p:with-option name="hrefs" select="$href-targets"/>
   </local:get-file-infos>
   <p:wrap-sequence wrapper="targets" name="targets-info"/>
