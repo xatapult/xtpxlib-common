@@ -12,11 +12,6 @@
 
 
   <!-- ======================================================================= -->
-  <!-- DEVELOPMENT SETTINGS: -->
-
-  <p:option name="develop" as="xs:boolean" static="true" select="false()"/>
-
-  <!-- ======================================================================= -->
   <!-- PORTS: -->
 
   <p:input port="source" primary="true" sequence="false" content-types="xml">
