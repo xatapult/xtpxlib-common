@@ -40,7 +40,13 @@
   <p:option name="add-macrodef-comments" as="xs:boolean" required="false" select="false()">
     <p:documentation>Whether to add a macro definition comment (summarizing all macro definitions) when a `&lt;*:macrodefs>` element is processed.</p:documentation>
   </p:option>
-
+  <p:option name="ignore-elements" as="xs:string*" required="false" select="()">
+    <p:documentation>Element names to ignore.</p:documentation>
+  </p:option>
+  <p:option name="ignore-attributes" as="xs:string*" required="false" select="()">
+    <p:documentation>Attribute names to ignore.</p:documentation>
+  </p:option>
+  
 
   <!-- ================================================================== -->
   <!-- MAIN: -->
@@ -53,7 +59,9 @@
       'expand-in-text': $expand-in-text,  
       'expand-in-attributes': $expand-in-attributes,  
       'use-local-macrodefs': $use-local-macrodefs,  
-      'add-macrodef-comments': $add-macrodef-comments  
+      'add-macrodef-comments': $add-macrodef-comments,
+      'ignore-elements': $ignore-elements,
+      'ignore-attributes': $ignore-attributes
     }"/>
   </p:xslt>
 

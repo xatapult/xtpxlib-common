@@ -40,6 +40,12 @@
   <xsl:param name="add-macrodef-comments" as="xs:boolean" required="false" select="false()">
     <!--~ Whether to add a macro definition comment (summarizing all macro definitions) when a `<*:macrodefs>` element is processed. -->
   </xsl:param>
+  <xsl:param name="ignore-elements" as="xs:string*" required="false" select="()">
+    <!-- Element names to ignore (local name, namespace independent). -->
+  </xsl:param>
+  <xsl:param name="ignore-attributes" as="xs:string*" required="false" select="()">
+    <!-- Attribute names to ignore (local name, namespace independent). -->
+  </xsl:param>
 
   <!-- ================================================================== -->
 
@@ -51,6 +57,8 @@
       <xsl:with-param name="expand-in-attributes" select="$expand-in-attributes"/>
       <xsl:with-param name="use-local-macrodefs" select="$use-local-macrodefs"/>
       <xsl:with-param name="add-macrodef-comments" select="$add-macrodef-comments"/>
+      <xsl:with-param name="ignore-elements" select="$ignore-elements"/>
+      <xsl:with-param name="ignore-attributes" select="$ignore-attributes"/>
     </xsl:call-template>
   </xsl:template>
 
