@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<section xmlns="http://www.eriksiegel.nl/ns/sml" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.eriksiegel.nl/ns/sml file:/xatapult/xtpxlib-sml/xsd/sml.xsd" xmlns:xi="http://www.w3.org/2001/XInclude"
+  id="macro-mechanism">
+  <title>The macro mechanism</title>
+
+  <!-- ======================================================================= -->
+
+  <xi:include href="include/base-sections.xml"/>
+
+  <!-- ======================================================================= -->
+
+</section>
