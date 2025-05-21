@@ -135,9 +135,9 @@
     <element name="macrodef">
       <attributes>
         <attribute name="name" type="xs:NCName" required="true">
-          <para>The name of the macro. Convention is to use all-uppercase.</para>
+          <para>The name of the macro. Convention is to use all upper-case.</para>
         </attribute>
-        <attribute name="value" type="">
+        <attribute name="value" type="xs:string">
           <para>The value for the macro. Can contain nested references to other macros.</para>
         </attribute>
       </attributes>
