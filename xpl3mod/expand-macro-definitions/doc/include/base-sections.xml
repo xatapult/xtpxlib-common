@@ -7,6 +7,9 @@
   <para>The macro mechanism allows using and defining string macros.</para>
 
   <section>
+    <macrodefs>
+      <macrodef name="REF" value="alpha:beta"/>
+    </macrodefs>
     <title>Using macros</title>
 
     <para>A reference to a parameter can be done in two different ways:</para>
@@ -27,8 +30,8 @@
       <title>Macro expansion flags</title>
 
       <para>A macro reference can be followed by zero or more flags, separated by colons (<code>:</code>). Assume for instance that the macro called
-          <code>REF</code> contains the value <code>alpha:beta</code>. Then referring to it as <code>${{REF:uc}</code> results in
-          <code>ALPHA:BETA</code> (everything upper-case). Referring to is as <code>${{REF:uc:fns}</code> will result in <code>APLHA_BETA</code>
+          <code>REF</code> contains the value <code>{$REF}</code>. Then referring to it as <code>${{REF:uc}</code> results in
+          <code>{$REF:uc}</code> (everything upper-case). Referring to is as <code>${{REF:uc:fns}</code> will result in <code>{$REF:uc:fns}</code>
         (everything upper-case, filename-safe).</para>
       <para>The following flags are defined:</para>
 
