@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-model href="visit-each-example-schema.sch" type="application/xml" schematypens="http://purl.oclc.org/dsdl/schematron"?>
+<descriptions>
+  <description> The part CD2345 consists of CD456 and CD234a.</description>
+</descriptions>
