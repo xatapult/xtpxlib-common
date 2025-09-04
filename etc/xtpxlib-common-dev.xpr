@@ -428,6 +428,7 @@
         <folder masterFiles="true" name="Master Files">
             <file name="xtpxlib-common-oxygen-project-master.xsl"/>
         </folder>
+        <folder path="../../xtools/"/>
         <folder path="../"/>
         <folder path="../../xtpxlib-webdoc/"/>
         <folder path="../../xtpxlib-xdoc/"/>
