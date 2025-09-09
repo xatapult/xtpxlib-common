@@ -83,21 +83,21 @@
   </p:if>
 
   <!-- At last, perform the validation: -->
-  
-  <!-- Remark: There seems to be a bug in Morgana passing compilation parameters, so we do it using the transpiler directly. -->
-  <!--<p:validate-with-schematron assert-valid="false" report-format="svrl">
+  <p:variable name="compiler-options" as="map(xs:QName, xs:anyAtomicType)" select="map{ 'schxslt:expand-text': true() }"/>
+  <p:validate-with-schematron assert-valid="false" report-format="svrl">
     <p:with-input port="source" pipe="source@validate-with-schematron-2025"/>
     <p:with-input port="schema" pipe="result@schematron-schema"/>
     <p:with-option name="phase" select="$phase"/>
-    <p:with-option name="parameters" select="map{ 
-        'c:compile': map{ 'schxslt:expand-text': true() }
-      }"/>
+    <p:with-option name="parameters" select="map{ 'c:compile': $compiler-options }"/>
   </p:validate-with-schematron>
   <p:identity>
     <p:with-input pipe="report"/>
-  </p:identity>-->
+  </p:identity>
   
-  <p:xslt name="compiled-schema">
+  <!-- The following code uses the transpiler directly. This is no longer necessary, 
+    I thought p:validate-with-schematron didn't pass the compiler arguments ok, 
+    but that was a misunderstanding on my side. Just kept the code here for future reference. -->
+  <!--<p:xslt name="compiled-schema">
     <p:with-input pipe="result@schematron-schema"/>
     <p:with-input port="stylesheet" href="file:/xatapult/xtools/schxslt2/transpile.xsl"/>
     <p:with-option name="parameters" select="map{ 'schxslt:expand-text': true() }"/>
@@ -106,6 +106,6 @@
   <p:xslt>
     <p:with-input port="stylesheet" pipe="result@compiled-schema"/>
     <p:with-input port="source" pipe="source@validate-with-schematron-2025"/>
-  </p:xslt>
+  </p:xslt>-->
 
 </p:declare-step>
