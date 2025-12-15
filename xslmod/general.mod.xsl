@@ -95,6 +95,17 @@
 
     <xsl:sequence select="concat('&quot;', $in, '&quot;')"/>
   </xsl:function>
+  
+  <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+  
+  <xsl:function name="xtlc:apos" as="xs:string" visibility="public">
+    <!--~ Returns the input string single-quoted (`'$in'`) -->
+    <xsl:param name="in" as="xs:string?">
+      <!--~ String to convert. -->
+    </xsl:param>
+    
+    <xsl:sequence select="concat('''', $in, '''')"/>
+  </xsl:function>
 
   <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 

@@ -74,7 +74,7 @@
           <c:directory name="{(tokenize($path, '/')[.])[last()]}" error="true"/>
         </p:with-input>
       </p:identity>
-      <p:add-attribute attribute-name="xml:base" attribute-value="$path"/>
+      <p:add-attribute attribute-name="xml:base" attribute-value="{$path}"/>
     </p:catch>
   </p:try>
 

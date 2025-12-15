@@ -133,9 +133,10 @@
     <p:otherwise>
       <p:variable name="sources-max-last-modified" as="xs:dateTime" select="max(/*/sources/c:file/@last-modified ! xs:dateTime(.))"/>
       <p:variable name="targets-min-last-modified" as="xs:dateTime" select="min(/*/targets/c:file/@last-modified ! xs:dateTime(.))"/>
+      <p:variable name="out-of-date" as="xs:boolean" select="$targets-min-last-modified le $sources-max-last-modified"/>
       <p:identity>
         <p:with-input>
-          <c:result>{$targets-min-last-modified le $sources-max-last-modified}</c:result>
+          <c:result>{$out-of-date}</c:result>
         </p:with-input>
       </p:identity>
     </p:otherwise>
