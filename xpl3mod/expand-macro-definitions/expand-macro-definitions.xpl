@@ -25,28 +25,34 @@
   <p:option name="use-standard-macrodefs" as="xs:boolean" required="false" select="true()">
     <p:documentation>Whether to use the standard macro definitions.</p:documentation>
   </p:option>
+  
   <p:option name="macrodefs" as="map(xs:string, xs:string)*" required="false" select="()">
     <p:documentation>Any initial macro definitions.</p:documentation>
   </p:option>
+  
   <p:option name="expand-in-text" as="xs:boolean" required="false" select="true()">
     <p:documentation>Whether to expand the macro definitions in text nodes.</p:documentation>
   </p:option>
+  
   <p:option name="expand-in-attributes" as="xs:boolean" required="false" select="true()">
     <p:documentation>Whether to expand the macro definitions in attributes.</p:documentation>
   </p:option>
+  
   <p:option name="use-local-macrodefs" as="xs:boolean" required="false" select="true()">
     <p:documentation>Check for `&lt;*:macrodefs>` element as first child and process accordingly</p:documentation>
   </p:option>
+  
   <p:option name="add-macrodef-comments" as="xs:boolean" required="false" select="false()">
     <p:documentation>Whether to add a macro definition comment (summarizing all macro definitions) when a `&lt;*:macrodefs>` element is processed.</p:documentation>
   </p:option>
+  
   <p:option name="ignore-elements" as="xs:string*" required="false" select="()">
     <p:documentation>Element names to ignore.</p:documentation>
   </p:option>
+  
   <p:option name="ignore-attributes" as="xs:string*" required="false" select="()">
     <p:documentation>Attribute names to ignore.</p:documentation>
   </p:option>
-  
 
   <!-- ================================================================== -->
   <!-- MAIN: -->
