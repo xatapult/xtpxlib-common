@@ -7,9 +7,7 @@
   <para>The macro mechanism allows using and defining string macros.</para>
 
   <section>
-    <macrodefs>
-      <macrodef name="REF" value="alpha:beta"/>
-    </macrodefs>
+
     <title>Using macros</title>
 
     <para>A reference to a parameter can be done in two different ways:</para>
@@ -26,98 +24,102 @@
     <para>Referencing macros can be done in text nodes and attribute values. If the macro does not exist, an error will be raised.</para>
     <para><emphasis>Watch out:</emphasis> it is possible that the software that uses the macro mechanism limits where macros can be used!</para>
 
-    <section>
-      <title>Macro expansion flags</title>
+  </section>
 
-      <para>A macro reference can be followed by zero or more flags, separated by colons (<code>:</code>). Assume for instance that the macro called
-          <code>REF</code> contains the value <code>{$REF}</code>. Then referring to it as <code>${{REF:uc}</code> results in
-          <code>{$REF:uc}</code> (everything upper-case). Referring to is as <code>${{REF:uc:fns}</code> will result in <code>{$REF:uc:fns}</code>
-        (everything upper-case, filename-safe).</para>
-      <para>The following flags are defined:</para>
+  <!-- ======================================================================= -->
 
-      <table>
-        <header>
-          <entry>
-            <para>Flag</para>
-          </entry>
-          <entry>
-            <para>Description</para>
-          </entry>
-        </header>
-        <row>
-          <entry>
-            <para>
-              <code>cap</code>
-            </para>
-          </entry>
-          <entry>
-            <para>Capitalize the macro value (first character upper-case, rest as-is).</para>
-          </entry>
-        </row>
-        <row>
-          <entry>
-            <para>
-              <code>compact</code>
-            </para>
-          </entry>
-          <entry>
-            <para>Remove all whitespace.</para>
-          </entry>
-        </row>
-        <row>
-          <entry>
-            <para>
-              <code>fns</code>
-            </para>
-          </entry>
-          <entry>
-            <para>Filename safe expansion: replace all forbidden characters in a filename with underscores (<code>_</code>).</para>
-          </entry>
-        </row>
-        <row>
-          <entry>
-            <para>
-              <code>fnsx</code>
-            </para>
-          </entry>
-          <entry>
-            <para>Filename safe expansion extra: like the <code>fns</code> flag, additionally replace all whitespace characters with
-              underscores.</para>
-          </entry>
-        </row>
-        <row>
-          <entry>
-            <para>
-              <code>lc</code>
-            </para>
-          </entry>
-          <entry>
-            <para>All lower-case.</para>
-          </entry>
-        </row>
-        <row>
-          <entry>
-            <para>
-              <code>normalize</code>
-            </para>
-          </entry>
-          <entry>
-            <para>Normalize the macro value (like the <code>normalize-space()</code> function).</para>
-          </entry>
-        </row>
-        <row>
-          <entry>
-            <para>
-              <code>uc</code>
-            </para>
-          </entry>
-          <entry>
-            <para>All upper-case.</para>
-          </entry>
-        </row>
-      </table>
-    </section>
+  <section>
+    <macrodefs>
+      <macrodef name="REF" value="alpha:beta"/>
+    </macrodefs>
+    <title>Macro expansion flags</title>
 
+    <para>A macro reference can be followed by zero or more flags, separated by colons (<code>:</code>). Assume for instance that the macro called
+        <code>REF</code> contains the value <code>{$REF}</code>. Then referring to it as <code>${{REF:uc}</code> results in <code>{$REF:uc}</code>
+      (everything upper-case). Referring to is as <code>${{REF:uc:fns}</code> will result in <code>{$REF:uc:fns}</code> (everything upper-case,
+      filename-safe).</para>
+    <para>The following flags are defined:</para>
+
+    <table>
+      <header>
+        <entry>
+          <para>Flag</para>
+        </entry>
+        <entry>
+          <para>Description</para>
+        </entry>
+      </header>
+      <row>
+        <entry>
+          <para>
+            <code>cap</code>
+          </para>
+        </entry>
+        <entry>
+          <para>Capitalize the macro value (first character upper-case, rest as-is).</para>
+        </entry>
+      </row>
+      <row>
+        <entry>
+          <para>
+            <code>compact</code>
+          </para>
+        </entry>
+        <entry>
+          <para>Remove all whitespace.</para>
+        </entry>
+      </row>
+      <row>
+        <entry>
+          <para>
+            <code>fns</code>
+          </para>
+        </entry>
+        <entry>
+          <para>Filename safe expansion: replace all forbidden characters in a filename with underscores (<code>_</code>).</para>
+        </entry>
+      </row>
+      <row>
+        <entry>
+          <para>
+            <code>fnsx</code>
+          </para>
+        </entry>
+        <entry>
+          <para>Filename safe expansion extra: like the <code>fns</code> flag, additionally replace all whitespace characters with underscores.</para>
+        </entry>
+      </row>
+      <row>
+        <entry>
+          <para>
+            <code>lc</code>
+          </para>
+        </entry>
+        <entry>
+          <para>All lower-case.</para>
+        </entry>
+      </row>
+      <row>
+        <entry>
+          <para>
+            <code>normalize</code>
+          </para>
+        </entry>
+        <entry>
+          <para>Normalize the macro value (like the <code>normalize-space()</code> function).</para>
+        </entry>
+      </row>
+      <row>
+        <entry>
+          <para>
+            <code>uc</code>
+          </para>
+        </entry>
+        <entry>
+          <para>All upper-case.</para>
+        </entry>
+      </row>
+    </table>
   </section>
 
   <!-- ======================================================================= -->
