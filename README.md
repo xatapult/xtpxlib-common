@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<README xml:space="preserve"># `xtpxlib-common`: Xatapult XML Library - Common component: Shared libraries and IDE support
+# `xtpxlib-common`: Xatapult XML Library - Common component: Shared libraries and IDE support
 
 **Xatapult Content Engineering - [`http://www.xatapult.com`](http://www.xatapult.com)**
 
@@ -13,7 +12,7 @@
 
 ## Technical information
 
-Component version: V3.0 - 2024-12-12
+Component version: V3.1 - 2026-03-17
 
 Documentation: [`https://common.xtpxlib.org`](https://common.xtpxlib.org)
 
@@ -25,7 +24,11 @@ Git site: [`https://github.com/xatapult/xtpxlib-common`](https://github.com/xata
 
 ## Version history
 
-**V3.0 - 2024-12-12 (current)**
+**V3.1 - 2026-03-17 (current)**
+
+Several fixes and enhancements
+
+**V3.0 - 2024-12-12**
 
 Deprecation of XProc 1.0. Several fixes.
 
@@ -78,6 +81,5 @@ Pre-release to test GitHub pages functionality
 
 
 -----------
-*Generated: 2024-12-12 15:04:26*
+*Generated: 2026-03-17 08:48:38*
 
-</README>

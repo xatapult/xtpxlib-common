@@ -68,6 +68,28 @@
     <xsl:sequence select="starts-with($href, '/') or starts-with($href, '\') or contains($href, ':/') or matches($href, '^[a-zA-Z]:')"/>
 
   </xsl:function>
+  
+  <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+  
+  <xsl:function name="xtlc:href-make-uri" as="xs:string" visibility="public">
+    <!--~  
+      Turns the concatenation of path components into a true URI. If there is no protocol
+      the file protocol is used.
+    -->
+    <xsl:param name="href-path-components" as="xs:string*">
+      <!--~ The path components to concatenate into a full href. -->
+    </xsl:param>
+    
+    <xsl:variable name="href-combined" as="xs:string" select="xtlc:href-concat($href-path-components)"/>
+    <xsl:choose>
+      <xsl:when test="xtlc:href-is-absolute($href-combined)">
+        <xsl:sequence select="xtlc:href-canonical($href-combined) => xtlc:href-protocol-add($xtlc:protocol-file, false())"/>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:sequence select="$href-combined"/>
+      </xsl:otherwise>  
+    </xsl:choose>
+  </xsl:function>
 
   <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 

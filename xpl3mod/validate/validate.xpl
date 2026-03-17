@@ -2,7 +2,7 @@
 <p:declare-step xmlns:p="http://www.w3.org/ns/xproc" xmlns:c="http://www.w3.org/ns/xproc-step" xmlns:map="http://www.w3.org/2005/xpath-functions/map"
   xmlns:array="http://www.w3.org/2005/xpath-functions/array" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:local="#local.dr1_vbj_sxb"
   version="3.0" exclude-inline-prefixes="#all" xmlns:xtlc="http://www.xtpxlib.nl/ns/common" xmlns:svrl="http://purl.oclc.org/dsdl/svrl"
-  type="xtlc:validate" name="validate">
+  xmlns:vc="http://www.w3.org/2007/XMLSchema-versioning" type="xtlc:validate" name="validate">
 
   <p:documentation>
     This step performs validation using a W3C Schema and/or Schematron. It breaks the processing if something is wrong.
@@ -30,8 +30,8 @@
       no schema validation will be performed.</p:documentation>
   </p:option>
 
-  <p:option name="schema-version" as="xs:string" required="false" select="'1.0'">
-    <p:documentation>The W3C Schema version to use.</p:documentation>
+  <p:option name="schema-version" as="xs:string?" required="false" select="()">
+    <p:documentation>The W3C Schema version to use. If empty, the pipeline tries to detect the version.</p:documentation>
   </p:option>
 
   <p:option name="href-schematron" as="xs:string?" required="false" select="()">
@@ -43,16 +43,24 @@
     <p:documentation>Whether to simplify the error messages. Only output the first error.</p:documentation>
   </p:option>
 
+  <p:option name="enabled" as="xs:boolean" required="false" select="true()">
+    <p:documentation>Whether all validation is enabled. If false, nothing happens.</p:documentation>
+  </p:option>
+
   <!-- ================================================================== -->
   <!-- MAIN: -->
 
-  <p:if test="exists($href-schema)">
+  <p:if test="$enabled and exists($href-schema)">
+    <!-- Get the schema in and detect the schema-version, if requested: -->
+    <p:load href="{$href-schema}" name="schema"/>
+    <p:variable name="actual-schema-version" as="xs:string" select="string(($schema-version, /*/@vc:minVersion, '1.0')[1])"/>
+    <!-- Do the schema validations: -->
     <p:choose>
       <p:when test="$simplify-error-messages">
         <p:try>
-          <p:validate-with-xml-schema assert-valid="true" version="{$schema-version}">
+          <p:validate-with-xml-schema assert-valid="true" version="{$actual-schema-version}">
             <p:with-input port="source" pipe="source@validate"/>
-            <p:with-input port="schema" href="{$href-schema}"/>
+            <p:with-input port="schema" pipe="@schema"/>
           </p:validate-with-xml-schema>
           <p:catch>
             <p:error code="xtlc:schema-validate-error">
@@ -64,15 +72,15 @@
         </p:try>
       </p:when>
       <p:otherwise>
-        <p:validate-with-xml-schema assert-valid="true" version="{$schema-version}">
+        <p:validate-with-xml-schema assert-valid="true" version="{$actual-schema-version}">
           <p:with-input port="source" pipe="source@validate"/>
-          <p:with-input port="schema" href="{$href-schema}"/>
+          <p:with-input port="schema" pipe="@schema"/>
         </p:validate-with-xml-schema>
       </p:otherwise>
     </p:choose>
   </p:if>
 
-  <p:if test="exists($href-schematron)">
+  <p:if test="$enabled and exists($href-schematron)">
     <p:choose>
       <p:when test="$simplify-error-messages">
         <p:try>

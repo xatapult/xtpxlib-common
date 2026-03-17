@@ -304,6 +304,12 @@
     <xsl:param name="add-macrodef-comments" as="xs:boolean" required="false" select="false()">
       <!--~ Whether to add a macro definition comment (summarizing all macro definitions) when a `<*:macrodefs>` element is processed. -->
     </xsl:param>
+    <xsl:param name="ignore-elements" as="xs:string*" required="false" select="()">
+      <!-- Element names to ignore (local name, namespace independent). -->
+    </xsl:param>
+    <xsl:param name="ignore-attributes" as="xs:string*" required="false" select="()">
+      <!-- Attribute names to ignore (local name, namespace independent). -->
+    </xsl:param>
 
     <xsl:apply-templates select="$in" mode="local:mode-expand-macro-definitions">
       <xsl:with-param name="macrodef-map"
@@ -312,6 +318,8 @@
       <xsl:with-param name="expand-in-attributes" select="$expand-in-attributes" tunnel="true"/>
       <xsl:with-param name="use-local-macrodefs" select="$use-local-macrodefs" tunnel="true"/>
       <xsl:with-param name="add-macrodef-comments" select="$add-macrodef-comments" tunnel="true"/>
+      <xsl:with-param name="ignore-elements" select="$ignore-elements" tunnel="true"/>
+      <xsl:with-param name="ignore-attributes" select="$ignore-attributes" tunnel="true"/>
     </xsl:apply-templates>
   </xsl:template>
 
@@ -321,39 +329,47 @@
     <xsl:param name="use-local-macrodefs" as="xs:boolean" required="true" tunnel="true"/>
     <xsl:param name="macrodef-map" as="map(xs:string, xs:string)" required="true" tunnel="true"/>
     <xsl:param name="add-macrodef-comments" as="xs:boolean" required="true" tunnel="true"/>
+    <xsl:param name="ignore-elements" as="xs:string*" required="true" tunnel="true"/>
 
-    <xsl:copy>
-      <xsl:apply-templates select="@*" mode="#current"/>
+    <xsl:choose>
+      <xsl:when test="local-name(.) = $ignore-elements">
+        <xsl:copy-of select="."/>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:copy>
+          <xsl:apply-templates select="@*" mode="#current"/>
 
-      <xsl:choose>
-        <xsl:when test="$use-local-macrodefs">
-          <xsl:variable name="macrodefs-element" as="element()" select="*:macrodefs[1]"/>
-          <xsl:variable name="new-macrodefs" as="map(xs:string, xs:string)">
-            <xsl:variable name="macrodef-elements" as="element()+" select="$macrodefs-element/*:macrodef[exists(@name[normalize-space(.) ne ''])]"/>
-            <xsl:map>
-              <!-- Use grouping to prevent double macrodef names causing errors. -->
-              <xsl:for-each-group select="$macrodef-elements" group-by="string(@name)">
-                <xsl:variable name="macrodef-element" as="element()" select="current-group()[last()]"/>
-                <xsl:map-entry key="current-grouping-key()" select="string($macrodef-element/@value)"/>
-              </xsl:for-each-group>
-            </xsl:map>
-          </xsl:variable>
-          <xsl:variable name="current-macrodefs" as="map(xs:string, xs:string)" select="xtlc:merge-macrodefs(($macrodef-map, $new-macrodefs))"/>
-          <xsl:if test="$add-macrodef-comments">
-            <xsl:call-template name="xtlc:macrodefs-as-comment">
-              <xsl:with-param name="macrodef-map" select="$current-macrodefs"/>
-            </xsl:call-template>
-          </xsl:if>
-          <xsl:apply-templates select="node() except $macrodefs-element" mode="#current">
-            <xsl:with-param name="macrodef-map" select="$current-macrodefs" tunnel="true"/>
-          </xsl:apply-templates>
-        </xsl:when>
-        <xsl:otherwise>
-          <xsl:apply-templates mode="#current"/>
-        </xsl:otherwise>
-      </xsl:choose>
+          <xsl:choose>
+            <xsl:when test="$use-local-macrodefs">
+              <xsl:variable name="macrodefs-element" as="element()" select="*:macrodefs[1]"/>
+              <xsl:variable name="new-macrodefs" as="map(xs:string, xs:string)">
+                <xsl:variable name="macrodef-elements" as="element()+" select="$macrodefs-element/*:macrodef[exists(@name[normalize-space(.) ne ''])]"/>
+                <xsl:map>
+                  <!-- Use grouping to prevent double macrodef names causing errors. -->
+                  <xsl:for-each-group select="$macrodef-elements" group-by="string(@name)">
+                    <xsl:variable name="macrodef-element" as="element()" select="current-group()[last()]"/>
+                    <xsl:map-entry key="current-grouping-key()" select="string($macrodef-element/@value)"/>
+                  </xsl:for-each-group>
+                </xsl:map>
+              </xsl:variable>
+              <xsl:variable name="current-macrodefs" as="map(xs:string, xs:string)" select="xtlc:merge-macrodefs(($macrodef-map, $new-macrodefs))"/>
+              <xsl:if test="$add-macrodef-comments">
+                <xsl:call-template name="xtlc:macrodefs-as-comment">
+                  <xsl:with-param name="macrodef-map" select="$current-macrodefs"/>
+                </xsl:call-template>
+              </xsl:if>
+              <xsl:apply-templates select="node() except $macrodefs-element" mode="#current">
+                <xsl:with-param name="macrodef-map" select="$current-macrodefs" tunnel="true"/>
+              </xsl:apply-templates>
+            </xsl:when>
+            <xsl:otherwise>
+              <xsl:apply-templates mode="#current"/>
+            </xsl:otherwise>
+          </xsl:choose>
 
-    </xsl:copy>
+        </xsl:copy>
+      </xsl:otherwise>
+    </xsl:choose>
   </xsl:template>
 
   <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
@@ -361,13 +377,21 @@
   <xsl:template match="@*[contains(., $xtlc:macrodef-start-character)]" mode="local:mode-expand-macro-definitions">
     <xsl:param name="macrodef-map" as="map(xs:string, xs:string)" required="true" tunnel="true"/>
     <xsl:param name="expand-in-attributes" as="xs:boolean" required="true" tunnel="true"/>
+    <xsl:param name="ignore-attributes" as="xs:string*" required="true" tunnel="true"/>
 
     <xsl:choose>
-      <xsl:when test="$expand-in-attributes">
-        <xsl:attribute name="{local-name(.)}" namespace="{namespace-uri(.)}" select="xtlc:expand-macrodefs(string(.), $macrodef-map)"/>
+      <xsl:when test="local-name(.) = $ignore-attributes">
+        <xsl:copy/>
       </xsl:when>
       <xsl:otherwise>
-        <xsl:copy/>
+        <xsl:choose>
+          <xsl:when test="$expand-in-attributes">
+            <xsl:attribute name="{local-name(.)}" namespace="{namespace-uri(.)}" select="xtlc:expand-macrodefs(string(.), $macrodef-map)"/>
+          </xsl:when>
+          <xsl:otherwise>
+            <xsl:copy/>
+          </xsl:otherwise>
+        </xsl:choose>
       </xsl:otherwise>
     </xsl:choose>
   </xsl:template>
@@ -377,15 +401,24 @@
   <xsl:template match="text()[contains(., $xtlc:macrodef-start-character)]" mode="local:mode-expand-macro-definitions">
     <xsl:param name="macrodef-map" as="map(xs:string, xs:string)" required="true" tunnel="true"/>
     <xsl:param name="expand-in-text" as="xs:boolean" required="true" tunnel="true"/>
+    <xsl:param name="ignore-elements" as="xs:string*" required="true" tunnel="true"/>
 
     <xsl:choose>
-      <xsl:when test="$expand-in-text">
-        <xsl:value-of select="xtlc:expand-macrodefs(string(.), $macrodef-map)"/>
+      <xsl:when test="local-name(..) = $ignore-elements">
+        <xsl:copy/>
       </xsl:when>
       <xsl:otherwise>
-        <xsl:copy/>
+        <xsl:choose>
+          <xsl:when test="$expand-in-text">
+            <xsl:value-of select="xtlc:expand-macrodefs(string(.), $macrodef-map)"/>
+          </xsl:when>
+          <xsl:otherwise>
+            <xsl:copy/>
+          </xsl:otherwise>
+        </xsl:choose>
       </xsl:otherwise>
     </xsl:choose>
+
   </xsl:template>
 
   <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->

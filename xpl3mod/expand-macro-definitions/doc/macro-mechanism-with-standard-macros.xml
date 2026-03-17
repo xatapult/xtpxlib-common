@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<section xmlns="http://www.eriksiegel.nl/ns/sml" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.eriksiegel.nl/ns/sml file:/xatapult/xtpxlib-sml/xsd/sml.xsd" xmlns:xi="http://www.w3.org/2001/XInclude"
+  id="macro-mechanism">
+  <title>The macro mechanism</title>
+
+  <!-- ======================================================================= -->
+
+  <xi:include href="include/base-sections.xml"/>
+
+  <!-- ======================================================================= -->
+
+  <section>
+    <title>Standard macros</title>
+
+    <para>The following macros are always available:</para>
+
+    <table>
+      <header>
+        <entry>
+          <para>Macro name</para>
+        </entry>
+        <entry>
+          <para>Description</para>
+        </entry>
+        <entry>
+          <para>Example(s)</para>
+        </entry>
+      </header>
+      <row>
+        <entry>
+          <para>
+            <code>DATE</code>
+          </para>
+        </entry>
+        <entry>
+          <para>The current date (<code>YYYY-MM-DD</code>).</para>
+        </entry>
+        <entry>
+          <para>
+            <code>2025-05-20</code>
+          </para>
+        </entry>
+      </row>
+      <row>
+        <entry>
+          <para>
+            <code>DATECOMPACT</code>
+          </para>
+        </entry>
+        <entry>
+          <para>The current date in more compact format (<code>YYYYMMDD</code>) </para>
+        </entry>
+        <entry>
+          <para>
+            <code>20250520</code>
+          </para>
+        </entry>
+      </row>
+      <row>
+        <entry>
+          <para>
+            <code>DATETIMEISO</code>
+          </para>
+        </entry>
+        <entry>
+          <para>The current date/time in ISO format (may include a timezone indicator).</para>
+        </entry>
+        <entry>
+          <para>
+            <code>2025-05-20T12:12:23</code>
+          </para>
+        </entry>
+      </row>
+      <row>
+        <entry>
+          <para>
+            <code>TIME</code>
+          </para>
+        </entry>
+        <entry>
+          <para>The current time (<code>HH:MM:SS</code>).</para>
+        </entry>
+        <entry>
+          <para>
+            <code>12:12:23</code>
+          </para>
+        </entry>
+      </row>
+      <row>
+        <entry>
+          <para>
+            <code>TIMECOMPACT</code>
+          </para>
+        </entry>
+        <entry>
+          <para>The current time in more compact format (<code>HHMMSS</code>)</para>
+        </entry>
+        <entry>
+          <para>
+            <code>121223</code>
+          </para>
+        </entry>
+      </row>
+      <row>
+        <entry>
+          <para>
+            <code>TIMESHORT</code>
+          </para>
+        </entry>
+        <entry>
+          <para>The current time without seconds (<code>HH:MM</code>).</para>
+        </entry>
+        <entry>
+          <para>
+            <code>12:12</code>
+          </para>
+        </entry>
+      </row>
+      <row>
+        <entry>
+          <para>
+            <code>TIMESHORTCOMPACT</code>
+          </para>
+        </entry>
+        <entry>
+          <para>The current time in more compact format (HHMM)</para>
+        </entry>
+        <entry>
+          <para>
+            <code>1212</code>
+          </para>
+        </entry>
+      </row>
+    </table>
+  </section>
+
+</section>

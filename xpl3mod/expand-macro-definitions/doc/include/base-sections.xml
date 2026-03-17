@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<fragment xmlns="http://www.eriksiegel.nl/ns/sml" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.eriksiegel.nl/ns/sml file:/xatapult/xtpxlib-sml/xsd/sml.xsd">
+
+  <!-- ======================================================================= -->
+
+  <para>The macro mechanism allows using and defining string macros.</para>
+
+  <section>
+
+    <title>Using macros</title>
+
+    <para>A reference to a parameter can be done in two different ways:</para>
+    <itemizedlist>
+      <listitem>
+        <para>As <code>{{$MACRO}</code></para>
+      </listitem>
+      <listitem>
+        <para>As <code>${{MACRO}</code></para>
+      </listitem>
+    </itemizedlist>
+
+    <para>Both will result in the text of the macro. To stop macro expansion, double the first curly brace.</para>
+    <para>Referencing macros can be done in text nodes and attribute values. If the macro does not exist, an error will be raised.</para>
+    <para><emphasis>Watch out:</emphasis> it is possible that the software that uses the macro mechanism limits where macros can be used!</para>
+
+  </section>
+
+  <!-- ======================================================================= -->
+
+  <section>
+    <macrodefs>
+      <macrodef name="REF" value="alpha:beta"/>
+    </macrodefs>
+    <title>Macro expansion flags</title>
+
+    <para>A macro reference can be followed by zero or more flags, separated by colons (<code>:</code>). Assume for instance that the macro called
+        <code>REF</code> contains the value <code>{$REF}</code>. Then referring to it as <code>${{REF:uc}</code> results in <code>{$REF:uc}</code>
+      (everything upper-case). Referring to is as <code>${{REF:uc:fns}</code> will result in <code>{$REF:uc:fns}</code> (everything upper-case,
+      filename-safe).</para>
+    <para>The following flags are defined:</para>
+
+    <table>
+      <header>
+        <entry>
+          <para>Flag</para>
+        </entry>
+        <entry>
+          <para>Description</para>
+        </entry>
+      </header>
+      <row>
+        <entry>
+          <para>
+            <code>cap</code>
+          </para>
+        </entry>
+        <entry>
+          <para>Capitalize the macro value (first character upper-case, rest as-is).</para>
+        </entry>
+      </row>
+      <row>
+        <entry>
+          <para>
+            <code>compact</code>
+          </para>
+        </entry>
+        <entry>
+          <para>Remove all whitespace.</para>
+        </entry>
+      </row>
+      <row>
+        <entry>
+          <para>
+            <code>fns</code>
+          </para>
+        </entry>
+        <entry>
+          <para>Filename safe expansion: replace all forbidden characters in a filename with underscores (<code>_</code>).</para>
+        </entry>
+      </row>
+      <row>
+        <entry>
+          <para>
+            <code>fnsx</code>
+          </para>
+        </entry>
+        <entry>
+          <para>Filename safe expansion extra: like the <code>fns</code> flag, additionally replace all whitespace characters with underscores.</para>
+        </entry>
+      </row>
+      <row>
+        <entry>
+          <para>
+            <code>lc</code>
+          </para>
+        </entry>
+        <entry>
+          <para>All lower-case.</para>
+        </entry>
+      </row>
+      <row>
+        <entry>
+          <para>
+            <code>normalize</code>
+          </para>
+        </entry>
+        <entry>
+          <para>Normalize the macro value (like the <code>normalize-space()</code> function).</para>
+        </entry>
+      </row>
+      <row>
+        <entry>
+          <para>
+            <code>uc</code>
+          </para>
+        </entry>
+        <entry>
+          <para>All upper-case.</para>
+        </entry>
+      </row>
+    </table>
+  </section>
+
+  <!-- ======================================================================= -->
+
+  <section>
+    <title>Defining macros</title>
+
+    <para>Macros can be defined using the <tag>macrodefs</tag> element. Where this element can appear depends on the application that uses the macro
+      mechanism and must be defined in its schema. It is <emphasis>always</emphasis> the first child element of some other element (usually for
+      something grouping/container like, for instance sections).</para>
+
+    <element name="macrodefs">
+      <children>
+        <element name="macrodef" occurrences="*"/>
+      </children>
+    </element>
+
+    <element name="macrodef">
+      <attributes>
+        <attribute name="name" type="xs:NCName" required="true">
+          <para>The name of the macro. Convention is to use all upper-case.</para>
+        </attribute>
+        <attribute name="value" type="xs:string">
+          <para>The value for the macro. Can contain nested references to other macros.</para>
+        </attribute>
+      </attributes>
+    </element>
+
+  </section>
+
+  <!-- ======================================================================= -->
+
+</fragment>
