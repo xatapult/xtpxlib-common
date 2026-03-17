@@ -54,31 +54,41 @@
           <tbody>
             <row>
               <entry>
-                <code role="code-width-limited">data</code>
+                <para>
+                  <code role="code-width-limited">data</code>
+                </para>
               </entry>
               <entry>XML data files.</entry>
             </row>
             <row>
               <entry>
-                <code role="code-width-limited">doc</code>
+                <para>
+                  <code role="code-width-limited">doc</code>
+                </para>
               </entry>
               <entry>Sources for the generation of the component's documentation. Internal use only.</entry>
             </row>
             <row>
               <entry>
-                <code role="code-width-limited">docs</code>
+                <para>
+                  <code role="code-width-limited">docs</code>
+                </para>
               </entry>
               <entry>GitHub pages site for this component.</entry>
             </row>
             <row>
               <entry>
-                <code role="code-width-limited">etc</code>
+                <para>
+                  <code role="code-width-limited">etc</code>
+                </para>
               </entry>
               <entry>Auxiliary files, mainly for use in the oXygen IDE.</entry>
             </row>
             <row>
               <entry>
-                <code role="code-width-limited">template</code>
+                <para>
+                  <code role="code-width-limited">template</code>
+                </para>
               </entry>
               <entry>
                 <para>Template files. These files contain XSLT, XQuery, XProc, etc. files with the main structure and headers filled in. Contain
@@ -88,39 +98,67 @@
               </entry>
             </row>
             <row>
-              <entry><code role="code-width-limited"/>xpl</entry>
+              <entry>
+                <para>
+                  <code role="code-width-limited">xpl</code>
+                </para>
+              </entry>
               <entry>General purpose XProc (1.0) pipelines. .</entry>
             </row>
             <row>
-              <entry><code role="code-width-limited"/>xplmod</entry>
+              <entry>
+                <para>
+                  <code role="code-width-limited">xplmod</code>
+                </para>
+              </entry>
               <entry>General purpose XProc (1.0) modules. </entry>
             </row>
             <row>
-              <entry><code role="code-width-limited"/>xpl3</entry>
+              <entry>
+                <para>
+                  <code role="code-width-limited">xpl3</code>
+                </para>
+              </entry>
               <entry>General purpose XProc (3.0) pipelines. .</entry>
             </row>
             <row>
-              <entry><code role="code-width-limited"/>xpl3mod</entry>
+              <entry>
+                <para>
+                  <code role="code-width-limited">xpl3mod</code>
+                </para>
+              </entry>
               <entry>General purpose XProc (3.0) modules. </entry>
             </row>
             <row>
-              <entry><code role="code-width-limited"/>xqmod</entry>
+              <entry>
+                <para>
+                  <code role="code-width-limited">xqmod</code>
+                </para>
+              </entry>
               <entry>General purpose XQuery modules. This is a partial translation of the XSLT module's functionality (especially from <code><link
                     linkend="href.mod.xsl">href.mod.xsl</link></code>) into XQuery.</entry>
             </row>
             <row>
               <entry>
-                <code role="code-width-limited">xsd</code>
+                <para>
+                  <code role="code-width-limited">xsd</code>
+                </para>
               </entry>
               <entry>Schemas for some of the document types used in <code>{$library-name}</code>. </entry>
             </row>
             <row>
-              <entry><code role="code-width-limited"/>xsl</entry>
+              <entry>
+                <para>
+                  <code role="code-width-limited">xsl</code>
+                </para>
+              </entry>
               <entry>Some general purpose XSLT stylesheets.</entry>
             </row>
             <row>
               <entry>
-                <code role="code-width-limited">xslmod</code>
+                <para>
+                  <code role="code-width-limited">xslmod</code>
+                </para>
               </entry>
               <entry>General purpose XSLT modules.</entry>
             </row>
@@ -273,14 +311,14 @@
 
     <xdoc:transform href="$xdoc/code-docgen-dir.xpl" dir="../../../xtpxlib-common/xpl3mod/" filter="\.xpl$" header-level="1" filecomponents="3"
       sublevels="true" depth="2"/>
-    
+
     <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
-    
+
     <sect1>
       <title>oXygen XProc 3.0 support (oXygen versions &lt;&#160;26)</title>
-      
-      <para>oXygen versions &lt;&#160;26 had nor editing support for XProc 3.0. The component contains an oXygen framework that enables validating XProc
-        3.0 documents. To use this:</para>
+
+      <para>oXygen versions &lt;&#160;26 had nor editing support for XProc 3.0. The component contains an oXygen framework that enables validating
+        XProc 3.0 documents. To use this:</para>
       <itemizedlist>
         <listitem>
           <para>Add the framework to the oXygen configuration:</para>
@@ -317,22 +355,22 @@
           </itemizedlist>
         </listitem>
       </itemizedlist>
-      
+
     </sect1>
-    
+
   </chapter>
-  
+
   <!-- ================================================================== -->
-  
+
   <chapter xml:id="chapter-xproc-libraries" xreflabel="XProc 1.0 Support">
     <title>XProc 1.0 Support</title>
-    
+
     <para>The {$component-name} component contains the following XProc&#160;1.0 library module:</para>
     <para><emphasis role="bold">WARNING</emphasis>: XProc&#160;1.0 support is considered deprecated and will be removed in the near future!</para>
-    
+
     <xdoc:transform href="$xdoc/code-docgen-dir.xpl" dir="../../../xtpxlib-common/xplmod/" filter="\.mod\.xpl$" header-level="1" filecomponents="3"
       sublevels="true"/>
-    
+
   </chapter>
 
   <!-- ================================================================== -->
