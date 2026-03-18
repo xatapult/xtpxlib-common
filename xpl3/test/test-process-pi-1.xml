@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<?xtpxlib-process xproc pipeline=test-1.xpl bla1=1 bla2=2 bla=bloeb source='test-1.xpl' ?>
-<?xtpxlib-process xslt stylesheet=test-1.xsl bla1=1 bla2=2 bla=bloeb  ?>
+<?xtpxlib-process      xproc pipeline=test-1.xpl bla1=1 bla2=2 bla=bloeb source='test-1.xpl' ?>
+<?xtpxlib-process xslt stylesheet=test-1.xsl bla1=1 bla2=2 bla="bloeb bloeb" quoted='This is a test!"' quoted2='This is a test!"'  ?>
+<!--xtpxlib-process a b c-->
 <test>
   <nonsense/>
 </test>
