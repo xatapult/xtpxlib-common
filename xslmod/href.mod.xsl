@@ -207,7 +207,21 @@
 
     <xsl:sequence select="xtlc:href-protocol-add($href, $xtlc:protocol-file, true())"/>
   </xsl:function>
-
+  
+  <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+  
+  <xsl:function name="xtlc:href-force-extension" as="xs:string" visibility="public">
+    <!--~ Forces the extension of an href to a specified one.  -->
+    <xsl:param name="href" as="xs:string">
+    <!--~ href to work on. -->
+    </xsl:param>
+    <xsl:param name="ext" as="xs:string" >
+      <!--~ The extension of the result. Must not start with a dot. -->
+    </xsl:param>
+    
+    <xsl:sequence select="xtlc:href-concat((xtlc:href-path($href), xtlc:href-name-noext($href) || '.' || $ext))"/>
+  </xsl:function>
+  
   <!-- ================================================================== -->
   <!-- CANONICALIZATION OF HREFs: -->
 
