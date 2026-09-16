@@ -49,7 +49,7 @@
         <p:empty/>
       </p:with-input>
     </p:os-exec>
-    <p:variable name="hostname" as="xs:string" select="replace(., '\s', '')"/>
+    <p:variable name="hostname" as="xs:string" select="xs:string((normalize-space(.)[.], 'UNKNOWN')[1])"/>
     <p:add-attribute attribute-name="hostname" attribute-value="{$hostname}">
       <p:with-input pipe="@base-result"/>
     </p:add-attribute>
