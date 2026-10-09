@@ -24,7 +24,9 @@
 
     <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 
-    <p:input port="source" primary="true" sequence="true" content-types="any"/>
+    <p:input port="source" primary="true" sequence="true" content-types="any">
+      <p:empty/>
+    </p:input>
     <p:output port="result" primary="true" sequence="true" content-types="any" pipe="source@message"/>
 
     <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
