@@ -164,13 +164,46 @@
   <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 
   <xsl:function name="xtlc:str2regexp" as="xs:string" visibility="public">
-    <!--~ Turns a string into a regular expression that matches the input exactly. -->
+    <!--~ Turns a string into a regular expression that matches the input exactly (not anchored). -->
     <xsl:param name="in" as="xs:string?">
       <!--~ String to convert  -->
     </xsl:param>
     <xsl:sequence select="xtlc:str2regexp($in, false())"/>
   </xsl:function>
-
+  
+  <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+  
+  <xsl:function name="xtlc:str2regexp-replace-string" as="xs:string">
+    <!--~ Makes a string safe for use in the replacement parameter of fn:replace() (escapes $ signs).  -->
+    <xsl:param name="replace-string" as="xs:string">
+      <!--~The string to make safe.  -->
+    </xsl:param>
+    
+    <xsl:sequence select="replace($replace-string, '([\\$])', '\\$1')"/>
+  </xsl:function>
+  
+  <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+  
+  <xsl:function name="xtlc:is-valid-regexp" as="xs:boolean">
+    <!-- Tests a regular expression for being valid. -->
+    <xsl:param name="regexp" as="xs:string"/>
+    
+    <xsl:try>
+      <!-- The choose here is to fool the optimizer. -->
+      <xsl:choose>
+        <xsl:when test="matches('something', $regexp)">
+          <xsl:sequence select="true()"/>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:sequence select="true()"/>
+        </xsl:otherwise>  
+      </xsl:choose>
+      <xsl:catch>
+        <xsl:sequence select="false()"/>
+      </xsl:catch>
+    </xsl:try>
+  </xsl:function>
+  
   <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 
   <xsl:function name="xtlc:str2filename-safe" as="xs:string" visibility="public">
