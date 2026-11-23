@@ -175,11 +175,11 @@
   
   <xsl:function name="xtlc:str2regexp-replace-string" as="xs:string">
     <!--~ Makes a string safe for use in the replacement parameter of fn:replace() (escapes $ signs).  -->
-    <xsl:param name="replace-string" as="xs:string">
+    <xsl:param name="replace-string" as="xs:string?">
       <!--~The string to make safe.  -->
     </xsl:param>
     
-    <xsl:sequence select="replace($replace-string, '([\\$])', '\\$1')"/>
+    <xsl:sequence select="replace(string($replace-string), '([\\$])', '\\$1')"/>
   </xsl:function>
   
   <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
